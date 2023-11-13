@@ -2,353 +2,158 @@
 @section('title', 'Products')
 @section('content')
 
+@php
+$products = [ 
+    [ 'name' => 'Computer', 'parent_category' => 'Electronics', 'image' => '/img/portfolio-3.jpg', 'items' => 120, ],
+    [ 'name' => 'Smartphone', 'parent_category' => 'Electronics', 'image' => '/img/portfolio-1.jpg', 'items' => 75, ],
+    [ 'name' => 'Headphones', 'parent_category' => 'Electronics', 'image' => '/img/portfolio-2.jpg', 'items' => 40, ],
+    [ 'name' => 'Television', 'parent_category' => 'Electronics', 'image' => '/img/portfolio-4.jpg', 'items' => 60, ],
+    [ 'name' => 'Camera', 'parent_category' => 'Electronics', 'image' => '/img/portfolio-5.jpg', 'items' => 30, ],
+    [ 'name' => 'Gaming', 'parent_category' => 'Electronics', 'image' => '/img/portfolio-6.jpg', 'items' => 50, ],
+    [ 'name' => 'Furniture', 'parent_category' => null, 'image' => '/img/portfolio-7.jpg', 'items' => 200, ],
+    [ 'name' => 'Home Decor', 'parent_category' => null, 'image' => '/img/portfolio-8.jpg', 'items' => 150, ],
+    [ 'name' => 'Cookware', 'parent_category' => 'Kitchen', 'image' => '/img/portfolio-9.jpg', 'items' => 80, ],
+    [ 'name' => 'Appliances', 'parent_category' => 'Kitchen', 'image' => '/img/portfolio-10.jpg', 'items' => 110, ],
+    [ 'name' => 'Bedding', 'parent_category' => 'Bedroom', 'image' => '/img/portfolio-11.jpg', 'items' => 90, ],
+    [ 'name' => 'Lighting', 'parent_category' => 'Home Decor', 'image' => '/img/portfolio-12.jpg', 'items' => 70, ],
+];
+@endphp
+<!-- push external head elements to head -->
 <div class="container-fluid">
-	<div class="page-header">
-		<div class="row align-items-end">
-			<div class="col-lg-8">
-				<div class="page-header-title">
-					<i class="ik ik-headphones bg-green"></i>
-					<div class="d-inline">
-						<h5>Products</h5>
-						<span>View, delete and update products</span>
-					</div>
-				</div>
-			</div>
-			<div class="col-lg-4">
-				<nav class="breadcrumb-container" aria-label="breadcrumb">
-					<ol class="breadcrumb">
-						<li class="breadcrumb-item">
-							<a href="/dashboard"><i class="ik ik-home"></i></a>
-						</li>
-						<li class="breadcrumb-item">
-							<a href="#">Products</a>
-						</li>
-					</ol>
-				</nav>
-			</div>
-		</div>
-	</div>
-	<div class="row">
-		<div class="col-md-12">
-			<div class="card">
-				<div class="card-header row">
-					<div class="col col-sm-2">
-						<a href="{{url('products/create')}}" class="btn btn-sm btn-primary btn-rounded">Add Product</a>
-					</div>
-					<div class="col col-sm-1">
-						<div class="card-options d-inline-block">
-							<div class="dropdown d-inline-block">
-								<a class="nav-link dropdown-toggle" href="#" id="moreDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="ik ik-more-horizontal"></i></a>
-								<div class="dropdown-menu dropdown-menu-left" aria-labelledby="moreDropdown">
-									<a class="dropdown-item" href="#">Delete</a>
-									<a class="dropdown-item" href="#">More Action</a>
-								</div>
-							</div>
-						</div>
+    <div class="page-header">
+        <div class="row align-items-end">
+            <div class="col-lg-8">
+                <div class="page-header-title">
+                    <i class="ik ik-list bg-blue"></i>
+                    <div class="d-inline">
+                        <h5>{{ __('Products')}}</h5>
+                        <span>Add, remove or edit products</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <nav class="breadcrumb-container" aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item">
+                            <a href="{{url('dashboard')}}"><i class="ik ik-home"></i></a>
+                        </li>
+                        <li class="breadcrumb-item">
+                            <a href="#">{{ __('Products')}}</a>
+                        </li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <!-- start message area-->
+        @include('include.message')
+        <!-- end message area-->
+        <div class="col-md-12">
+            <div class="mb-2 clearfix">
+                <div class="d-block mb-3 text-left">
+                    <a class="btn btn-primary" href="{{route('product.create')}}">
+                        Add Product
+					</a>
+                </div>
+                <a class="btn pt-0 pl-0 d-md-none d-lg-none" data-toggle="collapse" href="#displayOptions" role="button" aria-expanded="true" aria-controls="displayOptions">
+                    {{ __('Display Options')}}
+                    <i class="ik ik-chevron-down align-middle"></i>
+                </a>
+                <div class="collapse d-md-block display-options" id="displayOptions">
+                    <span class="mr-3 d-inline-block float-md-left dispaly-option-buttons">
+                        <a href="#" class="mr-1 view-thumb ">
+                            <i class="ik ik-list view-icon"></i>
+                        </a>
+                        <a href="#" class="mr-1 view-grid active">
+                            <i class="ik ik-grid view-icon"></i>
+                        </a>
+                    </span>
+                    <div class="d-block d-md-inline-block">
+                        <div class="btn-group float-md-left mr-1 mb-1">
+                            <button class="btn btn-outline-dark btn-xs dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ __('
+                                    Order By')}}
+                                <i class="ik ik-chevron-down mr-0 align-middle"></i>
+                            </button>
+                            <div class="dropdown-menu">
+                                <a class="dropdown-item" href="#">{{ __('DESC')}}</a>
+                                <a class="dropdown-item" href="#">{{ __('ASC')}}</a>
+                            </div>
+                        </div>
+                        <div class="search-sm d-inline-block float-md-left mr-1 mb-1 align-top">
+                            <form action="">
+                                <input type="text" class="form-control" placeholder="Search.." required>
+                                <button type="submit" class="btn btn-icon"><i class="ik ik-search"></i></button>
+                                <button type="button" id="adv_wrap_toggler" class="adv-btn ik ik-chevron-down dropdown-toggle" data-toggle="dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
+                                <div class="adv-search-wrap dropdown-menu dropdown-menu-right" aria-labelledby="adv_wrap_toggler">
+                                    <div class="form-group">
+                                        <input type="text" class="form-control" placeholder="Category Title">
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="text" class="form-control" placeholder="Category Code">
+                                    </div>
+                                    <button class="btn btn-theme">{{ __('Search')}}</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="float-md-right">
+                        <span class="text-muted text-small mr-2">{{ __('Displaying 1-10 of 210 items')}} </span>
+                        <button class="btn btn-outline-dark btn-xs dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            20
+                            <i class="ik ik-chevron-down mr-0 align-middle"></i>
+                        </button>
+                        <div class="dropdown-menu dropdown-menu-right">
+                            <a class="dropdown-item" href="#">10</a>
+                            <a class="dropdown-item" href="#">20</a>
+                            <a class="dropdown-item" href="#">30</a>
+                            <a class="dropdown-item" href="#">50</a>
+                            <a class="dropdown-item" href="#">100</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="separator mb-20"></div>
 
-					</div>
-					<div class="col col-sm-6">
-						<div class="card-search with-adv-search dropdown">
-							<form action="">
-								<input type="text" class="form-control global_filter" id="global_filter" placeholder="Search.." required="">
-								<button type="submit" class="btn btn-icon"><i class="ik ik-search"></i></button>
-								<button type="button" id="adv_wrap_toggler_1" class="adv-btn ik ik-chevron-down dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
-								<div class="adv-search-wrap dropdown-menu dropdown-menu-right" aria-labelledby="adv_wrap_toggler_1">
-									<div class="row">
-										<div class="col-md-12">
-											<div class="form-group">
-												<input type="text" class="form-control column_filter" id="col0_filter" placeholder="Title" data-column="0">
-											</div>
-										</div>
-										<div class="col-md-6">
-											<div class="form-group">
-												<input type="text" class="form-control column_filter" id="col1_filter" placeholder="Price" data-column="1">
-											</div>
-										</div>
-										<div class="col-md-6">
-											<div class="form-group">
-												<input type="text" class="form-control column_filter" id="col2_filter" placeholder="SKU" data-column="2">
-											</div>
-										</div>
-										<div class="col-md-4">
-											<div class="form-group">
-												<input type="text" class="form-control column_filter" id="col3_filter" placeholder="Qty" data-column="3">
-											</div>
-										</div>
-										<div class="col-md-4">
-											<div class="form-group">
-												<input type="text" class="form-control column_filter" id="col4_filter" placeholder="Category" data-column="4">
-											</div>
-										</div>
-										<div class="col-md-4">
-											<div class="form-group">
-												<input type="text" class="form-control column_filter" id="col5_filter" placeholder="Tag" data-column="5">
-											</div>
-										</div>
-									</div>
-									<button class="btn btn-theme">Search</button>
-								</div>
-							</form>
-						</div>
-					</div>
-					<div class="col col-sm-3">
-						<div class="card-options text-right">
-							<span class="mr-5" id="top">1 - 50 of 2,500</span>
-							<a href="#"><i class="ik ik-chevron-left"></i></a>
-							<a href="#"><i class="ik ik-chevron-right"></i></a>
-						</div>
-					</div>
-				</div>
-				<div class="card-body">
-					<table id="advanced_table" class="table">
-						<thead>
-							<tr>
-								<th class="nosort" width="10">
-									<label class="custom-control custom-checkbox m-0">
-										<input type="checkbox" class="custom-control-input" id="selectall" name="" value="option2">
-										<span class="custom-control-label">&nbsp;</span>
-									</label>
-								</th>
-								<th class="nosort">Image</th>
-								<th>Title</th>
-								<th>SKU</th>
-								<th>Categories</th>
-								<th>Price</th>
-								<th>Purchase Price</th>
-								<th>In Stock</th>
-								<th>Action</th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr>
-								<td>
-									<label class="custom-control custom-checkbox">
-										<input type="checkbox" class="custom-control-input select_all_child" id="" name="" value="option2">
-										<span class="custom-control-label">&nbsp;</span>
-									</label>
-								</td>
-								<td>
-									<img src="/img/products/headphone.webp" class="table-user-thumb" alt="">
-								</td>
-								<td>HeadPhone</td>
-								<td>EH1234</td>
-								<td>
-									Electronics,
-									Computers,
-								</td>
-								<td>100</td>
-								<td>90</td>
-								<td>50</td>
-								<td>
-									<a href="#productView" data-toggle="modal" data-target="#productView"><i class="ik ik-eye f-16 mr-15"></i></a>
-									<a href="#"><i class="ik ik-edit f-16 mr-15 text-green"></i></a>
-									<a href="#!"><i class="ik ik-trash-2 f-16 text-red"></i></a>
-								</td>
-							</tr>
-							<tr>
-								<td>
-									<label class="custom-control custom-checkbox">
-										<input type="checkbox" class="custom-control-input select_all_child" id="" name="" value="option2">
-										<span class="custom-control-label">&nbsp;</span>
-									</label>
-								</td>
-								<td>
-									<img src="/img/products/ipone-6.jpg" class="table-user-thumb" alt="">
-								</td>
-								<td>Iphone 6</td>
-								<td>EH1234</td>
-								<td>
-									Electronics,
-									Others,
-								</td>
-								<td>5000</td>
-								<td>4850</td>
-								<td>1</td>
-								<td>
-									<a href="#productView" data-toggle="modal" data-target="#productView"><i class="ik ik-eye f-16 mr-15"></i></a>
-									<a href="/products/2/edit"><i class="ik ik-edit f-16 mr-15 text-green"></i></a>
-									<a href="#!"><i class="ik ik-trash-2 f-16 text-red"></i></a>
-								</td>
-							</tr>
-							<tr>
-								<td>
-									<label class="custom-control custom-checkbox">
-										<input type="checkbox" class="custom-control-input select_all_child" id="" name="" value="option2">
-										<span class="custom-control-label">&nbsp;</span>
-									</label>
-								</td>
-								<td>
-									<img src="/img/products/bag.webp" class="table-user-thumb" alt="">
-								</td>
-								<td>Leather Bag</td>
-								<td>EH1234</td>
-								<td>
-									Fashion,
-								</td>
-								<td>500</td>
-								<td>450</td>
-								<td>100</td>
-								<td>
-									<a href="#productView" data-toggle="modal" data-target="#productView"><i class="ik ik-eye f-16 mr-15"></i></a>
-									<a href="/products/3/edit"><i class="ik ik-edit f-16 mr-15 text-green"></i></a>
-									<a href="#!"><i class="ik ik-trash-2 f-16 text-red"></i></a>
-								</td>
-							</tr>
-							<tr>
-								<td>
-									<label class="custom-control custom-checkbox">
-										<input type="checkbox" class="custom-control-input select_all_child" id="" name="" value="option2">
-										<span class="custom-control-label">&nbsp;</span>
-									</label>
-								</td>
-								<td>
-									<img src="/img/products/camera.webp" class="table-user-thumb" alt="">
-								</td>
-								<td>Camera</td>
-								<td>EH1234</td>
-								<td>
-									Electronics,
-									Computers,
-								</td>
-								<td>100</td>
-								<td>90</td>
-								<td>50</td>
-								<td>
-									<a href="#productView" data-toggle="modal" data-target="#productView"><i class="ik ik-eye f-16 mr-15"></i></a>
-									<a href="/products/4/edit"><i class="ik ik-edit f-16 mr-15 text-green"></i></a>
-									<a href="#!"><i class="ik ik-trash-2 f-16 text-red"></i></a>
-								</td>
-							</tr>
-							<tr>
-								<td>
-									<label class="custom-control custom-checkbox">
-										<input type="checkbox" class="custom-control-input select_all_child" id="" name="" value="option2">
-										<span class="custom-control-label">&nbsp;</span>
-									</label>
-								</td>
-								<td>
-									<img src="/img/products/joystick.webp" class="table-user-thumb" alt="">
-								</td>
-								<td>Joystick</td>
-								<td>EH1234</td>
-								<td>
-									Electronics,
-									Computers,
-								</td>
-								<td>5000</td>
-								<td>4850</td>
-								<td>10</td>
-								<td>
-									<a href="#productView" data-toggle="modal" data-target="#productView"><i class="ik ik-eye f-16 mr-15"></i></a>
-									<a href="/products/5/edit"><i class="ik ik-edit f-16 mr-15 text-green"></i></a>
-									<a href="#!"><i class="ik ik-trash-2 f-16 text-red"></i></a>
-								</td>
-							</tr>
-							<tr>
-								<td>
-									<label class="custom-control custom-checkbox">
-										<input type="checkbox" class="custom-control-input select_all_child" id="" name="" value="option2">
-										<span class="custom-control-label">&nbsp;</span>
-									</label>
-								</td>
-								<td>
-									<img src="/img/products/jacket.webp" class="table-user-thumb" alt="">
-								</td>
-								<td>Jacket</td>
-								<td>EH1234</td>
-								<td>
-									Fashion,
-								</td>
-								<td>500</td>
-								<td>450</td>
-								<td>100</td>
-								<td>
-									<a href="#productView" data-toggle="modal" data-target="#productView"><i class="ik ik-eye f-16 mr-15"></i></a>
-									<a href="/products/6/edit"><i class="ik ik-edit f-16 mr-15 text-green"></i></a>
-									<a href="#!"><i class="ik ik-trash-2 f-16 text-red"></i></a>
-								</td>
-							</tr>
-							<tr>
-								<td>
-									<label class="custom-control custom-checkbox">
-										<input type="checkbox" class="custom-control-input select_all_child" id="" name="" value="option2">
-										<span class="custom-control-label">&nbsp;</span>
-									</label>
-								</td>
-								<td>
-									<img src="/img/products/watch.webp" class="table-user-thumb" alt="">
-								</td>
-								<td>Smart Watch</td>
-								<td>EH1234</td>
-								<td>
-									Electronics,
-									Computers,
-								</td>
-								<td>100</td>
-								<td>90</td>
-								<td>50</td>
-								<td>
-									<a href="#productView" data-toggle="modal" data-target="#productView"><i class="ik ik-eye f-16 mr-15"></i></a>
-									<a href="/products/7/edit"><i class="ik ik-edit f-16 mr-15 text-green"></i></a>
-									<a href="#!"><i class="ik ik-trash-2 f-16 text-red"></i></a>
-								</td>
-							</tr>
-							<tr>
-								<td>
-									<label class="custom-control custom-checkbox">
-										<input type="checkbox" class="custom-control-input select_all_child" id="" name="" value="option2">
-										<span class="custom-control-label">&nbsp;</span>
-									</label>
-								</td>
-								<td>
-									<img src="/img/products/tshirt.jpg" class="table-user-thumb" alt="">
-								</td>
-								<td>T-shirt</td>
-								<td>EH1234</td>
-								<td>
-									Electronics,
-									Computers,
-								</td>
-								<td>5500</td>
-								<td>4850</td>
-								<td>10</td>
-								<td>
-									<a href="#productView" data-toggle="modal" data-target="#productView"><i class="ik ik-eye f-16 mr-15"></i></a>
-									<a href="/products/8/edit"><i class="ik ik-edit f-16 mr-15 text-green"></i></a>
-									<a href="#!"><i class="ik ik-trash-2 f-16 text-red"></i></a>
-								</td>
-							</tr>
-							<tr>
-								<td>
-									<label class="custom-control custom-checkbox">
-										<input type="checkbox" class="custom-control-input select_all_child" id="" name="" value="option2">
-										<span class="custom-control-label">&nbsp;</span>
-									</label>
-								</td>
-								<td>
-									<img src="/img/products/helmet.jpg" class="table-user-thumb" alt="">
-								</td>
-								<td>Helmet</td>
-								<td>EH1234</td>
-								<td>
-									Fashion,
-								</td>
-								<td>500</td>
-								<td>450</td>
-								<td>100</td>
-								<td>
-									<a href="#productView" data-toggle="modal" data-target="#productView"><i class="ik ik-eye f-16 mr-15"></i></a>
-									<a href="/products/9/edit"><i class="ik ik-edit f-16 mr-15 text-green"></i></a>
-									<a href="#!"><i class="ik ik-trash-2 f-16 text-red"></i></a>
-								</td>
-							</tr>
+            <div class="row layout-wrap" id="layout-wrap">
+                @foreach($products as $key => $category)
+                <div class="col-xl-3 col-lg-4 col-12 col-sm-6 mb-4 list-item list-item-grid">
+                    <div class="card d-flex flex-row mb-3">
+                        <a class="d-flex card-img" href="#productView" data-toggle="modal" data-target="#productView">
+                            <img src="{{asset($category['image'])}}" alt="{{$category['name']}}" class="list-thumbnail responsive border-0">
+                        </a>
+                        <div class="d-flex flex-grow-1 min-width-zero card-content">
+                            <div class="card-body align-self-center d-flex flex-column flex-md-row justify-content-between min-width-zero align-items-md-center mb-0">
+                                <a class="mb-1 list-item-heading  truncate w-40 w-xs-100" href="#categoryView" data-toggle="modal" data-target="#categoryView">
+                                    <b>{{$category['name']}}
+                                    </b>
+                                    @if($category['parent_category'])
+                                    <span class="text-muted">
+                                        {{$category['parent_category']}}
+                                    </span>
+                                    @endif
+                                </a>
+                                <p class="mb-1 w-15 w-xs-100">
+                                    Total {{$category['items']}} items
+                                </p>
+                            </div>
+                            <div class="list-actions">
+                                <a href="{{route('product.create')}}"><i class="ik ik-edit-2"></i></a>
+                                <a href="#" class="list-delete"><i class="ik ik-trash-2"></i></a>
+                            </div>
+                            <div class="custom-control custom-checkbox pl-1 align-self-center">
+                                <label class="custom-control custom-checkbox mb-0">
+                                    <input type="checkbox" class="custom-control-input">
+                                    <span class="custom-control-label"></span>
+                                </label>
+                            </div>
 
-						</tbody>
-					</table>
-				</div>
-			</div>
-		</div>
-	</div>
+                        </div>
+                    </div>
+                </div>
+                @endforeach
+        </div>
+    </div>
 </div>
 <div class="modal fade edit-layout-modal pr-0" id="productView" tabindex="-1" role="dialog" aria-labelledby="productViewLabel" aria-hidden="true">
 	<div class="modal-dialog" role="document">

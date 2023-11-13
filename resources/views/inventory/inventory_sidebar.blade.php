@@ -26,20 +26,17 @@
                     <a href="{{url('pos')}}"><i class="ik ik-printer"></i><span>{{ __('POS')}}</span> <span class=" badge badge-success badge-right">{{ __('New')}}</span></a>
                 </div>
                 <div class="nav-item {{ ($segment1 == 'products') ? 'active open' : '' }} has-sub">
-                    <a href="#"><i class="ik ik-headphones"></i><span>{{ __('Products')}}</span></a>
-                    <div class="submenu-content">
-                        <a href="{{route('product.create')}}" class="menu-item {{ ($segment1 == 'products' && $segment2 == 'create') ? 'active' : '' }}">{{ __('Add Product')}}</a>
-                        <a href="{{route('product.index')}}" class="menu-item {{ ($segment1 == 'products' && $segment2 == '') ? 'active' : '' }}">{{ __('List Producs')}}</a>
-                    </div>
+                    <a href="{{route('product.index')}}"><i class="ik ik-headphones"></i><span>{{ __('Products')}}</span></a>
+                    
                 </div>
                 <div class="nav-item {{ ($segment1 == 'categories') ? 'active' : '' }}">
-                    <a href="{{url('categories')}}"><i class="ik ik-list"></i><span>{{ __('Categories')}}</span></a>
+                    <a href="{{route('category.index')}}"><i class="ik ik-list"></i><span>{{ __('Categories')}}</span></a>
                 </div>
                 <div class="nav-item {{ ($segment1 == 'sales') ? 'active open' : '' }} has-sub">
                     <a href="#"><i class="ik ik-shopping-cart"></i><span>{{ __('Sales')}}</span></a>
                     <div class="submenu-content">
-                        <a href="{{url('sales/create')}}" class="menu-item {{ ($segment1 == 'sales' && $segment2 == 'create') ? 'active' : '' }}">{{ __('Add Sale')}}</a>
-                        <a href="{{url('sales')}}" class="menu-item {{ ($segment1 == 'sales' && $segment2 == '') ? 'active' : '' }}">{{ __('List Sales')}}</a>
+                        <a href="{{route('category.create')}}" class="menu-item {{ ($segment1 == 'sales' && $segment2 == 'create') ? 'active' : '' }}">{{ __('Add Sale')}}</a>
+                        <a href="{{route('category.index')}}" class="menu-item {{ ($segment1 == 'sales' && $segment2 == '') ? 'active' : '' }}">{{ __('List Sales')}}</a>
                     </div>
                 </div>
                 <div class="nav-item {{ ($segment1 == 'purchases') ? 'active open' : '' }} has-sub">

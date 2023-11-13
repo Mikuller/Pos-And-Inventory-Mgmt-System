@@ -2,18 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Product;
-use App\Models\User;
+use App\Models\Category;
 use Illuminate\Http\Request;
 
-class ProductController extends Controller
+class CategoryController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        return view('inventory.product.list');
+        return view('inventory.category.index');
     }
 
     /**
@@ -21,7 +20,7 @@ class ProductController extends Controller
      */
     public function create()
     {
-        return view('inventory.product.create');
+        return view('inventory.category.create');
     }
 
     /**
@@ -32,25 +31,16 @@ class ProductController extends Controller
        // dd(request()->all());
         $validated = request()->validate(
             [
-              'name'=>'required|max:40|min:2',
-              'image'=>'image',
-              'description'=>'min:3',
-              'sellingPrice'=>'required|numeric|min:1',
-              'purchasePrice'=>'required|numeric|min:1',
-              'taxPercentage'=>'required|numeric|between:0,100',
-              'quantity'=>'required|numeric|min:1',
-              'stockAlert'=>'required||numeric|min:1',
-              'taxType'=>'required'
+              'name'=>'required|max:50|min:2',
+              'image'=>'image'
             ]
             );
-
             if(request()->has('image')){
-                $userEmail = auth()->user()->email;
-                $imageURL = request()->file('image')->store("$userEmail/productsImage", 'public');
-                $validated['image']= $imageURL;
+                $imageURL = request()->file('image')->store('categoryImages', 'public');
+                $validated['image'] = $imageURL;
             }
 
-            Product::create($validated);
+           $category = Category::create($validated);
             return redirect()->route('dashboard');
     }
 

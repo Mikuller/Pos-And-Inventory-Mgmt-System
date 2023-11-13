@@ -33,10 +33,10 @@
                     <div class="col-xl-4 col-lg-4 col-md-4 m-auto">
                         <div class="authentication-form mx-auto">
                             <div class="logo-centered">
-                                <a href="http://radmin.rakibhstu.com"><h1>Yene POS and Inventory</h1></a>
+                                <a href="#"><h1>Yene POS and Inventory</h1></a>
                             </div>
                             <p>Welcome back! </p>
-                            <form method="POST" action="{{ route('login') }}">
+                            <form method="POST" action="{{ route('authenticate') }}">
                             @csrf
                                 <div class="form-group">
                                     <input id="email" type="email" placeholder="Email" class="form-control @error('email') is-invalid @enderror" name="email" value="admin@test.com" required autocomplete="email" autofocus>
@@ -70,10 +70,10 @@
                                     </div>
                                 </div>
                                 <div class="sign-btn text-center">
-                                    <button class="btn btn-custom">Sign In</button>
+                                    <button type="submit" class="btn btn-custom">Sign In</button>
                                 </div>
                                 <div class="register">
-                                    <p>{{ __('No account?')}} <a href="{{url('register')}}">{{ __('Sign Up')}}</a></p>
+                                    <p>{{ __('No account?')}} <a href="{{route('register')}}">{{ __('Sign Up')}}</a></p>
                                 </div>
                                 
                             </form>
