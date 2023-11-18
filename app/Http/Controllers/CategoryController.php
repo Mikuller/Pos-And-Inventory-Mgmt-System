@@ -12,7 +12,8 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        return view('inventory.category.index');
+        $categories = Category::latest()->get();
+        return view('inventory.category.index',compact('categories'));
     }
 
     /**
@@ -20,6 +21,7 @@ class CategoryController extends Controller
      */
     public function create()
     {
+        
         return view('inventory.category.create');
     }
 
@@ -36,7 +38,8 @@ class CategoryController extends Controller
             ]
             );
             if(request()->has('image')){
-                $imageURL = request()->file('image')->store('categoryImages', 'public');
+                $userEmail = auth()->user()->email;
+                $imageURL = request()->file('image')->store("$userEmail/categoryImages", 'public');
                 $validated['image'] = $imageURL;
             }
 
@@ -55,9 +58,9 @@ class CategoryController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Category $category)
     {
-        //
+        return view('inventory.category.edit', compact('category'));
     }
 
     /**
@@ -71,8 +74,9 @@ class CategoryController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Category $category)
     {
-        //
+        $category->delete();
+        return redirect()->route('category.index');
     }
 }

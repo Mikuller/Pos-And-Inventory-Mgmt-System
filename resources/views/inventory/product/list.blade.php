@@ -2,22 +2,7 @@
 @section('title', 'Products')
 @section('content')
 
-@php
-$products = [ 
-    [ 'name' => 'Computer', 'parent_category' => 'Electronics', 'image' => '/img/portfolio-3.jpg', 'items' => 120, ],
-    [ 'name' => 'Smartphone', 'parent_category' => 'Electronics', 'image' => '/img/portfolio-1.jpg', 'items' => 75, ],
-    [ 'name' => 'Headphones', 'parent_category' => 'Electronics', 'image' => '/img/portfolio-2.jpg', 'items' => 40, ],
-    [ 'name' => 'Television', 'parent_category' => 'Electronics', 'image' => '/img/portfolio-4.jpg', 'items' => 60, ],
-    [ 'name' => 'Camera', 'parent_category' => 'Electronics', 'image' => '/img/portfolio-5.jpg', 'items' => 30, ],
-    [ 'name' => 'Gaming', 'parent_category' => 'Electronics', 'image' => '/img/portfolio-6.jpg', 'items' => 50, ],
-    [ 'name' => 'Furniture', 'parent_category' => null, 'image' => '/img/portfolio-7.jpg', 'items' => 200, ],
-    [ 'name' => 'Home Decor', 'parent_category' => null, 'image' => '/img/portfolio-8.jpg', 'items' => 150, ],
-    [ 'name' => 'Cookware', 'parent_category' => 'Kitchen', 'image' => '/img/portfolio-9.jpg', 'items' => 80, ],
-    [ 'name' => 'Appliances', 'parent_category' => 'Kitchen', 'image' => '/img/portfolio-10.jpg', 'items' => 110, ],
-    [ 'name' => 'Bedding', 'parent_category' => 'Bedroom', 'image' => '/img/portfolio-11.jpg', 'items' => 90, ],
-    [ 'name' => 'Lighting', 'parent_category' => 'Home Decor', 'image' => '/img/portfolio-12.jpg', 'items' => 70, ],
-];
-@endphp
+
 <!-- push external head elements to head -->
 <div class="container-fluid">
     <div class="page-header">
@@ -116,30 +101,26 @@ $products = [
             <div class="separator mb-20"></div>
 
             <div class="row layout-wrap" id="layout-wrap">
-                @foreach($products as $key => $category)
+                @foreach($products as $product)
                 <div class="col-xl-3 col-lg-4 col-12 col-sm-6 mb-4 list-item list-item-grid">
                     <div class="card d-flex flex-row mb-3">
                         <a class="d-flex card-img" href="#productView" data-toggle="modal" data-target="#productView">
-                            <img src="{{asset($category['image'])}}" alt="{{$category['name']}}" class="list-thumbnail responsive border-0">
+                            <img src="{{$product->getImageURL()}}" alt="{{$product->name}}" class="list-thumbnail responsive border-0">
                         </a>
                         <div class="d-flex flex-grow-1 min-width-zero card-content">
                             <div class="card-body align-self-center d-flex flex-column flex-md-row justify-content-between min-width-zero align-items-md-center mb-0">
                                 <a class="mb-1 list-item-heading  truncate w-40 w-xs-100" href="#categoryView" data-toggle="modal" data-target="#categoryView">
-                                    <b>{{$category['name']}}
+                                    <b>{{$product->name}}
                                     </b>
-                                    @if($category['parent_category'])
-                                    <span class="text-muted">
-                                        {{$category['parent_category']}}
-                                    </span>
-                                    @endif
+                                   
                                 </a>
                                 <p class="mb-1 w-15 w-xs-100">
-                                    Total {{$category['items']}} items
+                                    Total {{$product->quantity}} items
                                 </p>
                             </div>
                             <div class="list-actions">
                                 <a href="{{route('product.create')}}"><i class="ik ik-edit-2"></i></a>
-                                <a href="#" class="list-delete"><i class="ik ik-trash-2"></i></a>
+                                <a href="{{route('product.destroy')}}" class="list-delete"><i class="ik ik-trash-2"></i></a>
                             </div>
                             <div class="custom-control custom-checkbox pl-1 align-self-center">
                                 <label class="custom-control custom-checkbox mb-0">

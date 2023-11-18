@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
 use App\Models\Product;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -13,7 +14,8 @@ class ProductController extends Controller
      */
     public function index()
     {
-        return view('inventory.product.list');
+        $products = Product::latest()->get();
+        return view('inventory.product.list', compact('products'));
     }
 
     /**
@@ -21,37 +23,43 @@ class ProductController extends Controller
      */
     public function create()
     {
-        return view('inventory.product.create');
+        $categories = Category::latest()->get(['id', 'name']);
+        return view('inventory.product.create', compact('categories'));
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store()
+    public function store(Request $request)
     {
-       // dd(request()->all());
-        $validated = request()->validate(
-            [
-              'name'=>'required|max:40|min:2',
-              'image'=>'image',
-              'description'=>'min:3',
-              'sellingPrice'=>'required|numeric|min:1',
-              'purchasePrice'=>'required|numeric|min:1',
-              'taxPercentage'=>'required|numeric|between:0,100',
-              'quantity'=>'required|numeric|min:1',
-              'stockAlert'=>'required||numeric|min:1',
-              'taxType'=>'required'
-            ]
-            );
+        $validated = request()->validate([
+            'name' => 'required|max:40|min:2',
+            'image' => 'image',
+            'description' => 'min:3',
+            'sellingPrice' => 'required|numeric|min:1',
+            'purchasePrice' => 'required|numeric|min:1',
+            'taxPercentage' => 'required|numeric|between:0,100',
+            'quantity' => 'required|numeric|min:1',
+            'stockAlert' => 'required|numeric|min:1',
+            'taxType' => 'required|in:Inclusive,Exclusive',
+        ]);
 
-            if(request()->has('image')){
-                $userEmail = auth()->user()->email;
-                $imageURL = request()->file('image')->store("$userEmail/productsImage", 'public');
-                $validated['image']= $imageURL;
-            }
+        if (request()->has('image')) {
+            $userEmail = auth()->user()->email;
+            $imageURL = request()
+                ->file('image')
+                ->store("$userEmail/productsImage", 'public');
+            $validated['image'] = $imageURL;
+        }
 
-            Product::create($validated);
-            return redirect()->route('dashboard');
+        $product = Product::create($validated);
+
+        $request->validate(['categoryId' => 'required|array|min:1']);
+        $selectedCategories = $request->input('categoryId', []);
+
+        $product->categories()->sync($selectedCategories);
+
+        return redirect()->route('dashboard');
     }
 
     /**

@@ -23,33 +23,30 @@ Route::get('/', function () {
     return view('inventory.dashboard');
 })->name('dashboard')->middleware(['auth']);
 
-Route::group(['middleware' => 'guest'], function(){
 
-    Route::get('/register', [AuthController::class, 'index'])->name('register');
 
-    Route::post('/register', [AuthController::class, 'store'])->name('register.save');
+Route::group(['prefix'=>'products', 'as'=>'product.', 'middleware'=> ['auth']], function () {
+    Route::get('/create', [ProductController::class, 'create'])->name('create')->middleware(['auth']);
+
+    Route::get('/index', [ProductController::class, 'index'])->name('index')->middleware(['auth']);; 
     
-    Route::get('/login', [AuthController::class, 'login'])->name('login');
+    Route::put('/store', [ProductController::class, 'store'])->name('store')->middleware(['auth']);; 
     
-    Route::post('/authenticate', [AuthController::class, 'authenticate'])->name('authenticate');
+    
+    
+});
+Route::group(['prefix'=>'categories', 'as'=>'category.', 'middleware'=> ['auth']], function () {
+    Route::get('/create', [CategoryController::class, 'create'])->name('create')->middleware(['auth']);
 
-    Route::get('/logout', [AuthController::class, 'logout'])->name('logout')->withoutMiddleware(['guest']);
+    Route::get('/index', [CategoryController::class, 'index'])->name('index')->middleware(['auth']); 
+    ;
+    Route::put('/store', [CategoryController::class, 'store'])->name('store')->middleware(['auth']); 
+    
+    Route::get('/edit/{id}', [CategoryController::class, 'edit'])->name('edit')->middleware(['auth']);
+
+    Route::get('/destroy/{category}', [CategoryController::class, 'destroy'])->name('destroy')->middleware(['auth']);
 });
 
-
-
-Route::get('products/create', [ProductController::class, 'create'])->name('product.create')->middleware(['auth']);
-
-Route::get('products/index', [ProductController::class, 'index'])->name('product.index')->middleware(['auth']);; 
-
-Route::post('products/store', [ProductController::class, 'store'])->name('product.store')->middleware(['auth']);; 
-
-
-Route::get('categories/create', [CategoryController::class, 'create'])->name('category.create')->middleware(['auth']);
-
-Route::get('categories/index', [CategoryController::class, 'index'])->name('category.index')->middleware(['auth']);; 
-
-Route::put('categories/store', [CategoryController::class, 'store'])->name('category.store')->middleware(['auth']);; 
 
 
 Route::get('/pos', function () {
