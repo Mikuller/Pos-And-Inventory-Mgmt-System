@@ -44,15 +44,17 @@ class CategoryController extends Controller
             }
 
            $category = Category::create($validated);
-            return redirect()->route('dashboard');
+            return redirect()->route('category.index');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Category $category)
     {
-        //
+        session(['viewMode' => true]);
+        session(['category' => $category]);
+        return back();
     }
 
     /**
@@ -60,15 +62,30 @@ class CategoryController extends Controller
      */
     public function edit(Category $category)
     {
-        return view('inventory.category.edit', compact('category'));
+        session(['editMode' => true]);
+        session(['category' => $category]);
+       
+        return back();
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Category $category)
     {
-        //
+        $validated = request()->validate(
+            [
+              'name'=>'required|max:50|min:2',
+              'image'=>'image'
+            ]
+            );
+            if(request()->has('image')){
+                $userEmail = auth()->user()->email;
+                $imageURL = request()->file('image')->store("$userEmail/categoryImages", 'public');
+                $validated['image'] = $imageURL;
+            }
+            $category->update($validated);
+            return redirect()->back();
     }
 
     /**
@@ -77,6 +94,6 @@ class CategoryController extends Controller
     public function destroy(Category $category)
     {
         $category->delete();
-        return redirect()->route('category.index');
+        return redirect()->back();
     }
 }

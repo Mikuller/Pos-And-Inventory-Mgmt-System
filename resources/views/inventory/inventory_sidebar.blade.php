@@ -35,8 +35,8 @@
                 <div class="nav-item {{ ($segment1 == 'sales') ? 'active open' : '' }} has-sub">
                     <a href="#"><i class="ik ik-shopping-cart"></i><span>{{ __('Sales')}}</span></a>
                     <div class="submenu-content">
-                        <a href="{{route('category.create')}}" class="menu-item {{ ($segment1 == 'sales' && $segment2 == 'create') ? 'active' : '' }}">{{ __('Add Sale')}}</a>
-                        <a href="{{route('category.index')}}" class="menu-item {{ ($segment1 == 'sales' && $segment2 == '') ? 'active' : '' }}">{{ __('List Sales')}}</a>
+                        <a href="{{route('pos.dashboard')}}" class="menu-item {{ ($segment1 == 'sales' && $segment2 == 'create') ? 'active' : '' }}">{{ __('Add Sale')}}</a>
+                        <a href="{{route('sales.index')}}" class="menu-item {{ ($segment1 == 'sales' && $segment2 == '') ? 'active' : '' }}">{{ __('List Sales')}}</a>
                     </div>
                 </div>
                 <div class="nav-item {{ ($segment1 == 'purchases') ? 'active open' : '' }} has-sub">

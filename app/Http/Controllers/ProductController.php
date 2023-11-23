@@ -14,8 +14,10 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $products = Product::latest()->get();
-        return view('inventory.product.list', compact('products'));
+        $products = Product::with('categories')
+            ->latest()
+            ->get();
+        return view('inventory.product.index', compact('products'));
     }
 
     /**
@@ -65,17 +67,24 @@ class ProductController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Product $product)
     {
-        //
+       
+        session(['viewMode' => true]);
+        session(['product' => $product]);
+        
+        return back();
+       
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Product $product)
     {
-        //
+        $categories = Category::latest()->get();
+       
+        return view('inventory.product.edit', compact('product', 'categories'));
     }
 
     /**
@@ -89,8 +98,9 @@ class ProductController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Product $product)
     {
-        //
+        $product->delete();
+        return redirect()->back();
     }
 }

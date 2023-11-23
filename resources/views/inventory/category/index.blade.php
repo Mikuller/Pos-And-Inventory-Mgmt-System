@@ -141,7 +141,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($categories as $category)
+                                    @forelse ($categories as $category)
                                         <tr>
                                             <td>
                                                 <label class="custom-control custom-checkbox">
@@ -157,14 +157,16 @@
                                             <td>{{ $category->name }}</td>
 
                                             <td>
-                                                <a href="" data-toggle="modal"
-                                                    data-target="#categoryView" ><i class="ik ik-eye f-16 mr-15"></i></a>
-                                                <a href="{{route('category.edit',['id'=>$category->id])}}" data-toggle="modal"
-                                                    data-target="#categoryView" ><i class="ik ik-edit f-16 mr-15 text-green"></i></a>
-                                                <a href="{{route('category.destroy',['id'=>$category->id])}}"><i class="ik ik-trash-2 f-16 text-red"></i></a>
+                                                <a href="{{ route('category.show', ['category' => $category->id]) }}"><i
+                                                        class="ik ik-eye f-16 mr-15"></i></a>
+                                                <a href="{{ route('category.edit', ['category' => $category->id]) }}"><i
+                                                        class="ik ik-edit f-16 mr-15 text-green"></i></a>
+                                                <a href="{{ route('category.destroy', ['category' => $category->id]) }}"><i
+                                                        class="ik ik-trash-2 f-16 text-red"></i></a>
                                             </td>
                                         </tr>
-                                    @endforeach
+                                    @empty
+                                    @endforelse
                                 </tbody>
                             </table>
                         </div>
@@ -173,6 +175,29 @@
             </div>
         </div>
     </div>
-    @include('inventory.category.add')
+   
+    @include('inventory.category.create')
+
+    @if (session('editMode') ?? false)
     @include('inventory.category.edit')
+        <script>
+            // Open the modal using JavaScript
+            $(document).ready(function() {
+                $('#editModal').modal('show');
+            });
+        </script>
+         <?php session(['editMode' => false]); ?>
+    @elseif (session('viewMode') ?? false)
+    @include('inventory.category.show')
+        <script>
+            // Open the modal using JavaScript
+            $(document).ready(function() {
+                $('#viewModal').modal('show');
+            });
+        </script>
+        <?php session(['viewMode' => false]); ?>
+    @endif
+
+
+
 @endsection
