@@ -24,8 +24,8 @@
             </div>
         </div>
     </div>
-    <!-- initiate modal menu section-->
-    @include('include.modalmenu')
+    {{-- <!-- initiate modal menu section-->
+    @include('include.modalmenu') --}}
 
     @include('pos.invoice-card')
     <!-- initiate scripts-->

@@ -61,7 +61,7 @@ class ProductController extends Controller
 
         $product->categories()->sync($selectedCategories);
 
-        return redirect()->route('dashboard');
+        return redirect()->route('product.index')->with('success', 'New Product is Added!');
     }
 
     /**
@@ -90,9 +90,37 @@ class ProductController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Product $product)
     {
-        //
+        $validated = request()->validate([
+            'name' => 'required|max:40|min:2',
+            'image' => 'image',
+            'description' => 'min:3',
+            'sellingPrice' => 'required|numeric|min:1',
+            'purchasePrice' => 'required|numeric|min:1',
+            'taxPercentage' => 'required|numeric|between:0,100',
+            'quantity' => 'required|numeric|min:1',
+            'stockAlert' => 'required|numeric|min:1',
+            'taxType' => 'required|in:Inclusive,Exclusive',
+        ]);
+
+        if (request()->has('image')) {
+            $userEmail = auth()->user()->email;
+            $imageURL = request()
+                ->file('image')
+                ->store("$userEmail/productsImage", 'public');
+            $validated['image'] = $imageURL;
+        }
+
+        $product->update($validated);
+
+        request()->validate(['categoryId' => 'required|array|min:1']);
+        $selectedCategories = request()->input('categoryId', []);
+
+        $product->categories()->sync($selectedCategories);
+
+        return redirect()->route('product.index')->with('success', 'Product is Updated, successfully');
+
     }
 
     /**
@@ -101,6 +129,6 @@ class ProductController extends Controller
     public function destroy(Product $product)
     {
         $product->delete();
-        return redirect()->back();
+        return redirect()->back()->with('success', 'Product is Deleted, successfully');
     }
 }

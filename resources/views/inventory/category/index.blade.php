@@ -6,8 +6,7 @@
     <!-- push external head elements to head -->
 
     <div class="row">
-        <!-- start message area-->
-        @include('include.message')
+
         <!-- end message area-->
         <div class="container-fluid">
             <div class="page-header">
@@ -33,6 +32,8 @@
                             </ol>
                         </nav>
                     </div>
+                    <!-- start message area-->
+                    @include('include.message')
                 </div>
             </div>
             <div class="row">
@@ -175,20 +176,20 @@
             </div>
         </div>
     </div>
-   
+
     @include('inventory.category.create')
 
     @if (session('editMode') ?? false)
-    @include('inventory.category.edit')
+        @include('inventory.category.edit')
         <script>
             // Open the modal using JavaScript
             $(document).ready(function() {
                 $('#editModal').modal('show');
             });
         </script>
-         <?php session(['editMode' => false]); ?>
+        <?php session(['editMode' => false]); ?>
     @elseif (session('viewMode') ?? false)
-    @include('inventory.category.show')
+        @include('inventory.category.show')
         <script>
             // Open the modal using JavaScript
             $(document).ready(function() {

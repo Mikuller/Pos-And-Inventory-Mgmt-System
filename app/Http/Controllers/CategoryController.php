@@ -44,7 +44,7 @@ class CategoryController extends Controller
             }
 
            $category = Category::create($validated);
-            return redirect()->route('category.index');
+            return redirect()->route('category.index')->with('success', 'New Product Category is Added');
     }
 
     /**
@@ -85,7 +85,7 @@ class CategoryController extends Controller
                 $validated['image'] = $imageURL;
             }
             $category->update($validated);
-            return redirect()->back();
+            return redirect()->back()->with('success', 'Product Category is Updated, successfully');
     }
 
     /**
@@ -94,6 +94,6 @@ class CategoryController extends Controller
     public function destroy(Category $category)
     {
         $category->delete();
-        return redirect()->back();
+        return redirect()->back()->with('success', 'Product Category is Deleted, successfully');
     }
 }

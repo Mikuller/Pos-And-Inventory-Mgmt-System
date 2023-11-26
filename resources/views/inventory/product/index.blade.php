@@ -28,12 +28,11 @@
                         </ol>
                     </nav>
                 </div>
+                <!-- start message area-->
+                @include('include.message')
             </div>
         </div>
         <div class="row">
-            <!-- start message area-->
-            @include('include.message')
-            <!-- end message area-->
             <div class="col-md-12">
                 <div class="mb-2 clearfix">
                     <div class="d-block mb-3 text-left">

@@ -11,7 +11,7 @@
                     <h3 class="d-block w-100">Radmin<small class="float-right">07/10/2021</small></h3>
                 </div>
                 <div class="card-body">
-                    @include('common.invoice')
+                    @include('pos.invoice')
                     <div class="row no-print">
                         <div class="col-12">
                             <button type="button" class="btn btn-success pull-right"><i class="fa fa-credit-card"></i> Submit Payment</button>
