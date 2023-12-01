@@ -1,10 +1,10 @@
-<header class="header-top" header-theme="light">
+<header class="header-top " header-theme="light">
     <div class="container-fluid">
         <div class="d-flex justify-content-between">
             <div class="top-menu d-flex align-items-center">
                 <button type="button" class="btn-icon mobile-nav-toggle d-lg-none"><span></span></button>
                 
-                <div class="header-search">
+                {{-- <div class="header-search">
                     <div class="input-group">
 
                         <span class="input-group-addon search-close">
@@ -13,7 +13,7 @@
                         <input type="text" class="form-control">
                         <span class="input-group-addon search-btn"><i class="ik ik-search"></i></span>
                     </div>
-                </div>
+                </div> --}}
                 <button class="nav-link" title="clear cache">
                     <a  href="{{url('clear-cache')}}">
                     <i class="ik ik-battery-charging"></i> 

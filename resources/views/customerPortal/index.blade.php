@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title>Login | Laravel Admin Starter Kit - Radmin</title>
+    <title>Customer Portal | Check Service Status - Yene POS</title>
     <meta name="description" content="">
     <meta name="keywords" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -39,13 +39,13 @@
                             </a>
                         </div>
                         <p>Welcome, To check your service status please enter the refrence number You recieved </p>
-                        <form method="POST" action="{{ route('checkService.show') }}">
+                        <form method="GET" action="{{ route('checkService.show') }}">
                             @csrf
                             <div class="form-group">
                                 <input id="refNumber" type="text" placeholder="Enter Service Refrence number"
                                     class="form-control @error('refNumber') is-invalid @enderror" name="refNumber" required
                                     autocomplete="refNumber" autofocus>
-                                <i class="ik ik-user"></i>
+                                <i class="fa fa-cogs" aria-hidden="true"></i>
                                 @error('refNumber')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>

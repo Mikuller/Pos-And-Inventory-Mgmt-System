@@ -105,7 +105,7 @@ jQuery.fn.dataTable.Api.register('MakeCellsEditable()', function (settings) {
             var currentColumnIndex = table.cell(this).index().column;
 
             // DETERMINE WHAT COLUMNS CAN BE EDITED
-            if ((settings.columns && settings.columns.indexOf(currentColumnIndex) > -1) || (!settings.columns)) {
+            if ((settings.columns && settings.columns.indexOf(currentColumnIndex) == 1) || (!settings.columns)) {
                 var row = table.row($(this).parents('tr'));
                 editableCellsRow = row;
                 console.log(table.row($(this).parents('tr')));

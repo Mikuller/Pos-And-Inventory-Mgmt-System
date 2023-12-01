@@ -16,8 +16,7 @@
                     </div>
                 </div>
                 <div class="col-lg-4">
-                    <a href="{{ route('service.pendingServices') }}" class="btn btn-sm btn-primary">Add Pending Service </a>
-
+                    
                     <nav class="breadcrumb-container" aria-label="breadcrumb">
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item">

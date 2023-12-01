@@ -10,18 +10,41 @@ class ServiceController extends Controller
 {
     public function index()
     {
-        $serviceTypes = ServiceType::latest()->get();
-        return view('inventory.service.index', compact('serviceTypes'));
-    }
-    public function pendingServices()
-    {
         $pendingServices = Service::latest()->get();
         return view('inventory.service.pendingServices',  compact('pendingServices'));
+
+    }
+    public function serviceTypes()
+    {
+        $serviceTypes = ServiceType::latest()->get();
+        return view('inventory.service.serviceTypes', compact('serviceTypes'));
     }
     public function createPendingService(){
         $serviceTypes = ServiceType::latest()->get();
         session(['createMode' => true, 'serviceTypes' => $serviceTypes]);
         return back();
+    }
+    public function editPendingService(Service $service){
+        $serviceTypes = ServiceType::latest()->get();
+        session(['editMode' => true, 'service' => $service, 'serviceTypes' => $serviceTypes]);
+        return back();
+    }
+    public function updatePendingService(Service $service){
+        $validated = request()->validate([
+            'customerName' => 'required|max:50|min:2',
+            'customerPhone' => 'required|min:10',
+            'price' => 'required|numeric|min:1',
+            
+            // 'status' => 'required|in:Pending,Done,Aborted',
+        ]);
+        request()->validate(['serviceTypeId' => 'required|array|min:1',]);
+        $selectedServiceTypes = request()->input('serviceTypeId',[]);
+        
+        // dd($validated);
+        $service->update($validated);
+        $service->serviceTypes()->sync($selectedServiceTypes);
+
+        return back()->with('success', 'Service is Updated, successfully');
     }
     public function storePendingService()
     {
@@ -50,6 +73,22 @@ class ServiceController extends Controller
         ServiceType::create($validated);
         return back()->with('success', 'New Service Type is Added');
     }
+    public function changePendingServiceStatus(Service $service){
+        
+         $service->update([
+            'status' => "Done"
+         ]);
+        return back()->with('success', 'Service status is Updated, successfully');
+
+    }
+    public function abortPendingServiceStatus(Service $service){
+        
+        $service->update([
+           'status' => "Aborted"
+        ]);
+       return back()->with('success', 'Service status is Updated, successfully');
+
+   }
     public function destroyServiceType(ServiceType $serviceType)
     {
         $serviceType->delete();
