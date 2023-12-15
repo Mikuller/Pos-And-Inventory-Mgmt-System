@@ -13,7 +13,7 @@ class Product extends Model
        return $this->belongsToMany(Category::class,"category_product")->withTimestamps();
     }
     public function sales(){
-        return $this->belongsToMany(Sale::class,"product_sale")->withTimestamps();
+        return $this->belongsToMany(Sale::class,"product_sale")->withPivot('amount')->withTimestamps();
      }
 
     function getImageURL()

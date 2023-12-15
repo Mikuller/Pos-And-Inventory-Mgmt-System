@@ -25,36 +25,42 @@
                 <div class="nav-item {{ ($segment1 == 'pos') ? 'active' : '' }}">
                     <a href="{{url('pos')}}"><i class="ik ik-printer"></i><span>{{ __('POS')}}</span> <span class=" badge badge-success badge-right">{{ __('New')}}</span></a>
                 </div>
-                <div class="nav-item {{ ($segment1 == 'products') ? 'active open' : '' }} has-sub">
+                @can('admin')
+                <div class="nav-item {{ ($segment1 == 'products') ? 'active open' : '' }} ">
                     <a href="{{route('product.index')}}"><i class="ik ik-headphones"></i><span>{{ __('Products')}}</span></a>
                     
                 </div>
                 <div class="nav-item {{ ($segment1 == 'categories') ? 'active' : '' }}">
                     <a href="{{route('category.index')}}"><i class="ik ik-list"></i><span>{{ __('Categories')}}</span></a>
                 </div>
-                <div class="nav-item {{ ($segment1 == 'sales') ? 'active open' : '' }} has-sub">
+                @endcan
+                <div class="nav-item {{ ($segment1 == 'sales') ? 'active open' : '' }} ">
                     <a href="#"><i class="ik ik-shopping-cart"></i><span>{{ __('Sales')}}</span></a>
                     <div class="submenu-content">
                         <a href="{{route('pos.dashboard')}}" class="menu-item {{ ($segment1 == 'sales' && $segment2 == 'create') ? 'active' : '' }}">{{ __('Add Sale')}}</a>
                         <a href="{{route('sales.index')}}" class="menu-item {{ ($segment1 == 'sales' && $segment2 == '') ? 'active' : '' }}">{{ __('List Sales')}}</a>
                     </div>
                 </div>
-                <div class="nav-item {{ ($segment1 == 'purchases') ? 'active open' : '' }} has-sub">
+                <div class="nav-item {{ ($segment1 == 'purchases') ? 'active open' : '' }} ">
                     <a href="#"><i class="ik ik-truck"></i><span>{{ __('Purchases')}}</span></a>
                     <div class="submenu-content">
                         <a href="{{url('purchases/create')}}" class="menu-item {{ ($segment1 == 'purchases' && $segment2 == 'create') ? 'active' : '' }}">{{ __('Add Purchase')}}</a>
                         <a href="{{url('purchases')}}" class="menu-item {{ ($segment1 == 'purchases' && $segment2 == '') ? 'active' : '' }}">{{ __('List Purchases')}}</a>
                     </div>
                 </div>
-                <div class="nav-item {{ ($segment1 == 'services' || $segment2 == 'services') ? 'active open' : '' }} has-sub">
+                <div class="nav-item {{ ($segment1 == 'services' || $segment2 == 'services') ? 'active open' : '' }} ">
                     <a href="{{route('service.index')}}" ><i  class="fa fa-wrench" aria-hidden="true"></i><span>{{ __('Services')}}</span></a>
                     {{-- <div class="submenu-content">
                         <a href="{{route('service.pendingServices')}}" class="menu-item {{ ($segment1 == 'suppliers') ? 'active' : '' }}">Pending Services</a>
                         <a   class="menu-item {{ ($segment1 == 'customers') ? 'active' : '' }}">Service List</a>
                     </div> --}}
                 </div>
-
-
+                @can('admin')
+                <div class="nav-item {{ ($segment1 == 'staffs') ? 'active' : '' }}">
+                    <a href="{{route('staffs.index')}}"><i class="ik ik-user"></i><span>{{ __('Staff Management')}}</span></a>
+                </div>
+                @endcan
+                
 
                 <!-- end inventory pages -->
 

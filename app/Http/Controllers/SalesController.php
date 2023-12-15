@@ -3,19 +3,26 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
+use Illuminate\Database\Console\DumpCommand;
 use Illuminate\Http\Request;
 
 class SalesController extends Controller
 {
     public function dashboard(){
-        $products = Product::with('categories')
-        ->latest()
-        ->get();
-    return view('pos.dashboard', compact('products'));
+    
+    return view('pos.dashboard');
     }
 
-    public function index(){
-        return view('inventory.sale.list');
+    public function index(Request $request){
+       
+        session([ 'cart' => $request->input('cart')]);
+      
+       return back();
+    }
+    public function show(Request $request){
+       
+       dump(session('cart'));
+        //return back();
     }
 
 

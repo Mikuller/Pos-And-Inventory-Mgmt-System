@@ -1,8 +1,8 @@
-<div class="col-sm-3 bg-white product-cart-area">
+<div  class="col-sm-3 bg-white product-cart-area" >
     <div class="product-selection-area">
         <div class="d-flex justify-content-between align-items-center">
             <h5 class="mb-0"> Order Details</h6>
-                <i class="text-danger ik ik-refresh-ccw cursor-pointer font-15" onclick="cleartCart()"></i>
+                <a href="{{url('/pos')}}"> <i class="text-danger ik ik-refresh-ccw cursor-pointer font-15" onclick="cleartCart() "></i> </a>
         </div>
         <hr>
         <div id="product-cart" class="product-cart mb-3">
@@ -37,7 +37,7 @@
                 <b id="total-bill">0.00</b>
             </div>
         </div>
-        <div class="box-shadow p-3 mb-3">
+        {{-- <div class="box-shadow p-3 mb-3">
             <label class="d-block">Customer Information</label>
             <div class="d-block">
                 <div class="form-group">
@@ -50,10 +50,13 @@
                     <textarea type="text" name="name" class="form-control h-82px" placeholder="Enter Address" value="Christopher Alex"></textarea>
                 </div>
             </div>
-        </div>
-        <div class="box-shadow p-3">
-            <button class="btn btn-danger btn-checkout btn-pos-checkout " data-toggle="modal" data-target="#InvoiceModal">SELL</button>
-        </div>
+        </div> --}}
+        {{-- <div class="box-shadow p-3">
+            
+            <button wire:click="openModal"  type="submit" class="btn btn-danger btn-checkout btn-pos-checkout" >SELL</button>
+        `
+        </div> --}}
     </div>
-
+    
 </div>
+

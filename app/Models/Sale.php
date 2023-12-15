@@ -9,7 +9,7 @@ class Sale extends Model
 {
     protected $guarded = [];
     public function products(){
-        return $this->belongsToMany(Product::class,"product_sale")->withTimestamps();
+        return $this->belongsToMany(Product::class,"product_sale")->withPivot('amount')->withTimestamps();
     }
     use HasFactory;
 }

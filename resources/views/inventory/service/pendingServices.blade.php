@@ -117,7 +117,9 @@
                                     <th>Service Type</th>
                                     <th>Total Price</th>
                                     <th>Status</th>
+                                    @can('admin')
                                     <th>Action</th>
+                                    @endcan
                                 </tr>
                             </thead>
                             <tbody>
@@ -152,25 +154,30 @@
                                                     class="badge badge-pill {{ $pendingService->status == 'Pending' ? 'badge-warning' : 'badge-success' }}  mb-1 text-black">{{ $pendingService->status }}</span>
                                             @endif
                                         </td>
-                                        <td>
-                                            <div class="dropdown d-inline-block">
-                                                <a class="nav-link dropdown-toggle" href="#" id="moreDropdown"
-                                                    role="button" data-toggle="dropdown" aria-haspopup="true"
-                                                    aria-expanded="false">
-                                                    <i class="ik ik-more-vertical"></i>
-                                                </a>
-                                                <div class="dropdown-menu dropdown-menu-right">
-                                                    <a class="dropdown-item" href="{{ route('service.edit.pendingService', ['service' => $pendingService->id]) }}"><i
-                                                            class="ik ik-edit"></i> Edit </a>
-                                                    <a class="dropdown-item"
-                                                        href="{{ route('service.changeStatus.pendingService', ['service' => $pendingService->id]) }}"><i
-                                                            class="fa fa-check-circle"></i> Mark as Done </a>
+                                        @can('admin')
+                                            <td>
+                                                <div class="dropdown d-inline-block">
+                                                    <a class="nav-link dropdown-toggle" href="#" id="moreDropdown"
+                                                        role="button" data-toggle="dropdown" aria-haspopup="true"
+                                                        aria-expanded="false">
+                                                        <i class="ik ik-more-vertical"></i>
+                                                    </a>
+                                                    <div class="dropdown-menu dropdown-menu-right">
+                                                        <a class="dropdown-item"
+                                                            href="{{ route('service.edit.pendingService', ['service' => $pendingService->id]) }}"><i
+                                                                class="ik ik-edit"></i> Edit </a>
+                                                        <a class="dropdown-item"
+                                                            href="{{ route('service.changeStatus.pendingService', ['service' => $pendingService->id]) }}"><i
+                                                                class="fa fa-check-circle"></i> Mark as Done </a>
 
-                                                    <a class="dropdown-item" href="{{ route('service.abortStatus.pendingService', ['service' => $pendingService->id]) }}">
-                                                        <i class="fa fa-ban"></i> Abort </a>
+                                                        <a class="dropdown-item"
+                                                            href="{{ route('service.abortStatus.pendingService', ['service' => $pendingService->id]) }}">
+                                                            <i class="fa fa-ban"></i> Abort </a>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        </td>
+                                            </td>
+                                        @endcan
+
                                     </tr>
 
                                 @empty
@@ -272,7 +279,7 @@
         </div>
     @endif
 
-    @if (session('editMode') && session('service')->exists()  ?? false)
+    @if (session('editMode') && session('service')->exists() ?? false)
         <script>
             // Open the modal using JavaScript
             $(document).ready(function() {
@@ -280,8 +287,8 @@
             });
         </script>
         <?php session(['editMode' => false]); ?>
-        <div class="modal fade edit-layout-modal pr-0" id="serviceEdit" role="dialog" aria-labelledby="serviceEditLabel"
-            style="display: none;" aria-hidden="true">
+        <div class="modal fade edit-layout-modal pr-0" id="serviceEdit" role="dialog"
+            aria-labelledby="serviceEditLabel" style="display: none;" aria-hidden="true">
             <div class="modal-dialog w-300" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -290,13 +297,14 @@
                                 aria-hidden="true">×</span></button>
                     </div>
                     <div class="modal-body">
-                        <form action="{{ route('service.update.pendingService', ['service'=>session('service')->id]) }}" method="POST">
+                        <form action="{{ route('service.update.pendingService', ['service' => session('service')->id]) }}"
+                            method="POST">
                             @csrf
                             @method('PUT')
                             <div class="form-group">
                                 <label class="d-block">Customer Name</label>
                                 <input type="text" name="customerName" class="form-control"
-                                    placeholder="Enter Customer Name" value="{{session('service')->customerName}}">
+                                    placeholder="Enter Customer Name" value="{{ session('service')->customerName }}">
                                 @error('customerName')
                                     <div class="help-block with-errors">
                                         <span class="text-red">{{ $message }}</span>
@@ -306,7 +314,7 @@
                             <div class="form-group">
                                 <label class="d-block">Phone</label>
                                 <input type="text" name="customerPhone" class="form-control"
-                                    placeholder="Enter Phone"  value="{{session('service')->customerPhone}}">
+                                    placeholder="Enter Phone" value="{{ session('service')->customerPhone }}">
                                 @error('customerPhone')
                                     <div class="help-block with-errors">
                                         <span class="text-red">{{ $message }}</span>
@@ -319,20 +327,19 @@
                                     <div class="border-checkbox-section ml-3">
 
                                         <div class="border-checkbox-group border-checkbox-group-success d-block">
-                                             @if (session('service')->serviceTypes->contains($serviceType))
-                                             <input name="serviceTypeId[]" class="border-checkbox" type="checkbox"
-                                             id="checkbox{{ $serviceType->id }}" value="{{ $serviceType->id }}" checked>
-                                         <label class="border-checkbox-label"
-                                             for="checkbox{{ $serviceType->id }}">{{ $serviceType->name }}</label>
+                                            @if (session('service')->serviceTypes->contains($serviceType))
+                                                <input name="serviceTypeId[]" class="border-checkbox" type="checkbox"
+                                                    id="checkbox{{ $serviceType->id }}" value="{{ $serviceType->id }}"
+                                                    checked>
+                                                <label class="border-checkbox-label"
+                                                    for="checkbox{{ $serviceType->id }}">{{ $serviceType->name }}</label>
+                                            @else
+                                                <input name="serviceTypeId[]" class="border-checkbox" type="checkbox"
+                                                    id="checkbox{{ $serviceType->id }}" value="{{ $serviceType->id }}">
+                                                <label class="border-checkbox-label"
+                                                    for="checkbox{{ $serviceType->id }}">{{ $serviceType->name }}</label>
+                                            @endif
 
-                                             @else
-                                             <input name="serviceTypeId[]" class="border-checkbox" type="checkbox"
-                                             id="checkbox{{ $serviceType->id }}" value="{{ $serviceType->id }}">
-                                         <label class="border-checkbox-label"
-                                             for="checkbox{{ $serviceType->id }}">{{ $serviceType->name }}</label>
-
-                                             @endif
-                                            
                                         </div>
 
                                     </div>
@@ -347,14 +354,15 @@
                             </div>
                             <div class="form-group">
                                 <label class="d-block">Price</label>
-                                <input type="text" name="price" class="form-control" placeholder="Enter Price" value="{{session('service')->price}}">
+                                <input type="text" name="price" class="form-control" placeholder="Enter Price"
+                                    value="{{ session('service')->price }}">
                                 @error('price')
                                     <div class="help-block with-errors">
                                         <span class="text-red">{{ $message }}</span>
                                     </div>
                                 @enderror
                             </div>
-                            
+
                             <div class="form-group">
                                 <input class="btn btn-primary" type="submit" name="Save" value="Update">
                             </div>

@@ -40,23 +40,29 @@
             </thead>
             <tbody>
                 @php
-                $invoiceItems = config('mockdata.invoice_items');
+                if (session('cart')!=null) {
+                    $invoiceItems = session('cart');
+                }else{
+                    $invoiceItems = [];
+                }
+                
                 $grandTotal = 0;
                 $grandDiscount = 0;
 
                 @endphp
-                @foreach($invoiceItems as $key => $product)
+                @foreach($invoiceItems as $key => $item)
                 @php
-
-                $subtotal = $product['qty'] * ($product['unit_price'] - $product['discount']);
+                 
+                $product = App\Models\Product::all()->find($key);
+                $subtotal = $item * ($product['sellingPrice']);
                 $grandTotal += $subtotal;
                 @endphp
                 <tr>
-                    <td>{{($key +  1)}}</td>
+                    <td>{{($key)}}</td>
                     <td>{{$product['name']}}</td>
-                    <td>{{$product['unit_price']}}</td>
-                    <td>{{$product['qty']}}</td>
-                    <td>{{number_format($product['discount'], 2, '.', '')}}</td>
+                    <td>{{$product['sellingPrice']}}</td>
+                    <td>{{$item}}</td>
+                    <td>0</td>
                     <td class="text-right">{{number_format($subtotal, 2, '.', '')}}</td>
                 </tr>
                 @endforeach
