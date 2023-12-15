@@ -23,7 +23,7 @@
                                 <a href="{{ url('dashboard') }}"><i class="ik ik-home"></i></a>
                             </li>
                             <li class="breadcrumb-item">
-                                <a href="#">{{ __('Products') }}</a>
+                                <a href="{{ url('products') }}">{{ __('Products') }}</a>
                             </li>
                         </ol>
                     </nav>

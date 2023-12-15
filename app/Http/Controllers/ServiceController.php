@@ -10,14 +10,14 @@ class ServiceController extends Controller
 {
     public function index()
     {
-        $pendingServices = Service::latest()->get();
-        return view('inventory.service.pendingServices',  compact('pendingServices'));
+       
+        return view('inventory.service.pendingServices');
 
     }
     public function serviceTypes()
     {
-        $serviceTypes = ServiceType::latest()->get();
-        return view('inventory.service.serviceTypes', compact('serviceTypes'));
+       
+        return view('inventory.service.serviceTypes');
     }
     public function createPendingService(){
         $serviceTypes = ServiceType::latest()->get();
