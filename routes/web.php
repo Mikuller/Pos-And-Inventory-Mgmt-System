@@ -61,10 +61,15 @@ Route::group(['prefix' => 'categories', 'as' => 'category.', 'middleware' => ['a
     Route::get('/destroy/{category}', [CategoryController::class, 'destroy'])->name('destroy');
 });
 
-Route::get('/pos', [SalesController::class, 'dashboard'])->name('pos.dashboard');
+Route::group(['prefix' => 'sales', 'as' => 'sales.', 'middleware' => ['auth', 'can:admin']], function () {
 
-Route::post('/sales', [SalesController::class, 'index'])->name('sales.index');
-Route::get('/sales/show', [SalesController::class, 'show'])->name('sales.show');
+Route::get('/pos', [SalesController::class, 'POS'])->name('pos.dashboard');
+
+Route::get('/index', [SalesController::class, 'index'])->name('index');
+Route::get('/show', [SalesController::class, 'show'])->name('show');
+Route::post('/create', [SalesController::class, 'create'])->name('create');
+});
+
 
 Route::group(['prefix' => 'services', 'as' => 'service.', 'middleware' => ['auth']], function () {
     Route::get('/index', [ServiceController::class, 'index'])->name('index');

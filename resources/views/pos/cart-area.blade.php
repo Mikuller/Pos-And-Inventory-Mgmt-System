@@ -37,20 +37,7 @@
                 <b id="total-bill">0.00</b>
             </div>
         </div>
-        {{-- <div class="box-shadow p-3 mb-3">
-            <label class="d-block">Customer Information</label>
-            <div class="d-block">
-                <div class="form-group">
-                    <input type="text" name="name" class="form-control" placeholder="Enter Customer Name" value="Christopher Alex">
-                </div>
-                <div class="form-group">
-                    <input type="text" name="phone" class="form-control" placeholder="Enter Phone" value="219-122-1234">
-                </div>
-                <div class="form-group">
-                    <textarea type="text" name="name" class="form-control h-82px" placeholder="Enter Address" value="Christopher Alex"></textarea>
-                </div>
-            </div>
-        </div> --}}
+        
         {{-- <div class="box-shadow p-3">
             
             <button wire:click="openModal"  type="submit" class="btn btn-danger btn-checkout btn-pos-checkout" >SELL</button>

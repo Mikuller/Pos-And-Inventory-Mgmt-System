@@ -18,12 +18,12 @@
         <div class="nav-container">
             <nav id="main-menu-navigation" class="navigation-main">
                 <div class="nav-item {{ ($segment2 == 'inventory') ? 'active' : '' }}">
-                    <a href="{{url('/inventory')}}"><i class="ik ik-bar-chart-2"></i><span>{{ __('Dashboard')}}</span></a>
+                    <a href="{{url('/')}}"><i class="ik ik-bar-chart-2"></i><span>{{ __('Dashboard')}}</span></a>
                 </div>
 
                 <!-- start inventory pages -->
                 <div class="nav-item {{ ($segment1 == 'pos') ? 'active' : '' }}">
-                    <a href="{{url('pos')}}"><i class="ik ik-printer"></i><span>{{ __('POS')}}</span> <span class=" badge badge-success badge-right">{{ __('New')}}</span></a>
+                    <a href="{{url('sales/pos')}}"><i class="ik ik-printer"></i><span>{{ __('POS')}}</span> <span class=" badge badge-success badge-right">{{ __('New')}}</span></a>
                 </div>
                 @can('admin')
                 <div class="nav-item {{ ($segment1 == 'products') ? 'active open' : '' }} ">
@@ -35,11 +35,11 @@
                 </div>
                 @endcan
                 <div class="nav-item {{ ($segment1 == 'sales') ? 'active open' : '' }} ">
-                    <a href="#"><i class="ik ik-shopping-cart"></i><span>{{ __('Sales')}}</span></a>
-                    <div class="submenu-content">
+                    <a href="{{route('sales.index')}}"><i class="ik ik-shopping-cart"></i><span>{{ __('Sales')}}</span></a>
+                    {{-- <div class="submenu-content">
                         <a href="{{route('pos.dashboard')}}" class="menu-item {{ ($segment1 == 'sales' && $segment2 == 'create') ? 'active' : '' }}">{{ __('Add Sale')}}</a>
                         <a href="{{route('sales.index')}}" class="menu-item {{ ($segment1 == 'sales' && $segment2 == '') ? 'active' : '' }}">{{ __('List Sales')}}</a>
-                    </div>
+                    </div> --}}
                 </div>
                 <div class="nav-item {{ ($segment1 == 'purchases') ? 'active open' : '' }} ">
                     <a href="#"><i class="ik ik-truck"></i><span>{{ __('Purchases')}}</span></a>

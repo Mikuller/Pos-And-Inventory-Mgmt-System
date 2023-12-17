@@ -15,17 +15,22 @@
         <div class="pos-container p-3 pt-0">
             <div class="row">
                 @include('pos.sidebar')
+                
                 <div class="col-sm-8 bg-white">
                     <div class="customer-area">
+                     
+                       
 
-                        @include('pos.pos-header')
+                       
 
                         <livewire:sales-counter />
 
                     </div>
+                    
                 </div>
                 @include('pos.cart-area')
                 @include('pos.invoice-modal')
+                
 
 
             </div>

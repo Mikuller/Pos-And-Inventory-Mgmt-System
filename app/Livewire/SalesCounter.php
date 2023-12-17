@@ -8,6 +8,7 @@ use Ramsey\Uuid\Type\Integer;
 
 class SalesCounter extends Component
 {
+    public $search;
     public $cart = [];
 
     public function countCart(int $productId)
@@ -25,7 +26,7 @@ class SalesCounter extends Component
     {
         session()->put('cart', $this->cart );
         session()->put('showInvoice', true);
-        $this->redirect('/pos');
+        $this->redirect('/sales/pos');
        
     }
     public function closeModal()
@@ -35,7 +36,8 @@ class SalesCounter extends Component
 
     public function getProducts()
     {
-        $products = Product::latest()->get();
+        $products = Product::where('name', 'like', "%{$this->search}%")
+        ->latest()->paginate(15);
         return $products;
     }
 

@@ -1,3 +1,5 @@
+<div>
+    @include('pos.pos-header')
 <div class="row pos-products layout-wrap" id="layout-wrap">
     <div id="sellCheckout" class="container-fluid">
         <button wire:click="openModal" type="submit" class="btn btn-danger btn-checkout btn-pos-checkout">Check out Cart</button>
@@ -26,4 +28,5 @@
         </div>
     @endforeach
 
+</div>
 </div>
