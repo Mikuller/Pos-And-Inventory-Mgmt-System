@@ -42,11 +42,11 @@
                     </div> --}}
                 </div>
                 <div class="nav-item {{ ($segment1 == 'purchases') ? 'active open' : '' }} ">
-                    <a href="#"><i class="ik ik-truck"></i><span>{{ __('Purchases')}}</span></a>
-                    <div class="submenu-content">
+                    <a href="{{route('purchases.index')}}"><i class="ik ik-truck"></i><span>{{ __('Purchases')}}</span></a>
+                    {{-- <div class="submenu-content">
                         <a href="{{url('purchases/create')}}" class="menu-item {{ ($segment1 == 'purchases' && $segment2 == 'create') ? 'active' : '' }}">{{ __('Add Purchase')}}</a>
                         <a href="{{url('purchases')}}" class="menu-item {{ ($segment1 == 'purchases' && $segment2 == '') ? 'active' : '' }}">{{ __('List Purchases')}}</a>
-                    </div>
+                    </div> --}}
                 </div>
                 <div class="nav-item {{ ($segment1 == 'services' || $segment2 == 'services') ? 'active open' : '' }} ">
                     <a href="{{route('service.index')}}" ><i  class="fa fa-wrench" aria-hidden="true"></i><span>{{ __('Services')}}</span></a>

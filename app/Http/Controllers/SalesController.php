@@ -7,6 +7,8 @@ use App\Models\Sale;
 use Illuminate\Database\Console\DumpCommand;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Nette\Utils\Strings;
+use PhpParser\Node\Expr\Cast\String_;
 
 class SalesController extends Controller
 {
@@ -49,10 +51,28 @@ class SalesController extends Controller
 
       $sale->products()->sync($cart);
       
-      
+     
 
+    
+      foreach ($cart as $key => $value) {
+        $productId = $key;
+        $amount = $value['amount'];
+       $this->updateInventoryValue($productId, $amount);
+      }
+
+     
       return back()->with('success', 'Transaction was Successful!');
 
+       }
+
+      public function updateInventoryValue(string $productId, float $amount){
+           $product = Product::all()->find($productId);
+           $newQty = $product->quantity - $amount;
+           $product->update(
+            [
+              'quantity'=> $newQty
+            ]
+            );
        }
 
 }

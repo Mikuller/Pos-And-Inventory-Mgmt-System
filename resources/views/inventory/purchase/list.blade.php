@@ -20,8 +20,9 @@
 							<a href="/dashboard"><i class="ik ik-home"></i></a>
 						</li>
 						<li class="breadcrumb-item">
-							<a href="#">Purchases</a>
+							<a href="{{route('purchases.index')}}">Purchases</a>
 						</li>
+						
 					</ol>
 				</nav>
 			</div>
@@ -32,7 +33,7 @@
 			<div class="card">
 				<div class="card-header row">
 					<div class="col col-sm-2">
-						<a href="/purchases/create" class="btn btn-primary btn-rounded">Add Purchase</a>
+						<a href="{{route('purchases.create')}}" class="btn btn-primary btn-rounded">Add Purchase</a>
 					</div>
 					<div class="col col-sm-1">
 						<div class="card-options d-inline-block">

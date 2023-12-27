@@ -1,25 +1,25 @@
-@extends('inventory.layout') 
+@extends('inventory.layout')
 @section('title', 'Dashboard')
 @section('content')
     <!-- push external head elements to head -->
     @push('head')
-
         <link rel="stylesheet" href="{{ asset('plugins/weather-icons/css/weather-icons.min.css') }}">
         <link rel="stylesheet" href="{{ asset('plugins/owl.carousel/dist/assets/owl.carousel.min.css') }}">
         <link rel="stylesheet" href="{{ asset('plugins/owl.carousel/dist/assets/owl.theme.default.min.css') }}">
         <link rel="stylesheet" href="{{ asset('plugins/chartist/dist/chartist.min.css') }}">
     @endpush
 
+    @include('include.message')
     <div class="container-fluid">
-    	<div class="row">
-    		<!-- page statustic chart start -->
+        <div class="row">
+            <!-- page statustic chart start -->
             <div class="col-xl-3 col-md-6">
                 <div class="card card-red text-white">
                     <div class="card-block">
                         <div class="row align-items-center">
                             <div class="col-8">
-                                <h4 class="mb-0">{{ __('2,563')}}</h4>
-                                <p class="mb-0">{{ __('Products')}}</p>
+                                <h4 class="mb-0">{{ App\Models\Product::all()->count() }}</h4>
+                                <p class="mb-0">{{ __('Products') }}</p>
                             </div>
                             <div class="col-4 text-right">
                                 <i class="fas fa-cube f-30"></i>
@@ -34,14 +34,14 @@
                     <div class="card-block">
                         <div class="row align-items-center">
                             <div class="col-8">
-                                <h4 class="mb-0">{{ __('3,612')}}</h4>
-                                <p class="mb-0">{{ __('Orders')}}</p>
+                                <h4 class="mb-0">{{ App\Models\Purchase::all()->count() }}</h4>
+                                <p class="mb-0">{{ __('Purchases') }}</p>
                             </div>
                             <div class="col-4 text-right">
-                                <i class="ik ik-shopping-cart f-30"></i>
+                                <i class="ik ik-truck f-30"></i>
                             </div>
                         </div>
-                        <div id="Widget-line-chart2" class="chart-line chart-shadow" ></div>
+                        <div id="Widget-line-chart2" class="chart-line chart-shadow"></div>
                     </div>
                 </div>
             </div>
@@ -50,11 +50,11 @@
                     <div class="card-block">
                         <div class="row align-items-center">
                             <div class="col-8">
-                                <h4 class="mb-0">{{ __('865')}}</h4>
-                                <p class="mb-0">{{ __('Customers')}}</p>
+                                <h4 class="mb-0">{{ App\Models\Service::all()->count() }}</h4>
+                                <p class="mb-0">{{ __('Services') }}</p>
                             </div>
                             <div class="col-4 text-right">
-                                <i class="ik ik-user f-30"></i>
+                                <i class="fa fa-wrench f-30"></i>
                             </div>
                         </div>
                         <div id="Widget-line-chart3" class="chart-line chart-shadow"></div>
@@ -66,69 +66,83 @@
                     <div class="card-block">
                         <div class="row align-items-center">
                             <div class="col-8">
-                                <h4 class="mb-0">{{ __('35,500')}}</h4>
-                                <p class="mb-0">{{ __('Sales')}}</p>
+                                <h4 class="mb-0">{{ App\Models\Sale::all()->count() }}</h4>
+                                <p class="mb-0">{{ __('Sales') }}</p>
                             </div>
                             <div class="col-4 text-right">
                                 <i class="ik f-30">৳</i>
                             </div>
                         </div>
-                        <div id="Widget-line-chart4" class="chart-line chart-shadow" ></div>
+                        <div id="Widget-line-chart4" class="chart-line chart-shadow"></div>
                     </div>
                 </div>
             </div>
             <!-- page statustic chart end -->
             <!-- sale 2 card start -->
-            <div class="col-md-6 col-xl-4">
-                <div class="card sale-card">
-                    <div class="card-header">
-                        <h3>{{ __('Realtime Profit')}}</h3>
-                    </div>
-                    <div class="card-block text-center">
-                        <div id="realtime-profit"></div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6 col-xl-4">
-                <div class="card sale-card">
-                    <div class="card-header">
-                        <h3>{{ __('Sales Difference')}}</h3>
-                    </div>
-                    <div class="card-block text-center">
-                        <div id="sale-diff" class="chart-shadow"></div>
-                    </div>
-                </div>
-            </div>
+
             <div class="col-md-12 col-xl-4">
                 <div class="card card-green text-white">
                     <div class="card-block pb-0">
                         <div class="row mb-50">
                             <div class="col">
-                                <h6 class="mb-5">{{ __('Sales In July')}}</h6>
-                                <h5 class="mb-0  fw-700">{{ __('$2665.00')}}</h5>
+                                <h6 class="mb-5">{{ 'Sales In '. date('F'); }}</h6>
+                                <h5 class="mb-0  fw-700">{{ $totalMonthlySales . " ETB"}}</h5>
                             </div>
-                            <div class="col-auto text-center">
-                                <p class="mb-5">{{ __('Direct Sale')}}</p>
-                                <h6 class="mb-0">{{ __('$1768')}}</h6>
+                            {{-- <div class="col-auto text-center">
+                                <p class="mb-5">{{ __('Direct Sale') }}</p>
+                                <h6 class="mb-0">{{ __('$1768') }}</h6>
                             </div>
 
                             <div class="col-auto text-center">
-                                <p class="mb-5">{{ __('Referal')}}</p>
-                                <h6 class="mb-0">{{ __('$897')}}</h6>
-                            </div>
+                                <p class="mb-5">{{ __('Referal') }}</p>
+                                <h6 class="mb-0">{{ __('$897') }}</h6>
+                            </div> --}}
                         </div>
-                        <div id="sec-ecommerce-chart-line" class="chart-shadow"></div>
-                        <div id="sec-ecommerce-chart-bar" ></div>
+                       
                     </div>
                 </div>
             </div>
             <!-- sale 2 card end -->
+            <!-- profit card start -->
 
-            <!-- product and new customar start -->
+            <div class="col-md-12 col-xl-4">
+                <div class="card card-red text-white">
+                    <div class="card-block pb-0">
+                        <div class="row mb-50">
+                            <div class="col">
+                                <h6 class="mb-5">{{ 'Profit in '. date('F') }}</h6>
+                                <h5 class="mb-0  fw-700">{{ $totalMonthlyProfit. " ETB" }}</h5>
+                            </div>
+                           
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+            <!-- profit card end -->
+<!--total service card start -->
+
+<div class="col-md-12 col-xl-4">
+    <div class="card card-blue text-white">
+        <div class="card-block pb-0">
+            <div class="row mb-50">
+                <div class="col">
+                    <h6 class="mb-5">{{ 'Service income in '. date('F');  }}</h6>
+                    <h5 class="mb-0  fw-700">{{ $totalMonthlyService. " ETB"}}</h5>
+                </div>
+                
+            </div>
+           
+        </div>
+    </div>
+</div>
+<!-- total sevice card end -->
+
+            <!-- pending services -->
             <div class="col-xl-4 col-md-6">
                 <div class="card new-cust-card">
                     <div class="card-header">
-                        <h3>{{ __('New Customers')}}</h3>
+                        <h3>{{ __('Pending Services') }}</h3>
                         <div class="card-header-right">
                             <ul class="list-unstyled card-option">
                                 <li><i class="ik ik-chevron-left action-toggle"></i></li>
@@ -138,45 +152,38 @@
                         </div>
                     </div>
                     <div class="card-block">
-                        <div class="align-middle mb-25">
-                            <img src="../img/users/1.jpg" alt="user image" class="rounded-circle img-40 align-top mr-15">
-                            <div class="d-inline-block">
-                                <a href="#!"><h6>{{ __('Alex Thompson')}}</h6></a>
-                                <p class="text-muted mb-0">{{ __('Cheers!')}}</p>
-                                <span class="status active"></span>
+
+                        @forelse ($services as $service)
+                            <div class="align-middle mb-25">
+
+                                <div class="d-inline-block">
+                                    <a href="#!">
+                                        <h6>{{ $service->customerName }}</h6>
+                                    </a>
+                                    <span class="d-inline-block bg-danger rounded-circle ml-300"
+                                        style="width: 10px; height: 10px;"></span>
+                                    @foreach ($service->serviceTypes as $serviceType)
+                                        <p class="text-muted mb-0 d-inline">{{ $serviceType->name . ',' }}</p>
+                                    @endforeach
+
+
+                                </div>
+
+
                             </div>
-                        </div>
-                        <div class="align-middle mb-25">
-                            <img src="../img/users/2.jpg" alt="user image" class="rounded-circle img-40 align-top mr-15">
-                            <div class="d-inline-block">
-                                <a href="#!"><h6>{{ __('John Doue')}}</h6></a>
-                                <p class="text-muted mb-0">{{ __('stay hungry stay foolish!')}}</p>
-                                <span class="status active"></span>
-                            </div>
-                        </div>
-                        <div class="align-middle mb-25">
-                            <img src="../img/users/3.jpg" alt="user image" class="rounded-circle img-40 align-top mr-15">
-                            <div class="d-inline-block">
-                                <a href="#!"><h6>{{ __('Alex Thompson')}}</h6></a>
-                                <p class="text-muted mb-0">{{ __('Cheers!')}}</p>
-                                <span class="status deactive text-mute"><i class="far fa-clock mr-10"></i>{{ __('30 min ago')}}</span>
-                            </div>
-                        </div>
-                        <div class="align-middle mb-25">
-                            <img src="../img/users/4.jpg" alt="user image" class="rounded-circle img-40 align-top mr-15">
-                            <div class="d-inline-block">
-                                <a href="#!"><h6>{{ __('John Doue')}}</h6></a>
-                                <p class="text-muted mb-0">{{ __('Cheers!')}}</p>
-                                <span class="status deactive text-mute"><i class="far fa-clock mr-10"></i>{{ __('10 min ago')}}</span>
-                            </div>
-                        </div>
+                        @empty
+                        <span class=" b-b-primary text-primary text-center">
+                            <p>No Pending Service Yet</p>
+                        </span>
+                        @endforelse
+
                     </div>
                 </div>
             </div>
             <div class="col-xl-8 col-md-6">
                 <div class="card table-card">
                     <div class="card-header">
-                        <h3>{{ __('New Products')}}</h3>
+                        <h3>{{ __('Low Stock Products') }}</h3>
                         <div class="card-header-right">
                             <ul class="list-unstyled card-option">
                                 <li><i class="ik ik-chevron-left action-toggle"></i></li>
@@ -190,62 +197,39 @@
                             <table class="table table-hover mb-0">
                                 <thead>
                                     <tr>
-                                        <th>{{ __('Product Name')}}</th>
-                                        <th>{{ __('Image')}}</th>
-                                        <th>{{ __('Status')}}</th>
-                                        <th>{{ __('Price')}}</th>
-                                        <th>{{ __('Action')}}</th>
+                                        <th>{{ __('Product Name') }}</th>
+                                        <th>{{ __('Image') }}</th>
+                                        <th>{{ __('Stock Value') }}</th>
+                                        <th>{{ __('Price') }}</th>
+                                        <th>{{ __('Action') }}</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td>{{ __('HeadPhone')}}</td>
-                                        <td><img src="../img/widget/p1.jpg" alt="" class="img-fluid img-20"></td>
-                                        <td>
-                                            <div class="p-status bg-green"></div>
-                                        </td>
-                                        <td>{{ __('$10')}}</td>
-                                        <td>
-                                            <a href="#!"><i class="ik ik-edit f-16 mr-15 text-green"></i></a>
-                                            <a href="#!"><i class="ik ik-trash-2 f-16 text-red"></i></a>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>{{ __('Iphone 6')}}</td>
-                                        <td><img src="../img/widget/p2.jpg" alt="" class="img-fluid img-20"></td>
-                                        <td>
-                                            <div class="p-status bg-green"></div>
-                                        </td>
-                                        <td>{{ __('$2')}}0</td>
-                                        <td><a href="#!"><i class="ik ik-edit f-16 mr-15 text-green"></i></a><a href="#!"><i class="ik ik-trash-2 f-16 text-red"></i></a></td>
-                                    </tr>
-                                    <tr>
-                                        <td>{{ __('Jacket')}}</td>
-                                        <td><img src="../img/widget/p3.jpg" alt="" class="img-fluid img-20"></td>
-                                        <td>
-                                            <div class="p-status bg-green"></div>
-                                        </td>
-                                        <td>{{ __('$35')}}</td>
-                                        <td><a href="#!"><i class="ik ik-edit f-16 mr-15 text-green"></i></a><a href="#!"><i class="ik ik-trash-2 f-16 text-red"></i></a></td>
-                                    </tr>
-                                    <tr>
-                                        <td>{{ __('Sofa')}}</td>
-                                        <td><img src="../img/widget/p4.jpg" alt="" class="img-fluid img-20"></td>
-                                        <td>
-                                            <div class="p-status bg-green"></div>
-                                        </td>
-                                        <td>{{ __('$85')}}</td>
-                                        <td><a href="#!"><i class="ik ik-edit f-16 mr-15 text-green"></i></a><a href="#!"><i class="ik ik-trash-2 f-16 text-red"></i></a></td>
-                                    </tr>
-                                    <tr>
-                                        <td>{{ __('Iphone 6')}}</td>
-                                        <td><img src="../img/widget/p2.jpg" alt="" class="img-fluid img-20"></td>
-                                        <td>
-                                            <div class="p-status bg-green"></div>
-                                        </td>
-                                        <td>{{ __('$20')}}</td>
-                                        <td><a href="#!"><i class="ik ik-edit f-16 mr-15 text-green"></i></a><a href="#!"><i class="ik ik-trash-2 f-16 text-red"></i></a></td>
-                                    </tr>
+
+                                    @forelse ($products as $product)
+                                        <tr>
+                                            <td>{{ $product->name }}</td>
+                                            <td><img src="{{ $product->getImageURL() }}" alt=""
+                                                    class="img-fluid img-20">
+                                            </td>
+                                            <td>
+                                                <div class="text-red text-center">{{ $product->quantity }}</div>
+                                            </td>
+                                            <td>{{ $product->sellingPrice }}</td>
+                                            <td>
+                                                <a href="{{ route('product.edit', ['product' => $product->id]) }}"><i
+                                                        class="ik ik-edit f-16 mr-15 text-green"></i></a>
+                                                <a href="{{ route('product.destroy', ['product' => $product->id]) }}"><i
+                                                        class="ik ik-trash-2 f-16 text-red"></i></a>
+                                            </td>
+                                        </tr>
+                                    @empty
+                                        <span class=" b-b-primary text-primary text-center">
+                                            <p>No low Stock Products to Remind</p>
+                                        </span>
+                                    @endforelse
+
+
                                 </tbody>
                             </table>
                         </div>
@@ -258,7 +242,7 @@
             <div class="col-md-12">
                 <div class="card table-card">
                     <div class="card-header">
-                        <h3>{{ __('Application Sales')}}</h3>
+                        <h3>{{ __('Top Sales') }}</h3>
                         <div class="card-header-right">
                             <ul class="list-unstyled card-option">
                                 <li><i class="ik ik-chevron-left action-toggle"></i></li>
@@ -272,85 +256,52 @@
                             <table class="table table-hover table-borderless mb-0">
                                 <thead>
                                     <tr>
-                                        <th>{{ __('Application')}}</th>
-                                        <th>{{ __('Sales')}}</th>
-                                        <th>{{ __('Change')}}</th>
-                                        <th>{{ __('Avg Price')}}</th>
-                                        <th>{{ __('Total')}}</th>
+                                        <th>{{ __('Product') }}</th>
+                                        <th>{{ __('Number of Sales') }}</th>
+
+                                        <th>{{ __('Total Item Sold') }}</th>
+                                        <th>{{ __('Total Sales') }}</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td>
-                                            <div class="d-inline-block align-middle">
-                                                <h6>{{ __('Able Pro')}}</h6>
-                                                <p class="text-muted mb-0">{{ __('Powerful Admin Theme')}}</p>
-                                            </div>
-                                        </td>
-                                        <td>{{ __('16,300')}}</td>
-                                        <td>
-                                            <div id="app-sale1"></div>
-                                        </td>
-                                        <td>$53</td>
-                                        <td class="text-blue">{{ __('$15,652')}}</td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <div class="d-inline-block align-middle">
-                                                <h6>{{ __('Photoshop')}}</h6>
-                                                <p class="text-muted mb-0">{{ __('Design Software')}}</p>
-                                            </div>
-                                        </td>
-                                        <td>{{ __('26,421')}}</td>
-                                        <td>
-                                            <div id="app-sale2"></div>
-                                        </td>
-                                        <td>{{ __('$35')}}</td>
-                                        <td class="text-blue">{{ __('$18,785')}}</td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <div class="d-inline-block align-middle">
-                                                <h6>{{ __('Guruable')}}</h6>
-                                                <p class="text-muted mb-0">{{ __('Best Admin Template')}}</p>
-                                            </div>
-                                        </td>
-                                        <td>{{ __('8,265')}}</td>
-                                        <td>
-                                            <div id="app-sale3"></div>
-                                        </td>
-                                        <td>{{ __('$98')}}</td>
-                                        <td class="text-blue">{{ __('$9,652')}}</td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <div class="d-inline-block align-middle">
-                                                <h6>{{ __('Flatable')}}</h6>
-                                                <p class="text-muted mb-0">{{ __('Admin App')}}</p>
-                                            </div>
-                                        </td>
-                                        <td>{{ __('10,652')}}</td>
-                                        <td>
-                                            <div id="app-sale4"></div>
-                                        </td>
-                                        <td>{{ __('$20')}}</td>
-                                        <td class="text-blue">{{ __('$7,856')}}</td>
-                                    </tr>
+                                    @forelse ($topSales as $product)
+                                        <tr>
+                                            <td>
+                                                <div class="d-inline-block align-middle">
+                                                    <h6>{{ App\Models\Product::all()->find($product)->name }}</h6>
+                                                    <p class="text-muted mb-0">
+                                                        {{ App\Models\Product::all()->find($product)->description }}</p>
+                                                </div>
+                                            </td>
+                                            <td>{{ App\Models\Product::all()->find($product)->sales->count() }}</td>
+
+                                            <td>{{ $product->total_amount }}</td>
+                                            <td class="text-green">
+                                                {{ $product->total_amount * App\Models\Product::all()->find($product)->sellingPrice . ' ETB' }}
+                                            </td>
+                                        </tr>
+                                    @empty
+                                        <span class=" b-b-primary text-primary text-center">
+                                            <p>No Sales To show</p>
+                                        </span>
+                                    @endforelse
+
+
                                 </tbody>
                             </table>
                         </div>
                     </div>
                     <div class="card-footer">
                         <div class="text-right">
-                            <a href="#!" class=" b-b-primary text-primary">{{ __('View all Projects')}}</a>
+                            <span class=" b-b-primary text-primary">{{ $topSales->links() }}</span>
                         </div>
                     </div>
                 </div>
             </div>
             <!-- Application Sales end -->
-    	</div>
+        </div>
     </div>
-	<!-- push external js -->
+    <!-- push external js -->
     @push('script')
         <script src="{{ asset('plugins/owl.carousel/dist/owl.carousel.min.js') }}"></script>
         <script src="{{ asset('plugins/chartist/dist/chartist.min.js') }}"></script>
@@ -362,11 +313,10 @@
         <script src="{{ asset('plugins/amcharts/amcharts.js') }}"></script>
         <script src="{{ asset('plugins/amcharts/serial.js') }}"></script>
         <script src="{{ asset('plugins/amcharts/themes/light.js') }}"></script>
-       
-        
+
+
         <script src="{{ asset('js/widget-statistic.js') }}"></script>
         <script src="{{ asset('js/widget-data.js') }}"></script>
         <script src="{{ asset('js/dashboard-charts.js') }}"></script>
-        
     @endpush
 @endsection

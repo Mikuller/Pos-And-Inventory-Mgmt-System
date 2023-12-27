@@ -4,11 +4,16 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\SalesController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\PurchaseController;
+use App\Http\Controllers\PurchasesController;
 use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\StaffController;
+
 use App\Models\Product;
 use App\Models\Service;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
+use Carbon\Carbon;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,54 +25,62 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
-Route::get('/dashboard', function () {
-    return view('inventory.dashboard');
-})->middleware(['auth']);
+// Route::get('/dashboard', function () {
+//     $products = Product::latest()->where('quantity','<=','stockAlert')->get();
+//     return view('inventory.dashboard',['products'=>$products]);
+// })->middleware(['auth']);
 
 Route::get('/', function () {
-    return view('inventory.dashboard');
-})
-    ->name('dashboard')
-    ->middleware(['auth']);
+    $products = Product::latest()->where('quantity','<=', DB::raw('stockAlert'))->get();
+    $services = Service::latest()->where('status','=','Pending')->get();
+    $topSales = Product::select('products.id', DB::raw('SUM(product_sale.amount) as total_amount'))->leftJoin('product_sale', 'products.id', '=', 'product_sale.product_id')->orderBy('total_amount', 'desc')->groupBy('products.id')->paginate(5);
+    $totalMonthlySales = DB::table('sales')->whereMonth('created_at', Carbon::now()->month)->whereYear('created_at', Carbon::now()->year)->sum('grandTotal');
+    $totalMonthlyService = DB::table('services')->whereMonth('created_at', Carbon::now()->month)->whereYear('created_at', Carbon::now()->year)->sum('price');
+    
+    $MonthlySoldProduct = Product::select('products.id', DB::raw('SUM(product_sale.amount) as total_amount'))
+    ->leftJoin('product_sale', 'products.id', '=', 'product_sale.product_id')
+    ->whereMonth('product_sale.created_at', Carbon::now()->month)
+    ->whereYear('product_sale.created_at', Carbon::now()->year)
+    ->groupBy('products.id')->get();
+   // dd($MonthlySoldProduct);
+    $totalMonthlyProfit = 0.00;
+    foreach ($MonthlySoldProduct as $value) {
+        $totalMonthlyProfit =  $totalMonthlyProfit + $value->total_amount * (Product::all()->find($value)->sellingPrice - Product::all()->find($value)->purchasePrice);
+    }
+    //dd($totalMonthlyProfit);
+    return view('inventory.dashboard',compact('products','services','topSales','totalMonthlySales','totalMonthlyService','totalMonthlyProfit'));
+})->name('dashboard')->middleware(['auth']);
 
 Route::group(['prefix' => 'products', 'as' => 'product.', 'middleware' => ['auth', 'can:admin']], function () {
     Route::get('/create', [ProductController::class, 'create'])->name('create');
-
     Route::get('/index', [ProductController::class, 'index'])->name('index');
-
     Route::put('/store', [ProductController::class, 'store'])->name('store');
-
     Route::get('/edit/{product}', [ProductController::class, 'edit'])->name('edit');
-
     Route::get('/show/{product}', [ProductController::class, 'show'])->name('show');
-
     Route::put('/update/{product}', [ProductController::class, 'update'])->name('update');
-
     Route::get('/destroy/{product}', [ProductController::class, 'destroy'])->name('destroy');
 });
+
 Route::group(['prefix' => 'categories', 'as' => 'category.', 'middleware' => ['auth', 'can:admin']], function () {
     Route::get('/create', [CategoryController::class, 'create'])->name('create');
-
     Route::get('/index', [CategoryController::class, 'index'])->name('index');
-
     Route::put('/store', [CategoryController::class, 'store'])->name('store');
-
     Route::get('/edit/{category}', [CategoryController::class, 'edit'])->name('edit');
-
     Route::get('/show/{category}', [CategoryController::class, 'show'])->name('show');
-
     Route::put('/update/{category}', [CategoryController::class, 'update'])->name('update');
-
     Route::get('/destroy/{category}', [CategoryController::class, 'destroy'])->name('destroy');
 });
 
 Route::group(['prefix' => 'sales', 'as' => 'sales.', 'middleware' => ['auth', 'can:admin']], function () {
-
-Route::get('/pos', [SalesController::class, 'POS'])->name('pos.dashboard');
-
-Route::get('/index', [SalesController::class, 'index'])->name('index');
-Route::get('/show', [SalesController::class, 'show'])->name('show');
-Route::post('/create', [SalesController::class, 'create'])->name('create');
+    Route::get('/pos', [SalesController::class, 'POS'])->name('pos.dashboard');
+    Route::get('/index', [SalesController::class, 'index'])->name('index');
+    Route::get('/show', [SalesController::class, 'show'])->name('show');
+    Route::post('/create', [SalesController::class, 'create'])->name('create');
+});
+Route::group(['prefix' => 'purchases', 'as' => 'purchases.', 'middleware' => ['auth', 'can:admin']], function () {
+    Route::get('/index', [PurchaseController::class, 'index'])->name('index');
+    Route::get('/show', [PurchaseController::class, 'show'])->name('show');
+    Route::get('/create', [PurchaseController::class, 'create'])->name('create');
 });
 
 

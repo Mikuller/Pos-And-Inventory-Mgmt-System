@@ -34,5 +34,6 @@
 
 	<!-- initiate scripts-->
 	@include('include.script')	
+	
 </body>
 </html>

@@ -23,7 +23,7 @@
                 <div class="d-block d-md-inline-block">
                     <div class="btn-group float-md-left mr-4 mb-1 ">
                         <select wire:model.live="searchWithCategory"  id="category" class="form-control select2">
-                            <option value="" selected>Search With Category</option>
+                            <option disabled>Search With Category</option>
                             @foreach ($categories as $category)
                             <option  wire:key={{$category->id}} value="{{$category->id}}">{{$category->name}}</option>
                             @endforeach
