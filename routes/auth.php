@@ -13,4 +13,5 @@ Route::get('/login', [AuthController::class, 'login'])->name('login');
 Route::post('/authenticate', [AuthController::class, 'authenticate'])->name('authenticate');
 
 Route::get('/logout', [AuthController::class, 'logout'])->name('logout')->withoutMiddleware(['guest']);
+Route::put('/resetPassword', [AuthController::class, 'resetPassword'])->name('users.resetPassword')->withoutMiddleware(['guest']);
 });

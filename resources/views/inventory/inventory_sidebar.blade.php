@@ -23,7 +23,7 @@
 
                 <!-- start inventory pages -->
                 <div class="nav-item {{ ($segment1 == 'pos') ? 'active' : '' }}">
-                    <a href="{{url('sales/pos')}}"><i class="ik ik-printer"></i><span>{{ __('POS')}}</span> <span class=" badge badge-success badge-right">{{ __('New')}}</span></a>
+                    <a href="{{url('sales/pos')}}"><i class="ik ik-printer"></i><span>{{ __('POS')}}</span> </a>
                 </div>
                 @can('admin')
                 <div class="nav-item {{ ($segment1 == 'products') ? 'active open' : '' }} ">
@@ -60,7 +60,11 @@
                     <a href="{{route('staffs.index')}}"><i class="ik ik-user"></i><span>{{ __('Staff Management')}}</span></a>
                 </div>
                 @endcan
-                
+                @can('admin')
+                <div class="nav-item {{ ($segment1 == 'reports') ? 'active' : '' }}">
+                    <a href="{{route('reports.index')}}"><i class="fa fa-calculator"></i><span>{{ __('Reports')}}</span></a>
+                </div>
+                @endcan
 
                 <!-- end inventory pages -->
 

@@ -12,5 +12,13 @@ class ServiceType extends Model
 public function services(){
    return $this->belongsToMany(Service::class, 'pending_type')->withTimestamps();
 }
+function getImageURL()
+{
+    if ($this->image) {
+        return url('storage/' . $this->image);
+    }
+
+    return url('img/defaultImages/product_image.jpg') ;
+}
     use HasFactory;
 }

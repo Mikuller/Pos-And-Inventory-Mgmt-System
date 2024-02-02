@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('customerPhone');
             $table->float('price');
             $table->string('status');
+            $table->longText('statusNote')->nullable();
             $table->string('refNumber')->unique();
             $table->timestamps();
         });

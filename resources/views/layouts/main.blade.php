@@ -4,11 +4,12 @@
 	<title>@yield('title','') | Radmin - Laravel Admin Starter</title>
 	<!-- initiate head with meta tags, css and script -->
 	@include('include.head')
-
 </head>
 <body id="app" >
     <div class="wrapper">
     	<!-- initiate header-->
+		
+
     	@include('include.header')
     	<div class="page-wrap">
 	    	<!-- initiate sidebar-->

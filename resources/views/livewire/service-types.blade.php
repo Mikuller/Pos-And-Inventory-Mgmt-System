@@ -5,27 +5,14 @@
     <div class="col-md-12">
         <div class="card">
             <div class="card-header row">
-                <div class="col col-sm-2">
+                <div class="col col-sm-3">
                     <a href="#serviceTypeAdd" data-toggle="modal" data-target="#serviceTypeAdd"
                         class="btn btn-sm btn-primary">Add New Service Type </a>
                 </div>
 
-                {{-- <div class="col col-sm-1">
-                    <div class="card-options d-inline-block">
-
-                        <div class="dropdown d-inline-block">
-                            <a class="nav-link dropdown-toggle" href="#" id="moreDropdown" role="button"
-                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i
-                                    class="ik ik-more-horizontal"></i></a>
-                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="moreDropdown">
-                                <a class="dropdown-item" href="#">Delete</a>
-                                <a class="dropdown-item" href="#">More Action</a>
-                            </div>
-                        </div>
-                    </div>
-                </div> --}}
+               
                 <div class="col col-sm-6">
-                    <div class="card-search with-adv-search dropdown">
+                    <div class="card-search with-adv-search dropdown ml-5">
                         <input type="text" wire:model.live.debounce.500ms="search" class="form-control global_filter" id="global_filter"
                                 placeholder="Search with name.." required="">
                             
@@ -69,8 +56,8 @@
                                     <a
                                         href="{{ route('service.edit.ServiceType', ['serviceType' => $serviceType->id]) }}"><i
                                             class="ik ik-edit f-16 mr-15 text-green"></i></a>
-                                    <a href="{{ route('service.destroy', ['serviceType' => $serviceType->id]) }}"><i
-                                            class="ik ik-trash-2 f-16 text-red"></i></a>
+                                    <a href="{{ route('service.destroy', ['serviceType' => $serviceType->id]) }}" onclick="confirmation(event)"><i
+                                            class="ik ik-trash-2 f-16 text-red" ></i></a>
                                 </td>
                             </tr>
                         @empty
@@ -82,3 +69,24 @@
         </div>
     </div>
 </div>
+<script>
+    function confirmation(ev) {
+        ev.preventDefault();
+        var urlToRedirect = ev.currentTarget.getAttribute('href');
+        console.log(urlToRedirect);
+        swal({
+                title: "Are you sure to Delete this Record?",
+                text: "You will not be able to revert this!",
+                icon: "warning",
+                buttons: true,
+                dangerMode: true,
+            })
+            .then((willCancel) => {
+                if (willCancel) {
+                    window.location.href = urlToRedirect;
+                }
+            });
+
+
+    }
+</script>

@@ -21,9 +21,9 @@
                     </a>
                 </span>
                 <div class="d-block d-md-inline-block">
-                    <div class="btn-group float-md-left mr-4 mb-1 ">
-                        <select wire:model.live="searchWithCategory"  id="category" class="form-control select2">
-                            <option disabled>Search With Category</option>
+                    <div class="float-md-left col-md-3 mr-4 mb-1 form-group">
+                        <select wire:model.live="searchWithCategory" class="form-control">
+                            <option value="" >Filter with Category</option>
                             @foreach ($categories as $category)
                             <option  wire:key={{$category->id}} value="{{$category->id}}">{{$category->name}}</option>
                             @endforeach
@@ -32,21 +32,8 @@
                     <div class="search-sm d-inline-block float-md-left mr-1 mb-1 align-top ">
 
                         <input wire:model.live.debounce.500ms="search" type="text" class="form-control"
-                            placeholder="Search with name.." required>
-                        {{-- <button  type="submit" class="btn btn-icon"><i class="ik ik-search"></i></button>  --}}
-                        {{-- <button type="button" id="adv_wrap_toggler"
-                                    class="adv-btn ik ik-chevron-down dropdown-toggle" data-toggle="dropdown"
-                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>  --}}
-                        {{-- <div class="adv-search-wrap dropdown-menu dropdown-menu-right"
-                                    aria-labelledby="adv_wrap_toggler">
-                                    <div class="form-group">
-                                        <input wire:model.live.debounce.500ms="search" type="text" class="form-control" placeholder="Category Title">
-                                    </div>
-                                    {{-- <div class="form-group">
-                                        <input type="text" class="form-control" placeholder="Category Code">
-                                    </div>
-                                    <button class="btn btn-theme">{{ __('Search') }}</button> 
-                                </div> --}}
+                            placeholder="Search with any attribute.." required>
+                       
 
                     </div>
                 </div>
@@ -94,7 +81,7 @@
                                 <a href="{{ route('product.edit', ['product' => $product->id]) }}"><i
                                         class="ik ik-edit-2"></i></a>
                                 <a href="{{ route('product.destroy', ['product' => $product->id]) }}"
-                                    class="list-delete"><i class="ik ik-trash-2"></i></a>
+                                    class="list-delete" onclick="confirmation(event)"><i class="ik ik-trash-2"></i></a>
                             </div>
                             <div class="custom-control custom-checkbox pl-1 align-self-center">
                                 <label class="custom-control custom-checkbox mb-0">

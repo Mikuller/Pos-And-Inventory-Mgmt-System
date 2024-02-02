@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('product_purchase', function (Blueprint $table) {
             $table->id();
             $table->foreignId('product_id')->constrained()->cascadeOnDelete();
+            $table->float('amount');
             $table->foreignId('purchase_id')->constrained()->cascadeOnDelete();
             $table->timestamps();
         });

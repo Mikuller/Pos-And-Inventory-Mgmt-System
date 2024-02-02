@@ -14,10 +14,12 @@ return new class extends Migration
         Schema::create('purchases', function (Blueprint $table) {
             $table->id();
             $table->float('grandTotal');
+            $table->float('totalTax');
             $table->string('supplierName')->nullable();
-            $table->string('purchaserID');
+            $table->string('purchaserID'); 
+            $table->string('status')->default("Paid");
             $table->string('purchaseNote')->nullable();
-            $table->float('shippingCost')->nullable();
+            $table->float('shippingCost')->default(0);
             $table->timestamps();
         });
     }

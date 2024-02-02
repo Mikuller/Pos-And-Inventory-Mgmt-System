@@ -31,7 +31,8 @@
             <div class="col-md-12">
                 <div class="card ">
                     <div class="card-body">
-                        <form enctype="multipart/form-data" class="forms-sample" method="POST" action="{{ route('product.store') }}">
+                        <form enctype="multipart/form-data" class="forms-sample" method="POST"
+                            action="{{ route('product.store') }}">
                             @csrf
                             @method('PUT')
                             <div class="row">
@@ -63,9 +64,9 @@
 
                                     <div class="form-group">
                                         <label>Product Images</label>
-        
+
                                         <input type="file" name="image">
-                                          
+
                                         @error('image')
                                             <div class="help-block with-errors">
                                                 <span class="text-red">{{ $message }}</span>
@@ -89,7 +90,7 @@
 
 
                                     </div>
-                                    <div class="form-group">
+                                    <div class="form-group mt-2">
                                         <label for="purchase_price">Purchase Price<span class="text-red">*</span></label>
                                         <input id="purchase_price" type="text" class="form-control" name="purchasePrice"
                                             placeholder="Enter product purchase price">
@@ -101,27 +102,18 @@
 
 
                                     </div>
-                                    <div class="form-group">
-                                        <label for="taxPercentage">Tax Percentage</label>
-                                        <input id="offer_price" type="text" class="form-control" name="taxPercentage"
-                                            placeholder="Enter tax Percentage" required="">
-                                        @error('taxPercentage')
-                                            <div class="help-block with-errors">
-                                                <span class="text-red">{{ $message }}</span>
-                                            </div>
-                                        @enderror
-                                    </div>
-                                    <div class="form-group">
+
+                                    {{-- <div class="form-group" style="display: none;">
                                         <label for="qty">Quantity<span class="text-red">*</span></label>
                                         <input id="qty" type="text" class="form-control" name="quantity"
-                                            placeholder="Enter Product Qty" required="">
+                                            placeholder="Add Quantity using Purchase" required="" value="0" >
                                         @error('quantity')
                                             <div class="help-block with-errors">
                                                 <span class="text-red">{{ $message }}</span>
                                             </div>
                                         @enderror
-                                    </div>
-                                    <div class="form-group">
+                                    </div> --}}
+                                    <div class="form-group mt-2">
                                         <label for="stock_alert">Stock Alert<span class="text-red">*</span></label>
                                         <input id="stock_alert" type="text" class="form-control" name="stockAlert"
                                             placeholder="Enter Stock Alert" required="">
@@ -139,46 +131,39 @@
                                     <div class="form-group">
 
                                         <label>Select Categories</label>
-                                        
-                                            
+
+
                                         @foreach ($categories as $category)
-                                        <div class="border-checkbox-section ml-3">
-                                           
-                                            <div class="border-checkbox-group border-checkbox-group-success d-block">
-                                            
-                                                <input name="categoryId[]" class="border-checkbox" type="checkbox" id="checkbox{{$category->id}}"
-                                                    value="{{$category->id}}">
-                                                <label class="border-checkbox-label" for="checkbox{{$category->id}}">{{$category->name}}</label>
-                                               
+                                            <div class="border-checkbox-section ml-3">
+
+                                                <div class="border-checkbox-group border-checkbox-group-success d-block">
+
+                                                    <input name="categoryId[]" class="border-checkbox" type="checkbox"
+                                                        id="checkbox{{ $category->id }}" value="{{ $category->id }}">
+                                                    <label class="border-checkbox-label"
+                                                        for="checkbox{{ $category->id }}">{{ $category->name }}</label>
+
+                                                </div>
+
                                             </div>
-                                           
-                                        </div>
                                         @endforeach
                                         @error('categoryId')
-                                        <div class="help-block with-errors">
-                                            <span class="text-red">{{ $message }}</span>
-                                        </div>
-                                    @enderror
+                                            <div class="help-block with-errors">
+                                                <span class="text-red">{{ $message }}</span>
+                                            </div>
+                                        @enderror
                                     </div>
 
-                                    <div class="form-group">
-                                        <label for="tax_type">Tax Type<span class="text-red">*</span></label>
-                                        <select name="taxType" class="form-control">
-                                            <option>Select</option>
-                                            <option value="Inclusive">Inclusive</option>
-                                            <option value="Exclusive">Exclusive</option>
-                                        </select>
-                                        @error('taxType')
-                                        <div class="help-block with-errors">
-                                            <span class="text-red">{{ $message }}</span>
-                                        </div>
-                                    @enderror
-                                        
-                                    </div>
+
 
 
                                     <div class="form-group text-right">
-                                        <button type="submit" name="submit" class="btn btn-primary">Save</button>
+                                        @if (!$categories->isEmpty())
+                                            <button type="submit" name="submit" class="btn btn-primary">Save</button>
+                                        @else
+                                            <span class="float-right btn-sm btn-danger" >Add Categories First <i
+                                                    class="fa fa-exclamation-triangle" aria-hidden="true"></i></span>
+                                        @endif
                                     </div>
                                 </div>
                             </div>

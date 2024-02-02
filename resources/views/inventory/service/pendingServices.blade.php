@@ -11,11 +11,11 @@
                             <h5>Pending services</h5>
                         </div>
                     </div>
+
                 </div>
-
                 <div class="col-lg-4">
-                    <a href="{{ route('service.serviceTypes') }}" class="btn btn-sm btn-primary">Add Service Types</a>
-
+                <a href="{{ route('service.serviceTypes') }}" class=" btn btn-sm btn-primary">Add Service Types</a>
+                    
                     <nav class="breadcrumb-container" aria-label="breadcrumb">
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item">
@@ -53,11 +53,11 @@
                     <div class="modal-body">
                         <form action="{{ route('service.store.pendingService') }}" method="POST">
                             @csrf
-                            @method('PUT')
+                          
                             <div class="form-group">
                                 <label class="d-block">Customer Name</label>
                                 <input type="text" name="customerName" class="form-control"
-                                    placeholder="Enter Customer Name">
+                                    placeholder="Enter Customer Name" required>
                                 @error('customerName')
                                     <div class="help-block with-errors">
                                         <span class="text-red">{{ $message }}</span>
@@ -67,7 +67,7 @@
                             <div class="form-group">
                                 <label class="d-block">Phone</label>
                                 <input type="text" name="customerPhone" class="form-control"
-                                    placeholder="Enter Phone">
+                                    placeholder="Enter Phone" required>
                                 @error('customerPhone')
                                     <div class="help-block with-errors">
                                         <span class="text-red">{{ $message }}</span>
@@ -76,8 +76,17 @@
                             </div>
                             <div class="form-group">
                                 <label class="d-block">Price</label>
-                                <input type="text" name="price" class="form-control" placeholder="Enter Price">
+                                <input type="number" name="price" class="form-control" placeholder="Enter Price" required>
                                 @error('price')
+                                    <div class="help-block with-errors">
+                                        <span class="text-red">{{ $message }}</span>
+                                    </div>
+                                @enderror
+                            </div>
+                            <div class="form-group">
+                                <label class="d-block">service Note</label>
+                                <textarea type="text" name="statusNote" class="form-control" placeholder="Enter a Note"></textarea>
+                                @error('statusNote')
                                     <div class="help-block with-errors">
                                         <span class="text-red">{{ $message }}</span>
                                     </div>
@@ -88,10 +97,10 @@
                                 @forelse (session('serviceTypes') as $serviceType)
                                     <div class="border-checkbox-section ml-3">
 
-                                        <div class="border-checkbox-group border-checkbox-group-success d-block">
+                                        <div class="border-checkbox-group border-checkbox-group-success d-block" >
 
                                             <input name="serviceTypeId[]" class="border-checkbox" type="checkbox"
-                                                id="checkbox{{ $serviceType->id }}" value="{{ $serviceType->id }}">
+                                                id="checkbox{{ $serviceType->id }}" value="{{$serviceType->id}}">
                                             <label class="border-checkbox-label"
                                                 for="checkbox{{ $serviceType->id }}">{{ $serviceType->name }}</label>
 
@@ -130,7 +139,7 @@
             <div class="modal-dialog w-300" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="supplierAddLabel">Add service</h5>
+                        <h5 class="modal-title" id="supplierAddLabel">Update service</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                                 aria-hidden="true">×</span></button>
                     </div>
@@ -154,6 +163,15 @@
                                 <input type="text" name="customerPhone" class="form-control"
                                     placeholder="Enter Phone" value="{{ session('service')->customerPhone }}">
                                 @error('customerPhone')
+                                    <div class="help-block with-errors">
+                                        <span class="text-red">{{ $message }}</span>
+                                    </div>
+                                @enderror
+                            </div>
+                            <div class="form-group">
+                                <label class="d-block">service Note</label>
+                                <textarea type="text" name="statusNote" class="form-control" placeholder="Enter a Note">{{ session('service')->statusNote }}</textarea>
+                                @error('statusNote')
                                     <div class="help-block with-errors">
                                         <span class="text-red">{{ $message }}</span>
                                     </div>

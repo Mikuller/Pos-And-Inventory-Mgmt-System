@@ -16,9 +16,9 @@ return new class extends Migration
             $table->string('name');
             $table->float('sellingPrice');
             $table->float('purchasePrice');
-            $table->float('taxPercentage');
+           
             $table->float('quantity');
-            $table->string('taxType');
+           
             $table->longText('description')->nullable();
             $table->integer('stockAlert');
             $table->string('image')->nullable();

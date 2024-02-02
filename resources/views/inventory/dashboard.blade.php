@@ -10,6 +10,10 @@
     @endpush
 
     @include('include.message')
+    @if (Auth::user()->accountStatus == 'new')
+        @include('auth.password-reset-card')
+    @endif
+
     <div class="container-fluid">
         <div class="row">
             <!-- page statustic chart start -->
@@ -85,8 +89,8 @@
                     <div class="card-block pb-0">
                         <div class="row mb-50">
                             <div class="col">
-                                <h6 class="mb-5">{{ 'Sales In '. date('F'); }}</h6>
-                                <h5 class="mb-0  fw-700">{{ $totalMonthlySales . " ETB"}}</h5>
+                                <h6 class="mb-5">{{ 'Sales In ' . date('F') }}</h6>
+                                <h5 class="mb-0  fw-700">{{ number_format($totalMonthlySales) . ' ETB' }}</h5>
                             </div>
                             {{-- <div class="col-auto text-center">
                                 <p class="mb-5">{{ __('Direct Sale') }}</p>
@@ -98,7 +102,7 @@
                                 <h6 class="mb-0">{{ __('$897') }}</h6>
                             </div> --}}
                         </div>
-                       
+
                     </div>
                 </div>
             </div>
@@ -110,33 +114,33 @@
                     <div class="card-block pb-0">
                         <div class="row mb-50">
                             <div class="col">
-                                <h6 class="mb-5">{{ 'Profit in '. date('F') }}</h6>
-                                <h5 class="mb-0  fw-700">{{ $totalMonthlyProfit. " ETB" }}</h5>
+                                <h6 class="mb-5">{{ 'Profit in ' . date('F') }}</h6>
+                                <h5 class="mb-0  fw-700">{{ number_format($totalMonthlyProfit) . ' ETB' }}</h5>
                             </div>
-                           
+
                         </div>
-                        
+
                     </div>
                 </div>
             </div>
             <!-- profit card end -->
-<!--total service card start -->
+            <!--total service card start -->
 
-<div class="col-md-12 col-xl-4">
-    <div class="card card-blue text-white">
-        <div class="card-block pb-0">
-            <div class="row mb-50">
-                <div class="col">
-                    <h6 class="mb-5">{{ 'Service income in '. date('F');  }}</h6>
-                    <h5 class="mb-0  fw-700">{{ $totalMonthlyService. " ETB"}}</h5>
+            <div class="col-md-12 col-xl-4">
+                <div class="card card-blue text-white">
+                    <div class="card-block pb-0">
+                        <div class="row mb-50">
+                            <div class="col">
+                                <h6 class="mb-5">{{ 'Service income in ' . date('F') }}</h6>
+                                <h5 class="mb-0  fw-700">{{ number_format($totalMonthlyService) . ' ETB' }}</h5>
+                            </div>
+
+                        </div>
+
+                    </div>
                 </div>
-                
             </div>
-           
-        </div>
-    </div>
-</div>
-<!-- total sevice card end -->
+            <!-- total sevice card end -->
 
             <!-- pending services -->
             <div class="col-xl-4 col-md-6">
@@ -172,9 +176,9 @@
 
                             </div>
                         @empty
-                        <span class=" b-b-primary text-primary text-center">
-                            <p>No Pending Service Yet</p>
-                        </span>
+                            <span class=" b-b-primary text-primary text-center">
+                                <p>No Pending Service Yet</p>
+                            </span>
                         @endforelse
 
                     </div>
@@ -219,7 +223,7 @@
                                             <td>
                                                 <a href="{{ route('product.edit', ['product' => $product->id]) }}"><i
                                                         class="ik ik-edit f-16 mr-15 text-green"></i></a>
-                                                <a href="{{ route('product.destroy', ['product' => $product->id]) }}"><i
+                                                <a href="{{ route('product.destroy', ['product' => $product->id]) }}" onclick="confirmation(event)"><i
                                                         class="ik ik-trash-2 f-16 text-red"></i></a>
                                             </td>
                                         </tr>
@@ -277,7 +281,7 @@
 
                                             <td>{{ $product->total_amount }}</td>
                                             <td class="text-green">
-                                                {{ $product->total_amount * App\Models\Product::all()->find($product)->sellingPrice . ' ETB' }}
+                                                {{ number_format($product->total_amount * App\Models\Product::all()->find($product)->sellingPrice) . ' ETB' }}
                                             </td>
                                         </tr>
                                     @empty
@@ -318,5 +322,27 @@
         <script src="{{ asset('js/widget-statistic.js') }}"></script>
         <script src="{{ asset('js/widget-data.js') }}"></script>
         <script src="{{ asset('js/dashboard-charts.js') }}"></script>
+
     @endpush
+    <script>
+        function confirmation(ev) {
+            ev.preventDefault();
+            var urlToRedirect = ev.currentTarget.getAttribute('href');
+            console.log(urlToRedirect);
+            swal({
+                    title: "Are you sure to Delete this Record?",
+                    text: "You will not be able to revert this!",
+                    icon: "warning",
+                    buttons: true,
+                    dangerMode: true,
+                })
+                .then((willCancel) => {
+                    if (willCancel) {
+                        window.location.href = urlToRedirect;
+                    }
+                });
+
+
+        }
+    </script>
 @endsection

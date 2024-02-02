@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Purchase;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 
 class PurchaseController extends Controller
@@ -23,12 +24,10 @@ class PurchaseController extends Controller
         return view('inventory.purchase.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+    public function generatePDF()
     {
-        //
+        $pdf = Pdf::loadView('inventory.purchase.purchasePDF', ['purchase' => session('purchase')]);
+        return $pdf->download('Purchase ' . date('F j, Y, g:i a') . '.pdf');
     }
 
     /**
@@ -36,23 +35,10 @@ class PurchaseController extends Controller
      */
     public function show(Purchase $purchase)
     {
-        //
-    }
+        session(['viewMode' => true]);
+        session(['purchase' => $purchase]);
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Purchase $purchase)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Purchase $purchase)
-    {
-        //
+        return back();
     }
 
     /**
@@ -60,6 +46,17 @@ class PurchaseController extends Controller
      */
     public function destroy(Purchase $purchase)
     {
-        //
+        try {
+            foreach ($purchase->products as $product) {
+                $newQty = $product->quantity - $product->pivot->amount;
+                $product->update([
+                    'quantity' => $newQty,
+                ]);
+            }
+            $purchase->delete();
+            return back()->with('success', 'Deletion Was Successful');
+        } catch (\Throwable $th) {
+            return back()->with('error', $th);
+        }
     }
 }

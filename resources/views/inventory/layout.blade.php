@@ -1,39 +1,45 @@
 <!doctype html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" >
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+
 <head>
-	<title>@yield('title','') | Yene - POS and Inventory Manager</title>
-	<!-- initiate head with meta tags, css and script -->
-	@include('include.head')
-	
+    <title>@yield('title', '') | Yene - POS and Inventory Manager</title>
+    <!-- initiate head with meta tags, css and script -->
+ 
+    @include('include.head')
+	 <!-- Scripts -->
+
 </head>
-<body id="app" >
+
+<body id="app">
     <div class="wrapper">
-    	<!-- initiate header-->
-    	@include('include.header')
-    	<div class="page-wrap">
-	    	<!-- initiate sidebar-->
-	    	@include('inventory.inventory_sidebar')
+        {{-- @stack('styles')  --}}
+        <!-- initiate header-->
+        @include('include.header')
+        <div class="page-wrap">
+            <!-- initiate sidebar-->
+            @include('inventory.inventory_sidebar')
 
-	    	<div class="main-content">
-	    		<!-- yeild contents here -->
-	    		@yield('content')
-	    	</div>
+            <div class="main-content">
+                <!-- yeild contents here -->
+                @yield('content')
+            </div>
 
-	    	<!-- initiate chat section-->
-	    	@include('include.chat')
+            <!-- initiate chat section-->
+            @include('include.chat')
 
 
-	    	<!-- initiate footer section-->
-	    	@include('include.footer')
+            <!-- initiate footer section-->
+            @include('include.footer')
 
-    	</div>
+        </div>
     </div>
-    
-	<!-- initiate modal menu section-->
-	@include('include.modalmenu')
 
-	<!-- initiate scripts-->
-	@include('include.script')	
-	
+    <!-- initiate modal menu section-->
+    @include('include.modalmenu')
+
+    <!-- initiate scripts-->
+    @include('include.script')
+    
 </body>
+
 </html>

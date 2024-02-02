@@ -4,7 +4,7 @@
     <div class="container-fluid">
         <div class="page-header">
             <div class="row align-items-end">
-                <div class="col-lg-8">
+                <div class="col-lg-6">
                     <div class="page-header-title">
                         <i class="ik ik-shopping-cart bg-blue"></i>
                         <div class="d-inline">
@@ -13,7 +13,10 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-4">
+                <div class="col-lg-2 ">
+                    <a href="{{ route('auditLog.index') }}" class="btn btn-primary float-right">Audit Log</a>
+                </div>
+                <div class="col-lg-3">
                     <nav class="breadcrumb-container" aria-label="breadcrumb">
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item">
@@ -44,26 +47,11 @@
                                 <div class="row">
                                     <div class="col-sm-4">
                                         <div class="form-group">
-                                            <select class="form-control select2">
-                                                <option selected="selected" value="" data-select2-id="6">Select
-                                                    Warehouse</option>
-                                                <option value="1">Warehouse 1</option>
-                                                <option value="2">Warehouse 2</option>
-                                            </select>
+                                            <input wire:model.live.debounce.500ms="search" type="text"
+                                                class="form-control" placeholder="Search with any attribute.." required>
                                         </div>
                                     </div>
-                                    <div class="col-sm-8">
-                                        <div class="form-group">
-                                            <select class="form-control select2">
-                                                <option selected="selected" value="" data-select2-id="9">Select
-                                                    Product</option>
-                                                <option value="1">HeadPhone</option>
-                                                <option value="2">Iphone 6</option>
-                                                <option value="3">Leather Bag</option>
-                                                <option value="4">Camera</option>
-                                            </select>
-                                        </div>
-                                    </div>
+
                                 </div>
 
                                 <div class="card-body">
@@ -109,6 +97,18 @@
                                                                     href="{{ route('staffs.changePrivilege', ['staff' => $staff->id]) }}">
                                                                     <i class="fa fa-check-circle"></i> Change Privilege
                                                                 </a>
+                                                                @if ($staff->accountStatus == 'active')
+                                                                    <a class="dropdown-item"
+                                                                        href="{{ route('staffs.changeAccountStatus', ['staff' => $staff->id]) }}">
+                                                                        <i class="fa fa-ban"></i> Deactivate
+                                                                    </a>
+                                                                @else
+                                                                    <a class="dropdown-item"
+                                                                        href="{{ route('staffs.changeAccountStatus', ['staff' => $staff->id]) }}">
+                                                                        <i class="fa fa-check-circle"></i> Activate
+                                                                    </a>
+                                                                @endif
+
                                                                 <form method="POST"
                                                                     action ="{{ route('staffs.destroy', $staff->id) }}">
                                                                     @csrf
@@ -140,17 +140,17 @@
     </div>
 
 
-    @if (session('editMode') && session('staff')->exists() ?? false )
-    @include('staff.edit')
-    <script>
-        // Open the modal using JavaScript
-        $(document).ready(function() {
-            $('#staffEdit').modal('show');
-        });
-    </script>
-    <?php session(['editMode' => false]); ?>
+    @if (session('editMode') && session('staff')->exists() ?? false)
+        @include('staff.edit')
+        <script>
+            // Open the modal using JavaScript
+            $(document).ready(function() {
+                $('#staffEdit').modal('show');
+            });
+        </script>
+        <?php session(['editMode' => false]); ?>
     @endif
-    
-    
+
+
 
 @endsection

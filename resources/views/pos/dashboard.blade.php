@@ -3,7 +3,9 @@
 
 <head>
     <title>POS | Radmin - Laravel Admin Starter</title>
-    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <meta name="csrf-token" content="{{ csrf_token() }}" >
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    
     <!-- initiate head with meta tags, css and script -->
     @include('include.head')
     <!-- CSRF Token -->
@@ -12,30 +14,7 @@
 
 <body id="app">
     <div class="wrapper">
-        <div class="pos-container p-3 pt-0">
-            <div class="row">
-                @include('pos.sidebar')
-                
-                <div class="col-sm-8 bg-white">
-                    <div class="customer-area">
-                     
-                       
-
-                       
-
-                        <livewire:sales-counter />
-
-                    </div>
-                    
-                </div>
-                @include('pos.cart-area')
-                @include('pos.invoice-modal')
-                
-
-
-            </div>
-
-        </div>
+        <livewire:p-o-s/>
     </div>
     {{-- <!-- initiate modal menu section-->
     @include('include.modalmenu') --}}
@@ -44,7 +23,7 @@
     <!-- initiate scripts-->
     <script src="{{ asset('all.js') }}"></script>
     <script src="{{ asset('dist/js/theme.js') }}"></script>
-    <script src="{{ asset('pos_request.js') }}"></script>
+    {{-- <script src="{{ asset('pos_request.js') }}"></script> --}}
 
     @if (session('showInvoice') && session('cart')!=[] ?? false)
         <script>
@@ -63,6 +42,27 @@
         </script>
     
     @endif
+    <script>
+        function message(ev) {
+            ev.preventDefault();
+            var urlToRedirect = ev.currentTarget.getAttribute('href');
+            console.log(urlToRedirect);
+            swal({
+                    title: "Item Is Out of Stock!!",
+                    text: "Please make a New Purchase.",
+                    icon: "warning",
+                    buttons: false,
+                    dangerMode: true,
+                })
+                .then((willCancel) => {
+                    if (willCancel) {
+                        window.location.href = urlToRedirect;
+                    }
+                });
+
+
+        }
+    </script>
 </body>
 
 </html>

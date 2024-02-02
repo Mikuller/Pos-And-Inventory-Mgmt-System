@@ -12,25 +12,26 @@ class PendingServices extends Component
     use WithPagination;
 
     public $search;
-    private $pendingServices;
-    public $searchByRef='';
-    public $searchByStatus='';
-      
-   
+ 
+    public $searchWithType ;
 
-    public function filterServices(){
-        
-       $this->pendingServices = Service::latest()
-        ->where('refNumber', "%{$this->searchByRef}%")
-        ->orWhere('status' , $this->searchByStatus)->paginate(15);
-    // dump($this->pendingServices);
-    }
+   
     public function render()
     {
-        $this->pendingServices = Service::latest()->where('customerName', 'like', "%{$this->search}%")
-        ->Where('refNumber', 'like', "%{$this->searchByRef}%")
-        ->paginate(15);
-        $pendingServices = $this->pendingServices;
+        $pendingServices = Service::when($this->search, function ($query) {
+            $query->where('customerName', 'like', "%{$this->search}%")
+                ->orWhere('refNumber', 'like', "%{$this->search}%")
+                ->orWhere('status', 'like', "%{$this->search}%")
+                ->orWhere('price', 'like', "%{$this->search}%")
+                ;
+        })->when($this->search, function ($query) {
+            $query->whereHas('serviceTypes', function ($serviceQuery) {
+            $serviceQuery->where('name', "%{$this->searchWithType}%");
+        });
+    })
+            ->latest()
+            ->paginate(15);
+       
         return view('livewire.pending-services', compact('pendingServices'));
     }
 }

@@ -23,39 +23,27 @@
                 </div> --}}
                 <div class="col col-sm-6">
                     <div class="card-search with-adv-search dropdown">
-                      
-                            <input type="text" wire:model.live.debounce.500ms="search"
-                                class="form-control global_filter" id="global_filter"
-                                placeholder="Search by Customer Name..">
-                            <button type="button" id="adv_wrap_toggler"
-                                class="adv-btn ik ik-chevron-down dropdown-toggle" data-toggle="dropdown"
-                                aria-haspopup="true" aria-expanded="false"></button>
-                            <div class="adv-search-wrap dropdown-menu dropdown-menu-right"
-                                aria-labelledby="adv_wrap_toggler">
-                                <form wire:submit="filterServices">
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <input type="text" wire:model="searchByRef"
-                                                    class="form-control column_filter" id="col2_filter"
-                                                    placeholder="Refrence Number" data-column="2">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <select wire:model="searchByStatus" class="form-control" id="serviceStatus">
-                                                    <option disabled>Select Status</option>
-                                                    <option value="Done">Done</option>
-                                                    <option value="Aborted">Aborted</option>
-                                                    <option value="Pending">Pending</option>
-                                                </select>
-                                            </div>
+
+                        <input type="text" wire:model.live.debounce.500ms="search" class="form-control global_filter"
+                            id="global_filter" placeholder="Search by Customer Name..">
+                       {{-- <button type="button" id="adv_wrap_toggler" class="adv-btn ik ik-chevron-down dropdown-toggle"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
+                         <div class="adv-search-wrap dropdown-menu dropdown-menu-right"
+                            aria-labelledby="adv_wrap_toggler">
+                            
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <input type="text" wire:model.live.debounce.500ms="searchWithType"
+                                                class="form-control column_filter" id="col2_filter"
+                                                placeholder="Search With Service Type"  data-column="2">
                                         </div>
                                     </div>
-                                    <button type="submit" class="btn btn-theme">Search</button>
-                                </form>
-                            </div>
-                       
+                                    
+                                </div>
+                                
+                        </div> --}}
+
                     </div>
                 </div>
                 <div class="col col-sm-3">
@@ -133,6 +121,9 @@
                                                 <a class="dropdown-item"
                                                     href="{{ route('service.changeStatus.pendingService', ['service' => $pendingService->id]) }}"><i
                                                         class="fa fa-check-circle"></i> Mark as Done </a>
+                                                <a class="dropdown-item"
+                                                    href="{{ route('service.markAsPending.pendingService', ['service' => $pendingService->id]) }}"><i
+                                                        class="fa fa-check-circle"></i> Mark as Pending </a>
 
                                                 <a class="dropdown-item"
                                                     href="{{ route('service.abortStatus.pendingService', ['service' => $pendingService->id]) }}">

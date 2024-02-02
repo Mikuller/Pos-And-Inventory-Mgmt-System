@@ -14,7 +14,6 @@ class ProductController extends Controller
      */
     public function index()
     {
-        
         return view('inventory.product.index');
     }
 
@@ -32,34 +31,41 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        $validated = request()->validate([
-            'name' => 'required|max:40|min:2',
-            'image' => 'image',
-            'description' => 'min:3',
-            'sellingPrice' => 'required|numeric|min:1',
-            'purchasePrice' => 'required|numeric|min:1',
-            'taxPercentage' => 'required|numeric|between:0,100',
-            'quantity' => 'required|numeric|min:1',
-            'stockAlert' => 'required|numeric|min:1',
-            'taxType' => 'required|in:Inclusive,Exclusive',
-        ]);
+        try {
+            $validated = request()->validate([
+                'name' => 'required|max:40|min:2',
+                'image' => 'image',
+                'sellingPrice' => 'required|numeric|min:1',
+                'purchasePrice' => 'required|numeric|min:1',
+                'stockAlert' => 'required|numeric|min:1',
+            ]);
+            //users add quantity from purchase
+            
+            $validated['quantity'] = 0;
+            $validated['description'] = request('description');
+            if (request()->has('image')) {
+                $userEmail = auth()->user()->email;
+                $imageURL = request()
+                    ->file('image')
+                    ->store("$userEmail/productsImage", 'public');
+                $validated['image'] = $imageURL;
+            }
 
-        if (request()->has('image')) {
-            $userEmail = auth()->user()->email;
-            $imageURL = request()
-                ->file('image')
-                ->store("$userEmail/productsImage", 'public');
-            $validated['image'] = $imageURL;
+            $product = Product::create($validated);
+
+            $request->validate(['categoryId' => 'required|array|min:1']);
+            $selectedCategories = $request->input('categoryId', []);
+
+            $product->categories()->sync($selectedCategories);
+
+            return redirect()
+                ->route('product.index')
+                ->with('success', 'New Product is Added!');
+        } catch (\Exception $e) {
+            return redirect()
+                ->route('product.index')
+                ->with('error', "error!! product not added");
         }
-
-        $product = Product::create($validated);
-
-        $request->validate(['categoryId' => 'required|array|min:1']);
-        $selectedCategories = $request->input('categoryId', []);
-
-        $product->categories()->sync($selectedCategories);
-
-        return redirect()->route('product.index')->with('success', 'New Product is Added!');
     }
 
     /**
@@ -67,12 +73,10 @@ class ProductController extends Controller
      */
     public function show(Product $product)
     {
-       
         session(['viewMode' => true]);
         session(['product' => $product]);
-        
+
         return back();
-       
     }
 
     /**
@@ -81,7 +85,7 @@ class ProductController extends Controller
     public function edit(Product $product)
     {
         $categories = Category::latest()->get();
-       
+
         return view('inventory.product.edit', compact('product', 'categories'));
     }
 
@@ -96,10 +100,7 @@ class ProductController extends Controller
             'description' => 'min:3',
             'sellingPrice' => 'required|numeric|min:1',
             'purchasePrice' => 'required|numeric|min:1',
-            'taxPercentage' => 'required|numeric|between:0,100',
-            'quantity' => 'required|numeric|min:1',
             'stockAlert' => 'required|numeric|min:1',
-            'taxType' => 'required|in:Inclusive,Exclusive',
         ]);
 
         if (request()->has('image')) {
@@ -117,8 +118,9 @@ class ProductController extends Controller
 
         $product->categories()->sync($selectedCategories);
 
-        return redirect()->route('product.index')->with('success', 'Product is Updated, successfully');
-
+        return redirect()
+            ->route('product.index')
+            ->with('success', 'Product is Updated, successfully');
     }
 
     /**
@@ -127,6 +129,8 @@ class ProductController extends Controller
     public function destroy(Product $product)
     {
         $product->delete();
-        return redirect()->back()->with('success', 'Product is Deleted, successfully');
+        return redirect()
+            ->back()
+            ->with('success', 'Product is Deleted, successfully');
     }
 }

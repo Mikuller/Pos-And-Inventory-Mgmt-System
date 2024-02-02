@@ -28,16 +28,16 @@ return parser.parseFromString(`
     // Update cart table
     updateCartTable();
     //let do the AJAX here
-    // Make a POST request using fetch
+    //Make a POST request using fetch
     // $.ajax({
     //     type: "POST",
-    //     url: '/sales',
+    //     url: 'http://127.0.0.1:8000/sales/create',
     //     data: cart,
-    //     headers: {
-    //       'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-    //     },
-    //     success: function() {
-    //       console.log("Value added " + cart);
+    //     contentType: "application/json; charset=utf-8",
+    //     dataType: "json",
+    //     success: function(result){
+    //         alert(result.d);
+    //         console.log(result);
     //     }
     // });
 
@@ -53,6 +53,7 @@ return parser.parseFromString(`
     updateCartTable();
     }
 
+   
     function cleartCart() {
     if (confirm('Are you sure to clear cart?')) {
     cart = {};

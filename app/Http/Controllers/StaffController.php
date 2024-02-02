@@ -21,6 +21,32 @@ class StaffController extends Controller
             ->with('success', "You have successfully Changed Staff's privilege");
     }
 
+    public function changeAccountStatus(User $staff)
+    {
+        try {
+            if ($staff->accountStatus == 'active') {
+                //deactivate
+                $staff->update([
+                    'accountStatus' => 'inactive',
+                ]);
+                return redirect()
+                    ->back()
+                    ->with('success', "You have successfully Changed Staff's Account Status");
+            } else {
+                $staff->update([
+                    'accountStatus' => 'active',
+                ]);
+                return redirect()
+                    ->back()
+                    ->with('success', "You have successfully Changed Staff's Account Status");
+            }
+        } catch (\Exception $e) {
+            return redirect()
+                ->back()
+                ->with('error', $e);
+        }
+    }
+
     /**
      * Display a listing of the resource.
      */
@@ -56,6 +82,7 @@ class StaffController extends Controller
             'email' => $validated['email'],
             'password' => Hash::make(11223344),
             'isAdmin' => $validated['privilege'],
+            'accountStatus' => "new",
         ]);
 
         return back()->with('success', 'You have successfully Registerd a Staff');

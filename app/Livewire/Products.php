@@ -12,30 +12,38 @@ use function Termwind\render;
 class Products extends Component
 {
     use WithPagination;
+
     
     public $search;
     private $products;
-   
-    public $searchWithCategory;
-    
 
-   
-    // public function filterProducts(){
-    //     $this->products = Product::whereHas('categories', function ($query){
-    //         $query->where('category_id', $this->searchWithCategory);})->paginate(15);
-        
-    // //   dump($this->products);
-    // }
-    
+    public $searchWithCategory;
+
+  
 
     public function render()
-    {
-        // ->WhereHas('categories', function ($query){
-        //     $query->where('category_id', $this->searchWithCategory);})
-        $categories  = Category::latest()->get();
-        $this->products = Product::where('name', 'like', "%{$this->search}%")
-            ->latest()->paginate(15);
-        $products = $this->products;
-        return view('livewire.products', compact('products', 'categories'));
-    }
+{
+    $categories = Category::latest()->get();
+    //dump($this->searchWithCategory);
+   
+    // Start with a base query for products
+    $products = Product::when($this->search, function ($query) {
+            $query->where('description', 'like', "%{$this->search}%")
+                ->orWhere('id', 'like', "%{$this->search}%")
+                ->orWhere('stockAlert', '=', $this->search)
+                ->orWhere('name', '=', $this->search)
+                ->orWhere('sellingPrice', '=', $this->search)
+                ->orWhere('purchasePrice', '=', $this->search);
+            })
+            ->when( $this->searchWithCategory, function ($query) {
+                // Use whereHas to filter products based on the selected category
+                $query->whereHas('categories', function ($categoryQuery) {
+                    $categoryQuery->where('category_id', $this->searchWithCategory);
+                });
+            })->latest()->paginate(15);
+    
+
+    return view('livewire.products', compact('products', 'categories'));
+}
+
 }

@@ -104,28 +104,18 @@
 
 
                                     </div>
-                                    <div class="form-group">
-                                        <label for="taxPercentage">Tax Percentage</label>
-                                        <input id="offer_price" type="text" class="form-control" name="taxPercentage"
-                                            placeholder="Enter tax Percentage" required=""
-                                            value="{{ $product->taxPercentage }}">
-                                        @error('taxPercentage')
-                                            <div class="help-block with-errors">
-                                                <span class="text-red">{{ $message }}</span>
-                                            </div>
-                                        @enderror
-                                    </div>
-                                    <div class="form-group">
+                                    
+                                    {{-- <div class="form-group" style="display: none;">
                                         <label for="qty">Quantity<span class="text-red">*</span></label>
                                         <input id="qty" type="text" class="form-control" name="quantity"
                                             placeholder="Enter Product Qty" required=""
-                                            value="{{ $product->quantity }}">
+                                            value="{{ $product->quantity }}" >
                                         @error('quantity')
                                             <div class="help-block with-errors">
                                                 <span class="text-red">{{ $message }}</span>
                                             </div>
                                         @enderror
-                                    </div>
+                                    </div> --}}
                                     <div class="form-group">
                                         <label for="stock_alert">Stock Alert<span class="text-red">*</span></label>
                                         <input id="stock_alert" type="text" class="form-control" name="stockAlert"
@@ -168,22 +158,7 @@
                                         @enderror
                                     </div>
 
-                                    <div class="form-group">
-                                        <label for="tax_type">Tax Type<span class="text-red">*</span></label>
-                                        <select name="taxType" class="form-control">
-                                            <option>Select</option>
-                                            <option value="Inclusive">Inclusive</option>
-                                            <option value="Exclusive">Exclusive</option>
-                                        </select>
-                                        @error('taxType')
-                                            <div class="help-block with-errors">
-                                                <span class="text-red">{{ $message }}</span>
-                                            </div>
-                                        @enderror
-
-                                    </div>
-
-
+                                    
                                     <div class="form-group text-right">
                                         <button type="submit" name="submit" class="btn btn-primary">Save</button>
                                     </div>
