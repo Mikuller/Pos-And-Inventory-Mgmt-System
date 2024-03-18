@@ -13,7 +13,9 @@
         "laravel/sanctum": "^3.3",
         "laravel/tinker": "^2.8",
         "livewire/livewire": "^3.2",
-        "realrashid/sweet-alert": "^7.1"
+        "realrashid/sweet-alert": "^7.1",
+        "spatie/db-dumper": "^3.4",
+        "spatie/laravel-backup": "^8.5"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.9",

@@ -18,12 +18,12 @@
         <div class="nav-container">
             <nav id="main-menu-navigation" class="navigation-main">
                 <div class="nav-item {{ ($segment2 == 'inventory') ? 'active' : '' }}">
-                    <a href="{{url('/')}}"><i class="ik ik-bar-chart-2"></i><span>{{ __('Dashboard')}}</span></a>
+                    <a href="{{route('dashboard')}}"><i class="fas fa-tachometer-alt"></i><span>{{ __('Dashboard')}}</span></a>
                 </div>
 
                 <!-- start inventory pages -->
                 <div class="nav-item {{ ($segment1 == 'pos') ? 'active' : '' }}">
-                    <a href="{{url('sales/pos')}}"><i class="ik ik-printer"></i><span>{{ __('POS')}}</span> </a>
+                    <a href="{{route('sales.pos.dashboard')}}"><i class="ik ik-printer"></i><span>{{ __('POS')}}</span> </a>
                 </div>
                 @can('admin')
                 <div class="nav-item {{ ($segment1 == 'products') ? 'active open' : '' }} ">

@@ -6,7 +6,7 @@
             <div class="row align-items-end">
                 <div class="col-lg-6">
                     <div class="page-header-title">
-                        <i class="ik ik-shopping-cart bg-blue"></i>
+                        <i class="fas fa-users-cog bg-blue"></i>
                         <div class="d-inline">
                             <h5>Manage Staff Information</h5>
                             <span>Create and View Staffs</span>
@@ -20,10 +20,10 @@
                     <nav class="breadcrumb-container" aria-label="breadcrumb">
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item">
-                                <a href="/dashboard"><i class="ik ik-home"></i></a>
+                                <a href="{{ route('dashboard')}}"><i class="ik ik-home"></i></a>
                             </li>
                             <li class="breadcrumb-item">
-                                <a href="#">Manage Staff</a>
+                                <a href="{{route('staffs.index')}}">Manage Staff</a>
                             </li>
                         </ol>
                     </nav>

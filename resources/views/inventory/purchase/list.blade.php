@@ -17,7 +17,7 @@
                     <nav class="breadcrumb-container" aria-label="breadcrumb">
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item">
-                                <a href="/dashboard"><i class="ik ik-home"></i></a>
+                                <a href="{{ route('dashboard')}}"><i class="ik ik-home"></i></a>
                             </li>
                             <li class="breadcrumb-item">
                                 <a href="{{ route('purchases.index') }}">Purchases</a>

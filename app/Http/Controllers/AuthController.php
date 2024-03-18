@@ -15,6 +15,9 @@ class AuthController extends Controller
         return view('auth.register');
     }
 
+    public function forgetPassword(){
+        return view('auth.passwords.reset');
+    }
     public function resetPassword()
     {
         if (Hash::check(request('oldPassword'), Auth::user()->password)) {
@@ -30,7 +33,7 @@ class AuthController extends Controller
         } else {
             return redirect()
                 ->route('dashboard')
-                ->with('error', 'Error While Resetting Your password');
+                ->with('error', 'Make sure old password is correct!');
         }
     }
 

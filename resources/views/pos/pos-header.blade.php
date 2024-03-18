@@ -10,7 +10,7 @@
                 @endforeach
             </select>
         </div>
-        <button wire:click="filterItems" class=" btn-sm {{ ($filterStockOut) ? 'btn-danger' : 'btn-primary' }}"> <i class="fa fa-filter" aria-hidden="true"></i> Only Available Stock </button>
+        <button wire:click="filterItems" class=" btn-sm {{ ($filterStockOut) ? 'btn-danger' : 'btn-primary' }}"> <i class="fa fa-filter" aria-hidden="true"></i> Available Stock Only </button>
 
     </div>
     <div class="col-sm-3">
@@ -20,7 +20,7 @@
 
     </div>
     <div class="col-sm-2 text-right">
-        <a href={{ url('/') }} class="btn btn-primary">
+        <a href={{  route('dashboard') }} class="btn btn-primary">
             <i class="ik ik-home"></i> Home
         </a>
     </div>

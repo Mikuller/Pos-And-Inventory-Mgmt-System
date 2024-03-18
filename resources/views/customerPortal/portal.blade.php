@@ -17,9 +17,9 @@
     <meta name="msapplication-TileColor" content="#FFFFFF">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="description" content="Surfside Media">
-    <meta name="keywords" content="Surfside Media">
-    <meta name="author" content="Surfside Media">
+    <meta name="description" content="Yene POS">
+    <meta name="keywords" content="Yene POS">
+    <meta name="author" content="Mikuda">
     <link rel="preconnect" href="https://fonts.gstatic.com">
 
     <title>Fitsum Mobile</title>

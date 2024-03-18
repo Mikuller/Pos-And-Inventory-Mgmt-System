@@ -17,7 +17,7 @@ use App\Models\ServiceType;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 use Carbon\Carbon;
-
+use Spatie\DbDumper\Databases\MySql;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -28,18 +28,39 @@ use Carbon\Carbon;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
-// Route::get('/dashboard', function () {
-//     $products = Product::latest()->where('quantity','<=','stockAlert')->get();
-//     return view('inventory.dashboard',['products'=>$products]);
-// })->middleware(['auth']);
+Route::get('/reload', function () {
+    return back();
+})->name('reload')->middleware(['auth']);
 
-Route::get('/', function () {
+Route::get('/backUpDB', function () {
+  try {
+   
+     // Execute the backup
+   $dumpCommand= MySql::create()
+    ->setDbName(env('DB_DATABASE'))
+    ->setUserName(env('DB_USERNAME'))
+    ->setPassword(env('DB_PASSWORD'))
+    ->dumpToFile('dataBaseBackUp.sql');
+     return back()->with("success","Database backup is successful");
+
+  } catch (\Exception $th) {
+    return back()->with("error",$th->getMessage()  );
+  }
+    
+
+})->name('backUpDB')->middleware(['auth']);
+
+Route::get('/profile', function () {
+    return view('auth.editProfile');
+})->name('profile')->middleware(['auth']);
+
+Route::get('/dashboard', function () {
     $products = Product::latest()
         ->where('quantity', '<=', DB::raw('stockAlert'))
         ->get();
-    $services = Service::latest()
+    $services = Service::with('serviceTypes')->latest()
         ->where('status', '=', 'Pending')
-        ->get();
+        ->latest()->paginate(5);
     $topSales = Product::select('products.id', DB::raw('SUM(product_sale.amount) as total_amount'))
         ->leftJoin('product_sale', 'products.id', '=', 'product_sale.product_id')
         ->orderBy('total_amount', 'desc')
@@ -64,22 +85,15 @@ Route::get('/', function () {
         ->whereYear('product_sale.created_at', Carbon::now()->year)
         ->groupBy('products.id')
         ->get();
-    // dd($MonthlySoldProduct);
-    // $totalMonthlyProfit = 0.0;
-    // $totalTaxDeduction = 0.0;
-    // foreach ($MonthlySoldProduct as $value) {
-    //     $totalTaxDeduction += (0.15 * Product::all()->find($value)->sellingPrice) - (0.15 * Product::all()->find($value)->purchasePrice);
-    //     $totalMonthlyProfit = $totalMonthlyProfit + $value->total_amount * (Product::all()->find($value)->sellingPrice - Product::all()->find($value)->purchasePrice - $totalTaxDeduction);
-    // }
+   
 
     $totalShippingCost = DB::table('purchases')
         ->whereMonth('created_at', Carbon::now()->month)
         ->whereYear('created_at', Carbon::now()->year)
         ->sum('shippingCost');
-    //shipping cost has to be deducted for profit
+   
     $totalMonthlyProfit = $totalMonthlyProfit + $totalMonthlyService - $totalShippingCost;
-    //dd($totalMonthlyProfit);
-    //how about shipping cost?
+   
     return view('inventory.dashboard', compact('products', 'services', 'topSales', 'totalMonthlySales', 'totalMonthlyService', 'totalMonthlyProfit'));
 })
     ->name('dashboard')
@@ -148,7 +162,7 @@ Route::get('staffs/changeAccountStatus/{staff}', [StaffController::class, 'chang
     ->name('staffs.changeAccountStatus')
     ->middleware(['auth', 'can:admin', 'can:status']);
 
-Route::get('/checkServiceStatus', function () {
+Route::get('/', function () {
     $serviceTypes = ServiceType::latest()->get();
     $products = Product::latest()->get();
     $categories = Category::latest()->get();

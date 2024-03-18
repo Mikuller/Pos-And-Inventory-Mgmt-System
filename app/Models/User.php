@@ -23,6 +23,9 @@ class User extends Authenticatable
         'password',
         'isAdmin',
         'accountStatus',
+        'securityQuestion',
+        'securityAnswer',
+
     ];
 
     /**

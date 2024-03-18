@@ -161,9 +161,10 @@
                             <div class="align-middle mb-25">
 
                                 <div class="d-inline-block">
-                                    <a href="#!">
-                                        <h6>{{ $service->customerName }}</h6>
-                                    </a>
+
+                                    <h5>{{ $service->customerName }}</h5>
+                                    <p>{{ $service->refNumber }}</p>
+
                                     <span class="d-inline-block bg-danger rounded-circle ml-300"
                                         style="width: 10px; height: 10px;"></span>
                                     @foreach ($service->serviceTypes as $serviceType)
@@ -180,7 +181,11 @@
                                 <p>No Pending Service Yet</p>
                             </span>
                         @endforelse
-
+                        <div class="card-footer">
+                            <div class="text-right">
+                                <span class=" b-b-primary text-primary">{{ $services->links() }}</span>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -202,10 +207,10 @@
                                 <thead>
                                     <tr>
                                         <th>{{ __('Product Name') }}</th>
-                                        <th>{{ __('Image') }}</th>
-                                        <th>{{ __('Stock Value') }}</th>
+
+                                        <th class="text-center">{{ __('Stock Value') }}</th>
                                         <th>{{ __('Price') }}</th>
-                                        <th>{{ __('Action') }}</th>
+
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -213,19 +218,12 @@
                                     @forelse ($products as $product)
                                         <tr>
                                             <td>{{ $product->name }}</td>
-                                            <td><img src="{{ $product->getImageURL() }}" alt=""
-                                                    class="img-fluid img-20">
-                                            </td>
+
                                             <td>
                                                 <div class="text-red text-center">{{ $product->quantity }}</div>
                                             </td>
                                             <td>{{ $product->sellingPrice }}</td>
-                                            <td>
-                                                <a href="{{ route('product.edit', ['product' => $product->id]) }}"><i
-                                                        class="ik ik-edit f-16 mr-15 text-green"></i></a>
-                                                <a href="{{ route('product.destroy', ['product' => $product->id]) }}" onclick="confirmation(event)"><i
-                                                        class="ik ik-trash-2 f-16 text-red"></i></a>
-                                            </td>
+
                                         </tr>
                                     @empty
                                         <span class=" b-b-primary text-primary text-center">
@@ -322,7 +320,6 @@
         <script src="{{ asset('js/widget-statistic.js') }}"></script>
         <script src="{{ asset('js/widget-data.js') }}"></script>
         <script src="{{ asset('js/dashboard-charts.js') }}"></script>
-
     @endpush
     <script>
         function confirmation(ev) {

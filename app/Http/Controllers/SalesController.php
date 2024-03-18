@@ -44,7 +44,8 @@ class SalesController extends Controller
                 'totalTax' => 'required|numeric|min:1',
                 'paymentMethod' => 'required|in:Cash,E-Cash',
             ]);
-
+ 
+            $validated['eCashRefNumber'] = request('eCashRefNumber');
             // dump( $validated);
             $validated['sellerID'] = Auth::user()->id;
             $validated['customerName'] = session('customerInfo')['customerName'];

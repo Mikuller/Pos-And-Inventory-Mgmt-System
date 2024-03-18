@@ -15,7 +15,7 @@ class Products extends Component
 
     
     public $search;
-    private $products;
+   
 
     public $searchWithCategory;
 

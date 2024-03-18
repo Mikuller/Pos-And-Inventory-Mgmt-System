@@ -97,12 +97,11 @@ class ProductController extends Controller
         $validated = request()->validate([
             'name' => 'required|max:40|min:2',
             'image' => 'image',
-            'description' => 'min:3',
             'sellingPrice' => 'required|numeric|min:1',
             'purchasePrice' => 'required|numeric|min:1',
             'stockAlert' => 'required|numeric|min:1',
         ]);
-
+        $validated['description'] = request('description');
         if (request()->has('image')) {
             $userEmail = auth()->user()->email;
             $imageURL = request()
