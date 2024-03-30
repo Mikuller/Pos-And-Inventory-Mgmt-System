@@ -26,7 +26,7 @@
         </div>
 
 
-        @include('inventory.report.reportTable')
+        @include('report.reportTable')
 
 
 

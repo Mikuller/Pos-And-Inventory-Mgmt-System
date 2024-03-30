@@ -6,7 +6,7 @@
                     <div class="main-menu">
                         <div class="menu-left">
                             <div class="brand-logo">
-                                <a href="checkServiceStatus">
+                                <a href="{{route('customerPortal.index')}}">
                                     <img src="{{asset('customerPortalAssets/images/logo.png')}}" class="h-logo img-fluid blur-up lazyload"
                                         alt="logo">
                                 </a>
@@ -27,9 +27,10 @@
                                                 </span>
                                             </div>
                                         </li>
-                                        <li><a href="{{route('checkService.index')}}" class="nav-link menu-title">Home</a></li>
+                                        <li><a href="{{route('customerPortal.index')}}" class="nav-link menu-title">Home</a></li>
                                         <li><a href="#" class="nav-link menu-title">About Us</a></li>
-                                        <li><a href="#" class="nav-link menu-title">Contact Us</a>
+                                        {{-- {{route('customer.contactUs')}} --}}
+                                       <li><a href="{{route('customer.contactUs')}}" class="nav-link menu-title">Contact Us</a>
                                         </li>
                                     </ul>
                                 </div>

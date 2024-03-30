@@ -32,7 +32,7 @@
         <livewire:sales />
     </div>
     @if (session('showInvoice') && session('sale') != [] ?? false)
-        @include('inventory.sale.show')
+        @include('pos.sale.show')
         <script>
             // Open the modal using JavaScript
             $(document).ready(function() {

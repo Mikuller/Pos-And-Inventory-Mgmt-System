@@ -92,9 +92,7 @@
                     <div class="row">
                         <div class="col-6">
                             <p class="lead">Payment Method:</p>
-                            <input type="text" class="text-center" value="{{ session('sale')->eCashRefNumber==null  ? session('sale')->paymentMethod  : session('sale')->paymentMethod." : ".session('sale')->eCashRefNumber }}" readonly/><br />
-                            
-    
+                            <input type="text" class="text-center" value="{{ session('sale')->eCashRefNumber==null  ? session('sale')->paymentMethod  : session('sale')->paymentMethod." : ".session('sale')->eCashRefNumber }}" readonly/><br />                               
                         </div>
                         <div class="col-2"></div>
                         <div class="col-4">

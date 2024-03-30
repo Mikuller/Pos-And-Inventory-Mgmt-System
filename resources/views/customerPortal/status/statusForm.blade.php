@@ -2,7 +2,7 @@
     <div class="row">
         <div class="col-8 mx-auto text-center">
 
-            <form method="GET" action="{{ route('checkService.index') }}">
+            <form method="GET" action="{{ route('customerPortal.index') }}">
                 @csrf
                 <div class="input-group custome-input-group">
                     <input name="refNumber" type="text" class="form-control" placeholder="Reference Number" required>

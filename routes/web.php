@@ -3,10 +3,13 @@
 use App\Http\Controllers\AuditLogController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\CustomerPortalController;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\MessageController;
 use App\Http\Controllers\SalesController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\PurchaseController;
-use App\Http\Controllers\PurchasesController;
+
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\StaffController;
@@ -30,72 +33,29 @@ use Spatie\DbDumper\Databases\MySql;
 */
 Route::get('/reload', function () {
     return back();
-})->name('reload')->middleware(['auth']);
+})
+    ->name('reload')
+    ->middleware(['auth']);
 
 Route::get('/backUpDB', function () {
-  try {
-   
-     // Execute the backup
-   $dumpCommand= MySql::create()
-    ->setDbName(env('DB_DATABASE'))
-    ->setUserName(env('DB_USERNAME'))
-    ->setPassword(env('DB_PASSWORD'))
-    ->dumpToFile('dataBaseBackUp.sql');
-     return back()->with("success","Database backup is successful");
-
-  } catch (\Exception $th) {
-    return back()->with("error",$th->getMessage()  );
-  }
-    
-
-})->name('backUpDB')->middleware(['auth']);
+    try {
+        // Execute the backup
+        $dumpCommand = MySql::create()->setDbName(env('DB_DATABASE'))->setUserName(env('DB_USERNAME'))->setPassword(env('DB_PASSWORD'))->dumpToFile('dataBaseBackUp.sql');
+        return back()->with('success', 'Database backup is successful');
+    } catch (\Exception $th) {
+        return back()->with('error', $th->getMessage());
+    }
+})
+    ->name('backUpDB')
+    ->middleware(['auth']);
 
 Route::get('/profile', function () {
     return view('auth.editProfile');
-})->name('profile')->middleware(['auth']);
-
-Route::get('/dashboard', function () {
-    $products = Product::latest()
-        ->where('quantity', '<=', DB::raw('stockAlert'))
-        ->get();
-    $services = Service::with('serviceTypes')->latest()
-        ->where('status', '=', 'Pending')
-        ->latest()->paginate(5);
-    $topSales = Product::select('products.id', DB::raw('SUM(product_sale.amount) as total_amount'))
-        ->leftJoin('product_sale', 'products.id', '=', 'product_sale.product_id')
-        ->orderBy('total_amount', 'desc')
-        ->groupBy('products.id')
-        ->paginate(5);
-    $totalMonthlySales = DB::table('sales')
-        ->whereMonth('created_at', Carbon::now()->month)
-        ->whereYear('created_at', Carbon::now()->year)
-        ->sum('grandTotal');
-    $totalMonthlyProfit = DB::table('sales')
-        ->whereMonth('created_at', Carbon::now()->month)
-        ->whereYear('created_at', Carbon::now()->year)
-        ->sum('profit');
-    $totalMonthlyService = DB::table('services')
-        ->whereMonth('created_at', Carbon::now()->month)
-        ->whereYear('created_at', Carbon::now()->year)
-        ->sum('price');
-
-    $MonthlySoldProduct = Product::select('products.id', DB::raw('SUM(product_sale.amount) as total_amount'))
-        ->leftJoin('product_sale', 'products.id', '=', 'product_sale.product_id')
-        ->whereMonth('product_sale.created_at', Carbon::now()->month)
-        ->whereYear('product_sale.created_at', Carbon::now()->year)
-        ->groupBy('products.id')
-        ->get();
-   
-
-    $totalShippingCost = DB::table('purchases')
-        ->whereMonth('created_at', Carbon::now()->month)
-        ->whereYear('created_at', Carbon::now()->year)
-        ->sum('shippingCost');
-   
-    $totalMonthlyProfit = $totalMonthlyProfit + $totalMonthlyService - $totalShippingCost;
-   
-    return view('inventory.dashboard', compact('products', 'services', 'topSales', 'totalMonthlySales', 'totalMonthlyService', 'totalMonthlyProfit'));
 })
+    ->name('profile')
+    ->middleware(['auth']);
+
+Route::get('/dashboard', [DashboardController::class,'index'])
     ->name('dashboard')
     ->middleware(['auth', 'can:status']);
 
@@ -162,34 +122,19 @@ Route::get('staffs/changeAccountStatus/{staff}', [StaffController::class, 'chang
     ->name('staffs.changeAccountStatus')
     ->middleware(['auth', 'can:admin', 'can:status']);
 
-Route::get('/', function () {
-    $serviceTypes = ServiceType::latest()->get();
-    $products = Product::latest()->get();
-    $categories = Category::latest()->get();
-    $service = null;
-    if (request()->has('refNumber')) {
-        $service = Service::where('refNumber', 'like', '%' . request('refNumber') . '%')->first();
-        session()->put('showStatus', true);
-        // session()->put('service',$service);
-    }
-    return view('customerPortal.portal', compact('serviceTypes', 'products', 'categories', 'service'));
-})->name('checkService.index');
-
-Route::get('/checkServiceStatus/show', function () {
-    $products = Product::latest()->get();
-    if (request()->has('refNumber')) {
-        $service = Service::where('refNumber', 'like', '%' . request('refNumber') . '%')->first();
-    }
-
-    return view('customerPortal.portal', compact('service', 'products'));
-})->name('checkService.show');
+Route::get('/', [CustomerPortalController::class, 'index'])->name('customerPortal.index');
+Route::get('/checkServiceStatus/show', [CustomerPortalController::class, 'showServiceStatus'])->name('checkService.show');
+Route::get('/customers/contactUs', [CustomerPortalController::class, 'contactUsPage'])->name('customer.contactUs');
+Route::get('/customers/storeComment', [CustomerPortalController::class, 'storeComment'])->name('store.comment');
 
 Route::group(['prefix' => 'auditLog', 'as' => 'auditLog.', 'middleware' => ['auth', 'can:admin', 'can:status']], function () {
     Route::get('/index', [AuditLogController::class, 'index'])->name('index');
     Route::get('/destroy/{auditLog}', [AuditLogController::class, 'destroy'])->name('destroy');
 });
-Route::get('/reports', function () {
-    return view('inventory.report.reportRequest');
-});
-Route::get('/reports/index', [ReportController::class, 'index'])->name('reports.index');
-Route::get('/reports/download', [ReportController::class, 'downloadReport'])->name('report.download');
+
+Route::get('/reports/index', [ReportController::class, 'index'])->name('reports.index')->middleware(['auth', 'can:admin', 'can:status']);
+Route::get('/reports/download', [ReportController::class, 'downloadReport'])->name('report.download')->middleware(['auth', 'can:admin', 'can:status']);
+
+Route::get('/messages/index', [MessageController::class, 'index'])->name('message.index')->middleware(['auth', 'can:status']);
+Route::get('/messages/show/{message}', [MessageController::class, 'show'])->name('message.show') ->middleware(['auth', 'can:status']);
+Route::get('/messages/destroy/{message}', [MessageController::class, 'destroy'])->name('message.destroy')->middleware(['auth', 'can:admin', 'can:status']);

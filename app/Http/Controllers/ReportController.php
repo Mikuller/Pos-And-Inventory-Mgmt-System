@@ -13,12 +13,12 @@ class ReportController extends Controller
 {
     public function index()
     {
-        return view('inventory.report.reportRequest');
+        return view('report.reportRequest');
     }
     public function downloadReport()
     {
         //dd($data);
-        $pdf = Pdf::loadView('inventory.report.reportTable', ['data' => session('data', []), 'startDate' => session('startDate', ''), 'endDate' => session('endDate', '')]);
+        $pdf = Pdf::loadView('report.reportTable', ['data' => session('data', []), 'startDate' => session('startDate', ''), 'endDate' => session('endDate', '')]);
         return $pdf->download('REPORT :' . date('F j, Y, g:i a') . '.pdf');
         // return back()->with('success', 'Invoice Downloaded Successfully!');
     }

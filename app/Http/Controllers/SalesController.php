@@ -21,7 +21,7 @@ class SalesController extends Controller
 
     public function index()
     {
-        return view('inventory.sale.list');
+        return view('pos.sale.list');
     }
     public function show(Sale $sale)
     {
@@ -31,7 +31,7 @@ class SalesController extends Controller
 
         return back();
 
-        //return back();
+        
     }
 
     public function create(Request $request)

@@ -11,11 +11,11 @@ class ServiceController extends Controller
 {
     public function index()
     {
-        return view('inventory.service.pendingServices');
+        return view('service.pendingServices');
     }
     public function serviceTypes()
     {
-        return view('inventory.service.serviceTypes');
+        return view('service.serviceTypes');
     }
     public function createPendingService()
     {

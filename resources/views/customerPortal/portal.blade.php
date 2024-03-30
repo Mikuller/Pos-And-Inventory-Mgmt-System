@@ -12,7 +12,7 @@
     <meta name="theme-color" content="#e87316">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
-    <meta name="apple-mobile-web-app-title" content="Surfside Media">
+    <meta name="apple-mobile-web-app-title" content="Fitsum Mobile">
     <meta name="msapplication-TileImage" content="assets/images/favicon.ico">
     <meta name="msapplication-TileColor" content="#FFFFFF">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -34,6 +34,7 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('customerPortalAssets/css/vendors/slick/slick.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('customerPortalAssets/css/vendors/slick/slick-theme.css') }}">
     <link id="color-link" rel="stylesheet" type="text/css" href="{{ asset('customerPortalAssets/css/demo4.css') }}">
+    <link rel="stylesheet" href="{{ asset('customerPortalAssets//css/custom.css') }}">
     <style>
         .h-logo {
             max-width: 185px !important;
@@ -107,7 +108,7 @@
             }
         }
     </style>
-    <link rel="stylesheet" href="{{ asset('customerPortalAssets//css/custom.css') }}">
+
     @include('customerPortal.include.header')
     <div class="mobile-menu d-sm-none">
         <ul>
@@ -143,16 +144,28 @@
             </li>
         </ul>
     </div>
-
-    @if (session('showStatus') && $service != null)
-        @include('customerPortal.status.showStatus')
+    @include('include.message')
+    @if (session('showContactUsForm') ?? false)<!--show contact-us form , ughh esey-->
+        @include('customerPortal.contact-us')
+        @php
+            session()->flush();
+        @endphp
     @else
-        @include('customerPortal.status.statusForm')
+        @if (!session('showStatus') ?? true)
+            @include('customerPortal.status.statusForm')
+            @include('customerPortal.banner')
+            @include('customerPortal.topServices')
+            @include('customerPortal.topProductCategories')
+            @include('customerPortal.productCollection')
+        @else
+            @include('customerPortal.status.showStatus')
+            @php
+                session()->flush();
+            @endphp
+        @endif
+
     @endif
-    @include('customerPortal.banner')
-    @include('customerPortal.topServices')
-    @include('customerPortal.topProductCategories')
-    @include('customerPortal.productCollection')
+
 
 
 

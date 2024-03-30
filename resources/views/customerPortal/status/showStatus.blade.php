@@ -3,9 +3,9 @@
         
         <div class="col-8 mx-auto text-center">
             
-        
+            @if ($service != null)
             <div class="col-8 mx-auto position-relative contact-details">
-                <a href="{{route('checkService.index')}}" class="btn btn-sm btn-primary float-start"><span aria-hidden="true">×</span></a>
+                <a href="{{route('customerPortal.index')}}" class="btn btn-sm btn-primary float-start"><span aria-hidden="true">×</span></a>
 
                 <div class="mx-auto">
 
@@ -67,6 +67,11 @@
                     </div>
                 </div>
             </div>
+            @else
+                <span class="text-danger">No Service is registered with the given refrence number!!</span>
+            @endif
+        
+            
         </div>
     </div>
 </section>

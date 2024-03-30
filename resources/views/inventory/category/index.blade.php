@@ -27,7 +27,7 @@
                                     <a href="{{ route('dashboard')}}"><i class="ik ik-home"></i></a>
                                 </li>
                                 <li class="breadcrumb-item">
-                                    <a href="#">Categories</a>
+                                    <a href="{{ route('reload')}}">Categories</a>
                                 </li>
                             </ol>
                         </nav>

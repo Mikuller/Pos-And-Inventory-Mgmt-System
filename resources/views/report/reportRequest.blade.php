@@ -25,7 +25,7 @@
                             </li>
                             
                             <li class="breadcrumb-item">
-                                <a href="/reports/index">Generate Reports</a>
+                                <a href="{{ route('reload')}}">Generate Reports</a>
                             </li>
 
                         </ol>
