@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('purchases', function (Blueprint $table) {
             $table->id();
             $table->float('grandTotal');
-            $table->float('totalTax');
+            // $table->float('totalTax');
             $table->string('supplierName')->nullable();
             $table->string('purchaserID'); 
             $table->string('status')->default("Paid");

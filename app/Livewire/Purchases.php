@@ -24,8 +24,8 @@ class Purchases extends Component
 
 
 
-    public $totalPrice = 0;
-    public $totalTax = 0;
+    // public $totalPrice = 0;
+    // public $totalTax = 0;
     public $grandTotal = 0;
 
     public function storePurchase()
@@ -34,7 +34,7 @@ class Purchases extends Component
         $purchaserID = Auth::user()->id;
         $purchase = Purchase::create([
           'grandTotal' => $this->grandTotal,
-          'totalTax' => $this->totalTax,
+        //   'totalTax' => $this->totalTax,
           'supplierName' => $this->supplierName,
           'purchaserID' => $purchaserID,
           'status' => $this->status,
@@ -68,8 +68,7 @@ class Purchases extends Component
                     'product' => $product,
                     'quantity' => $this->quantity,
                    ]);
-                $this->updateTotalPrice();
-                $this->totalTax();
+               
                 $this->grandTotal();
             } else {
                 session()->flash('error', 'Please select product');
@@ -89,31 +88,34 @@ class Purchases extends Component
             unset($this->purchaseList[$index]); // Delete the element at the specified index
             $this->purchaseList = array_values($this->purchaseList); // Reindex the array
             
-            $this->updateTotalPrice();
-            $this->totalTax();
+            // $this->updateTotalPrice();
+            // $this->totalTax();
             $this->grandTotal();
         }
        
     }
 
-    public function updateTotalPrice()
-    {
-        $this->totalPrice = 0;
-        foreach ($this->purchaseList as $purchase) {
-            $this->totalPrice += $purchase['quantity'] * ($purchase['product']->purchasePrice - $purchase['product']->purchasePrice * 0.15);
-        }
-    }
-    public function totalTax()
-    {
-        $this->totalTax = 0;
-        foreach ($this->purchaseList as $purchase) {
-            $this->totalTax += $purchase['quantity'] * ($purchase['product']->purchasePrice * 0.15);
-        }
-    }
+    // public function updateTotalPrice()
+    // {
+    //     $this->totalPrice = 0;
+    //     foreach ($this->purchaseList as $purchase) {
+    //         $this->totalPrice += $purchase['quantity'] * ($purchase['product']->purchasePrice - $purchase['product']->purchasePrice * 0.15);
+    //     }
+    // }
+    // public function totalTax()
+    // {
+    //     $this->totalTax = 0;
+    //     foreach ($this->purchaseList as $purchase) {
+    //         $this->totalTax += $purchase['quantity'] * ($purchase['product']->purchasePrice * 0.15);
+    //     }
+    // }
     public function grandTotal()
     {
         $this->grandTotal = 0;
-        $this->grandTotal = $this->totalPrice + $this->totalTax;
+        foreach ($this->purchaseList as $purchase) {
+                    $this->grandTotal += ($purchase['quantity'] * $purchase['product']->purchasePrice );
+                }
+      
     }
 
    

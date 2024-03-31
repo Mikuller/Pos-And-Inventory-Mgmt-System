@@ -26,7 +26,7 @@
                                         <span class="text-muted m-0">{{ $product->pivot->amount }}</span>
 
                                         <span
-                                            class="text-danger font-weight-bold cart-item-price">{{ number_format($product->sellingPrice * $product->pivot->amount) }}</span>
+                                            class="text-danger font-weight-bold cart-item-price">{{ number_format($product->purchasePrice * $product->pivot->amount) }}</span>
                                     </div>
                                 </div>
 

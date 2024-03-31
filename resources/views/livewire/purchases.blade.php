@@ -97,28 +97,28 @@
                                             {{ $purchase['product']->name }}</td>
                                         <td><input type="text" name="price"
                                                 class="form-control w-100 text-center hm-30"
-                                                value="{{ number_format($purchase['product']->purchasePrice - $purchase['product']->purchasePrice * 0.15) }}"
+                                                value="{{ number_format($purchase['product']->purchasePrice) }}"
                                                 readonly></td>
                                         <td><input type="number" name="Quantity"
                                                 class="form-control w-60 text-center hm-30"
                                                 value={{ number_format($purchase['quantity']) }} readonly></td>
                                         <td class="text-right">
-                                            {{ number_format($purchase['quantity'] * ($purchase['product']->purchasePrice - $purchase['product']->purchasePrice * 0.15)) }}
+                                            {{ number_format($purchase['quantity'] * ($purchase['product']->purchasePrice)) }}
                                         </td>
                                     </tr>
                                 @endforeach
 
 
-                                <tr>
+                                {{-- <tr>
                                     <th class="border-0" colspan="4"></th>
                                     <th>Total</th>
                                     <th class="text-right">{{ number_format($totalPrice) }}</th>
-                                </tr>
-                                <tr>
+                                </tr> --}}
+                                {{-- <tr>
                                     <td class="border-0" colspan="4"></td>
                                     <td>Tax (<span id="tax-per">15</span>%)</td>
                                     <td class="text-right">{{ number_format($totalTax) }}</td>
-                                </tr>
+                                </tr> --}}
                                 <tr>
                                     <td class="border-0" colspan="4"></td>
                                     <td>Shipping</td>
