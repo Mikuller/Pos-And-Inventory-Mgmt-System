@@ -19,7 +19,7 @@ class Reports extends Component
         $startDate = date_format(date_create($this->startDate), 'Y-m-d H:i:s');
         $endDate = date_format(date_create($this->endDate), 'Y-m-d H:i:s');
 
-        $totalTaxDeduction = $this->getTotalTaxDeduction($startDate, $endDate);
+        // $totalTaxDeduction = $this->getTotalTaxDeduction($startDate, $endDate);
         $totalServiceIncome = DB::table('services')
             ->whereDate('created_at', '>=', $startDate)
             ->whereDate('created_at', '<=', $endDate)
@@ -35,7 +35,7 @@ class Reports extends Component
 
         $this->data = [
             'totalProfit' => $totalProfit,
-            'totalTaxDeduction' => $totalTaxDeduction,
+            // 'totalTaxDeduction' => $totalTaxDeduction,
             'totalServiceIncome' => $totalServiceIncome,
             'totalSalesIncome' => $totalSalesIncome,
             'totalRevenue' => $totalRevenue,
@@ -57,20 +57,20 @@ class Reports extends Component
             ->sum('profit');
         return $totalProfit;
     }
-    public function getTotalTaxDeduction($startDate, $endDate)
-    {
-        $soldProducts = Product::select('products.id', DB::raw('SUM(product_sale.amount) as total_amount'))
-            ->leftJoin('product_sale', 'products.id', '=', 'product_sale.product_id')
-            ->whereDate('product_sale.created_at', '>=', $startDate)
-            ->whereDate('product_sale.created_at', '<=', $endDate)
-            ->groupBy('products.id')
-            ->get();
-        $totalTaxDeduction = 0.0;
-        foreach ($soldProducts as $value) {
-            $totalTaxDeduction += 0.15 * Product::all()->find($value)->sellingPrice - 0.15 * Product::all()->find($value)->purchasePrice;
-        }
-        return $totalTaxDeduction;
-    }
+    // public function getTotalTaxDeduction($startDate, $endDate)
+    // {
+    //     $soldProducts = Product::select('products.id', DB::raw('SUM(product_sale.amount) as total_amount'))
+    //         ->leftJoin('product_sale', 'products.id', '=', 'product_sale.product_id')
+    //         ->whereDate('product_sale.created_at', '>=', $startDate)
+    //         ->whereDate('product_sale.created_at', '<=', $endDate)
+    //         ->groupBy('products.id')
+    //         ->get();
+    //     $totalTaxDeduction = 0.0;
+    //     foreach ($soldProducts as $value) {
+    //         $totalTaxDeduction += 0.15 * Product::all()->find($value)->sellingPrice - 0.15 * Product::all()->find($value)->purchasePrice;
+    //     }
+    //     return $totalTaxDeduction;
+    // }
     public function getTotalPurchaseCost($startDate, $endDate)
     {
         $totalPurchaseCost = DB::table('purchases')

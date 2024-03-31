@@ -45,12 +45,12 @@
                                         </tr>
 
                                         </tr>
-                                        <tr>
+                                        {{-- <tr>
                                             <th rowspan="2">TAX</th>
                                         <tr>
                                             <th>Total Tax Deduction</th>>
                                             <td>{{ $data['totalTaxDeduction'] }}</td>
-                                        </tr>
+                                        </tr> --}}
 
                                         </tr>
                                         <tr>
