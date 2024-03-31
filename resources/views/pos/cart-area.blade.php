@@ -74,7 +74,7 @@
             </div> --}}
             <hr>
             <div class="d-flex justify-content-between font-20 align-items-center">
-                <b>Total (Tax Inclusive)</b>
+                <b>Grand Total</b>
                 {{-- the grandTotal is calculated inside the component --}}
                 <b id="total-bill"> {{ number_format($grandTotal) }}</b>
             </div>

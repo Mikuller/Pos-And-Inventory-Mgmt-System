@@ -77,7 +77,7 @@
                                             }
 
                                             $grandTotal = 0;
-                                            $grandDiscount = 0;
+                                            // $grandDiscount = 0;
 
                                         @endphp
                                         @if ($invoiceItems != null)
@@ -85,15 +85,13 @@
                                                 @php
 
                                                     $product = App\Models\Product::all()->find($key);
-                                                    $subtotal =
-                                                        $item *
-                                                        ($product['sellingPrice'] - $product['sellingPrice'] * 0.15);
-                                                    $grandTotal += $item * $product['sellingPrice'];
+                                                    $subtotal = $item * $product['sellingPrice'];
+                                                    $grandTotal +=  $subtotal;
                                                 @endphp
                                                 <tr>
                                                     <td>{{ $key }}</td>
                                                     <td>{{ $product['name'] }}</td>
-                                                    <td>{{ $product['sellingPrice'] - $product['sellingPrice'] * 0.15 }}
+                                                    <td>{{ $product['sellingPrice'] }}
                                                     </td>
                                                     <td>{{ $item }}</td>
 
@@ -125,23 +123,23 @@
                                 <div class="table-responsive">
                                     @php
 
-                                        $taxAmount = $grandTotal * 0.15; //this will be used later
-                                        $subTotal = $grandTotal - $taxAmount;
+                                        // $taxAmount = $grandTotal * 0.15; //this will be used later
+                                        // $subTotal = $grandTotal - $taxAmount;
                                         // $grandTotalWithTax = $grandTotal + $taxAmount; //this is commented because the total price for all products is tax included
                                     @endphp
                                     <table class="table">
                                         <tbody>
-                                            <tr>
+                                            {{-- <tr>
                                                 <th class="th-50">Subtotal:</th>
                                                 <td class="text-right">{{ number_format($subTotal, 2, '.', '') }}</td>
-                                            </tr>
-                                            <tr>
+                                            </tr> --}}
+                                            {{-- <tr>
                                                 <th>Tax (15%)</th>
                                                 <td class="text-right"><input class="text-center" type="text"
                                                         name="totalTax"
                                                         value="{{ number_format($taxAmount, 2, '.', '') }}" readonly />
                                                 </td>
-                                            </tr>
+                                            </tr> --}}
                                             <tr>
                                                 <th>Grand Total:</th>
                                                 <td class="text-right"><input class="text-center" type="text"

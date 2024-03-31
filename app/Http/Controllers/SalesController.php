@@ -34,14 +34,14 @@ class SalesController extends Controller
         
     }
 
-    public function create(Request $request)
+    public function create()
     {
         // dd($request->all);
 
         try {
             $validated = request()->validate([
                 'grandTotal' => 'required|numeric|min:1',
-                'totalTax' => 'required|numeric|min:1',
+                // 'totalTax' => 'required|numeric|min:1',
                 'paymentMethod' => 'required|in:Cash,E-Cash',
             ]);
  
@@ -81,8 +81,9 @@ class SalesController extends Controller
         foreach ($cart as $key => $value) {
             $productId = $key;
             $product = Product::all()->find($productId);
-            $taxDeduction = $product->sellingPrice * 0.15 - $product->purchasePrice * 0.15;
-            $profit += ($product->sellingPrice - $product->purchasePrice - $taxDeduction) * $value['amount'];
+            // $taxDeduction = $product->sellingPrice * 0.15 - $product->purchasePrice * 0.15;
+            // $profit += ($product->sellingPrice - $product->purchasePrice - $taxDeduction) * $value['amount'];
+            $profit += ($product->sellingPrice - $product->purchasePrice ) * $value['amount'];
         }
         return $profit;
     }
@@ -114,7 +115,7 @@ class SalesController extends Controller
 
     public function generateInvoice()
     {
-        $pdf = Pdf::loadView('inventory.sale.show', []);
+        $pdf = Pdf::loadView('pos.sale.show', []);
         return $pdf->download('Sales Invoice ' . date('F j, Y, g:i a') . '.pdf');
     }
 }
