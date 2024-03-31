@@ -23,6 +23,7 @@ class Reports extends Component
         $totalServiceIncome = DB::table('services')
             ->whereDate('created_at', '>=', $startDate)
             ->whereDate('created_at', '<=', $endDate)
+            ->where('status','=','Done')
             ->sum('price');
         $totalSalesIncome = DB::table('sales')
             ->whereDate('created_at', '>=', $startDate)

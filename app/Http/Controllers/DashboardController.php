@@ -25,6 +25,7 @@ class DashboardController extends Controller
     $totalMonthlyService = DB::table('services')
         ->whereMonth('created_at', Carbon::now()->month)
         ->whereYear('created_at', Carbon::now()->year)
+        ->where('status','=','Done')
         ->sum('price');
 
     $MonthlySoldProduct = Product::select('products.id', DB::raw('SUM(product_sale.amount) as total_amount'))
