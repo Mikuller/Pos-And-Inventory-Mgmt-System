@@ -103,16 +103,16 @@
 
                                     </div>
 
-                                    {{-- <div class="form-group" style="display: none;">
+                                    <div class="form-group" >
                                         <label for="qty">Quantity<span class="text-red">*</span></label>
                                         <input id="qty" type="text" class="form-control" name="quantity"
-                                            placeholder="Add Quantity using Purchase" required="" value="0" >
+                                            placeholder="Enter initial Quantity" required>
                                         @error('quantity')
                                             <div class="help-block with-errors">
                                                 <span class="text-red">{{ $message }}</span>
                                             </div>
                                         @enderror
-                                    </div> --}}
+                                    </div>
                                     <div class="form-group mt-2">
                                         <label for="stock_alert">Stock Alert<span class="text-red">*</span></label>
                                         <input id="stock_alert" type="text" class="form-control" name="stockAlert"
