@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use App\Models\Product;
+use App\Models\Purchase;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ProductController extends Controller
 {
@@ -31,17 +33,16 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        try {
+        
             $validated = request()->validate([
-                'name' => 'required|max:40|min:2',
+                'name' => 'required|max:40|min:2|unique:products,name',
                 'image' => 'image',
+                'quantity' => 'required|numeric|min:1',
                 'sellingPrice' => 'required|numeric|min:1',
                 'purchasePrice' => 'required|numeric|min:1',
                 'stockAlert' => 'required|numeric|min:1',
             ]);
-            //users add quantity from purchase
             
-            $validated['quantity'] = 0;
             $validated['description'] = request('description');
             if (request()->has('image')) {
                 $userEmail = auth()->user()->email;
@@ -58,14 +59,23 @@ class ProductController extends Controller
 
             $product->categories()->sync($selectedCategories);
 
+            $this->savePurchase($product);
             return redirect()
                 ->route('product.index')
                 ->with('success', 'New Product is Added!');
-        } catch (\Exception $e) {
-            return redirect()
-                ->route('product.index')
-                ->with('error', "error!! product not added");
-        }
+               
+    }
+    public function savePurchase($product){
+        $purchase = Purchase::create([
+          'grandTotal' => $product->purchasePrice * $product->quantity,
+          'purchaserID' => Auth::user()->id,
+        //   'status' => $this->status,
+        //   'purchaseNote' => $this->purchaseNote,
+        //   'shippingCost' => $this->shippingCost,
+        ]);
+       
+        $purchase->products()->attach($product->id, ['amount' => $product->quantity]);
+              
     }
 
     /**
