@@ -1,27 +1,20 @@
 <div class="row">
     <div class="col-md-12">
         <div class="mb-2 clearfix">
-            <div class="d-block mb-3 text-left">
+            <div class="d-inline mb-5">
                 <a class="btn btn-primary" href="{{ route('product.create') }}">
                     Add Product
                 </a>
+                <a class="btn btn-primary" href="{{ route('purchases.index') }}">
+                    Add Purchase 
+                 </a>
             </div>
-            <a class="btn pt-0 pl-0 d-md-none d-lg-none" data-toggle="collapse" href="#displayOptions" role="button"
-                aria-expanded="true" aria-controls="displayOptions">
-                {{ __('Display Options') }}
-                <i class="ik ik-chevron-down align-middle"></i>
-            </a>
-            <div class="collapse d-md-block display-options" id="displayOptions">
-                <span class="mr-3 d-inline-block float-md-left dispaly-option-buttons">
-                    <a href="#" class="mr-1 view-thumb ">
-                        <i class="ik ik-list view-icon"></i>
-                    </a>
-                    <a href="#" class="mr-1 view-grid active">
-                        <i class="ik ik-grid view-icon"></i>
-                    </a>
-                </span>
-                <div class="d-block d-md-inline-block">
-                    <div class="float-md-left col-md-3 mr-4 mb-1 form-group">
+           
+           
+            <div class="collapse mt-2 d-md-block display-options" id="displayOptions">
+               
+                <div class=" d-block d-md-inline-block">
+                    <div class="float-md-left col-md-3 mb-1 form-group">
                         <select wire:model.live="searchWithCategory" class="form-control">
                             <option value="" >Filter with Category</option>
                             @foreach ($categories as $category)
@@ -39,18 +32,7 @@
                 </div>
                 <div class="float-md-right">
                     <span class="text-muted text-small mr-2">{{ $products->links() }}</span>
-                    {{-- <button class="btn btn-outline-dark btn-xs dropdown-toggle" type="button"
-                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            20
-                            <i class="ik ik-chevron-down mr-0 align-middle"></i>
-                        </button>
-                        <div class="dropdown-menu dropdown-menu-right">
-                            <a class="dropdown-item" href="#">10</a>
-                            <a class="dropdown-item" href="#">20</a>
-                            <a class="dropdown-item" href="#">30</a>
-                            <a class="dropdown-item" href="#">50</a>
-                            <a class="dropdown-item" href="#">100</a>
-                        </div> --}}
+                  
                 </div>
             </div>
         </div>
