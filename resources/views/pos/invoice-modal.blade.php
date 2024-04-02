@@ -114,8 +114,11 @@
                                 <input type="radio" name="paymentMethod" id="E-Cash" value="E-Cash"
                                     required /><label class="ml-2" for="E-Cash">E-Cash</label><br />
                                 <div id="eCashRefNumberWrapper" style="display: none;">
+                                    <input type="text" class="d-block mb-2" name="creditAccountNum" id="creditAccountNum"
+                                        placeholder="Deposit Account Number" />
                                     <input type="text" name="eCashRefNumber" id="eCashRefNumber"
                                         placeholder="Txn Refrence Number" />
+                                    
                                 </div>
                             </div>
                             <div class="col-2"></div>
@@ -183,10 +186,13 @@
         if (this.checked) {
             eCashRefNumberWrapper.style.display = 'block';   
             refNum.required = true;
+            creditAccountNum.required = true;
         } else {
             // If the E-Cash radio button is unchecked, hide the text input
             eCashRefNumberWrapper.style.display = 'none';
             refNum.required = false;
+            creditAccountNum.required = false;
+
         }
     });
     cashRadio.addEventListener('change', function() {
@@ -194,9 +200,12 @@
         if (this.checked) {
             eCashRefNumberWrapper.style.display = 'none';
             refNum.required = false;
+            creditAccountNum.required = false;
+
         } else {
             eCashRefNumberWrapper.style.display = 'block';
             refNum.required = true;
+            creditAccountNum.required = true;
         }
     });
 </script>

@@ -92,7 +92,14 @@
                     <div class="row">
                         <div class="col-6">
                             <p class="lead">Payment Method:</p>
-                            <input type="text" class="text-center" value="{{ session('sale')->eCashRefNumber==null  ? session('sale')->paymentMethod  : session('sale')->paymentMethod." : ".session('sale')->eCashRefNumber }}" readonly/><br />                               
+                            @if (session('sale')->eCashRefNumber==null)
+                            <input type="text" class="text-center" value="{{  session('sale')->paymentMethod  }}" readonly/><br />                               
+                                
+                            @else
+                            <p>E-Cash</p>
+                            <input type="text" id="ecash" class="d-block" value="{{ "TXN ID"." : ".session('sale')->eCashRefNumber }}" readonly/><br />                                 
+                            <input type="text" id="ecash" class="d-block" value="{{ "ACC NUM".":".session('sale')->creditAccountNum }}" readonly/><br />                                 
+                            @endif
                         </div>
                         <div class="col-2"></div>
                         <div class="col-4">
