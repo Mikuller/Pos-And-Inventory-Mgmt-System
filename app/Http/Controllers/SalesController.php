@@ -46,7 +46,8 @@ class SalesController extends Controller
             ]);
  
             $validated['eCashRefNumber'] = request('eCashRefNumber');
-            $validated['creditAccountNum'] = request('creditAccountNum');
+        
+            $validated['deposit_bank_id'] = request('depositBank');
             // dump( $validated);
             $validated['sellerID'] = Auth::user()->id;
             $validated['customerName'] = session('customerInfo')['customerName'];

@@ -23,9 +23,9 @@
                             <div class="col-sm-3  invoice-col">
                                 From
                                 <address>
-                                    <strong>Yene POS,</strong><br>Mikuda <br>Ethiopia, Adama <br>Phone: +251
+                                    <strong>Fitsum Mobile,</strong><br>Fitsum <br>Ethiopia, Adama <br>Phone: +251
                                     949402695<br>Email:
-                                    fasikamillion75@gmail.com
+                                    Fitsa55@gmail.com
                                 </address>
                             </div>
                             <div class="col-sm-3 invoice-col">
@@ -78,7 +78,6 @@
 
                                             $grandTotal = 0;
                                             // $grandDiscount = 0;
-
                                         @endphp
                                         @if ($invoiceItems != null)
                                             @forelse ($invoiceItems as $key => $item)
@@ -86,7 +85,7 @@
 
                                                     $product = App\Models\Product::all()->find($key);
                                                     $subtotal = $item * $product['sellingPrice'];
-                                                    $grandTotal +=  $subtotal;
+                                                    $grandTotal += $subtotal;
                                                 @endphp
                                                 <tr>
                                                     <td>{{ $key }}</td>
@@ -113,12 +112,33 @@
                                     required /><label class="ml-2" for="cash">Cash</label><br />
                                 <input type="radio" name="paymentMethod" id="E-Cash" value="E-Cash"
                                     required /><label class="ml-2" for="E-Cash">E-Cash</label><br />
-                                <div id="eCashRefNumberWrapper" style="display: none;">
-                                    <input type="text" class="d-block mb-2" name="creditAccountNum" id="creditAccountNum"
-                                        placeholder="Deposit Account Number" />
-                                    <input type="text" name="eCashRefNumber" id="eCashRefNumber"
-                                        placeholder="Txn Refrence Number" />
+                                <div id="eCashRefNumberWrapper" class="form-group" style="display: none;">
                                     
+                                    <div class="row" id="bankInfoWrapper">
+                                        <div class="col-sm-7 pr-0">
+                                            <select class="form-control" name="depositBank" required>
+                                                <option selected="selected" value="">Select Deposit Bank</option>
+                                                @php
+                                                    $banks = App\Models\DepositBank::latest()->get();
+                                                @endphp
+                                                @forelse ($banks as $bank)
+                                                <option value="{{$bank->id}}">{{$bank->bankName."-".$bank->accNum}}</option>
+                                                    
+                                                @empty
+                                                <option value="">No bank Info Added Yet</option>
+                                                    
+                                                @endforelse
+
+                                            </select>
+
+                                        </div>
+                                        
+                                        <div class="col-sm-8 pr-0 pl-2 ml-2 pt-1 ">
+                                            <input class="form-control mt-2 " type="text" name="eCashRefNumber"
+                                                id="eCashRefNumber" placeholder="Txn Refrence Number" required/>
+                                        </div>
+
+                                    </div>
                                 </div>
                             </div>
                             <div class="col-2"></div>
@@ -178,13 +198,16 @@
     // Get the radio button and text input elements
     const eCashRadio = document.getElementById('E-Cash');
     const cashRadio = document.getElementById('cash');
+   
     const eCashRefNumberWrapper = document.getElementById('eCashRefNumberWrapper');
+   
+
     const refNum = document.getElementById('eCashRefNumber');
     // Add event listener to the radio button
     eCashRadio.addEventListener('change', function() {
         // If the E-Cash radio button is checked, show the text input
         if (this.checked) {
-            eCashRefNumberWrapper.style.display = 'block';   
+            eCashRefNumberWrapper.style.display = 'block';
             refNum.required = true;
             creditAccountNum.required = true;
         } else {
@@ -208,6 +231,7 @@
             creditAccountNum.required = true;
         }
     });
+   
 </script>
 
 

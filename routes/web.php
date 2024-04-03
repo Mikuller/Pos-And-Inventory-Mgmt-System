@@ -138,3 +138,13 @@ Route::get('/reports/download', [ReportController::class, 'downloadReport'])->na
 Route::get('/messages/index', [MessageController::class, 'index'])->name('message.index')->middleware(['auth', 'can:status']);
 Route::get('/messages/show/{message}', [MessageController::class, 'show'])->name('message.show') ->middleware(['auth', 'can:status']);
 Route::get('/messages/destroy/{message}', [MessageController::class, 'destroy'])->name('message.destroy')->middleware(['auth', 'can:admin', 'can:status']);
+
+
+Route::get('settings',function(){
+    session()->flush();
+    return view('Settings.index'); 
+})->name('setting.index');
+Route::get('settings/manageBankInfo',function(){
+    session(['bankInfoSession'=>true],null);
+    return view('Settings.index');; 
+})->name('setting.bankInfo');

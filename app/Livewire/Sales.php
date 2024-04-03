@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use App\Models\DepositBank;
 use App\Models\Sale;
 use Carbon\Carbon;
 use GuzzleHttp\Psr7\Query;
@@ -14,6 +15,7 @@ class Sales extends Component
 
     public $search;
     public $selectedDate;
+    public $selectedBank;
 
     public function render()
     {
@@ -24,7 +26,13 @@ class Sales extends Component
             ->when($this->selectedDate, function ($query) {
                 $query->whereDate('created_at', '=', Carbon::parse($this->selectedDate)->format('Y-m-d'));
             })
+            ->when($this->selectedBank, function ($query) {
+                $query->where('deposit_bank_id', '=', $this->selectedBank);
+            })
+            ->latest()
             ->paginate(10);
-        return view('livewire.sales', compact('sales'));
+
+        $depositBank = DepositBank::latest()->get();
+        return view('livewire.sales', compact('sales','depositBank'));
     }
 }

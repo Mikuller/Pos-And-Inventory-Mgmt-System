@@ -59,7 +59,7 @@ class ProductController extends Controller
 
             $product->categories()->sync($selectedCategories);
 
-            $this->savePurchase($product);
+            $this->savePurchase($product);//this is because whenever the quantity of the a product changes it has to be registerd as a purchase
             return redirect()
                 ->route('product.index')
                 ->with('success', 'New Product is Added!');

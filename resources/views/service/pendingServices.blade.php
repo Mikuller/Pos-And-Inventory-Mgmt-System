@@ -14,7 +14,6 @@
 
                 </div>
                 <div class="col-lg-4">
-                <a href="{{ route('service.serviceTypes') }}" class=" btn btn-sm btn-primary">Add Service Types</a>
                     
                     <nav class="breadcrumb-container" aria-label="breadcrumb">
                         <ol class="breadcrumb">

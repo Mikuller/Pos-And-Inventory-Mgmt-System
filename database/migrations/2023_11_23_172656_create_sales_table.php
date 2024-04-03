@@ -20,7 +20,9 @@ return new class extends Migration
             $table->string('customerName');
             $table->string('customerPhone');
             $table->string('paymentMethod');
+            $table->string('eCashRefNumber')->nullable();
             $table->string('sellerID');
+            $table->foreignId('deposit_bank_id')->nullable()->constrained("deposit_banks")->cascadeOnUpdate()->nullOnDelete();
             $table->timestamps();
         });
     }
