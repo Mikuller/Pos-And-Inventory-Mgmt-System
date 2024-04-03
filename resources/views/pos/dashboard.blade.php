@@ -2,7 +2,7 @@
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 
 <head>
-    <title>POS | Radmin - Laravel Admin Starter</title>
+    <title>POS | Yene POS App</title>
     <meta name="csrf-token" content="{{ csrf_token() }}" >
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     

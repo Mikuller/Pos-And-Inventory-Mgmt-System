@@ -11,8 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('sales', function (Blueprint $table) {
-            $table->string('creditAccountNum')->nullable();
+        Schema::create('deposit_banks', function (Blueprint $table) {
+            $table->id();
+            $table->string('bankName')->unique();
+            $table->string('accNum')->unique();
+            $table->timestamps();
         });
     }
 
@@ -21,8 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('sales', function (Blueprint $table) {
-            //
-        });
+        Schema::dropIfExists('deposit_banks');
     }
 };

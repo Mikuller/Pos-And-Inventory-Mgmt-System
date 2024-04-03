@@ -3,7 +3,9 @@
 namespace App\Livewire;
 
 use App\Models\Category;
+use App\Models\DepositBank;
 use App\Models\Product;
+use Livewire\Attributes\Validate;
 use Livewire\Component;
 
 class POS extends Component
@@ -17,20 +19,23 @@ class POS extends Component
     public $customerName = '';
     public $customerPhone = '';
 
+   
+
     public function getProducts()
     {
         $products = Product::when($this->search, function ($query) {
-            $query->where('description', 'like', "%{$this->search}%")
+            $query
+                ->where('description', 'like', "%{$this->search}%")
                 ->orWhere('id', 'like', "%{$this->search}%")
                 ->orWhere('stockAlert', '=', $this->search)
                 ->orWhere('name', '=', $this->search)
                 ->orWhere('sellingPrice', '=', $this->search)
                 ->orWhere('purchasePrice', '=', $this->search);
-            })
+        })
             ->when($this->filterStockOut, function ($query) {
                 $query->where('quantity', '>=', 1);
             })
-            ->when( $this->searchWithCategory, function ($query) {
+            ->when($this->searchWithCategory, function ($query) {
                 // Use whereHas to filter products based on the selected category
                 $query->whereHas('categories', function ($categoryQuery) {
                     $categoryQuery->where('category_id', $this->searchWithCategory);
@@ -42,12 +47,11 @@ class POS extends Component
     }
     public function filterItems()
     {
-        if($this->filterStockOut!=null){
+        if ($this->filterStockOut != null) {
             $this->filterStockOut = !$this->filterStockOut;
-        }else{
+        } else {
             $this->filterStockOut = true;
         }
-        
     }
 
     public function countCart(int $productId)
@@ -115,10 +119,13 @@ class POS extends Component
             $this->redirect('/sales/pos');
         }
     }
+
+   
+   
     public function render()
     {
         $grandTotal = $this->getGrandTotal();
         $categories = Category::latest()->get();
-        return view('livewire.p-o-s', ['products' => $this->getProducts(), 'grandTotal' => $grandTotal,'categories'=>$categories]);
+        return view('livewire.p-o-s', ['products' => $this->getProducts(), 'grandTotal' => $grandTotal, 'categories' => $categories]);
     }
 }

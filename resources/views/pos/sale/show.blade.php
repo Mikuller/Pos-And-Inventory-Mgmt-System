@@ -92,13 +92,16 @@
                     <div class="row">
                         <div class="col-6">
                             <p class="lead">Payment Method:</p>
-                            @if (session('sale')->eCashRefNumber==null)
+                            @if (session('sale')->paymentMethod=='Cash')
                             <input type="text" class="text-center" value="{{  session('sale')->paymentMethod  }}" readonly/><br />                               
                                 
                             @else
                             <p>E-Cash</p>
-                            <input type="text" id="ecash" class="d-block" value="{{ "TXN ID"." : ".session('sale')->eCashRefNumber }}" readonly/><br />                                 
-                            <input type="text" id="ecash" class="d-block" value="{{ "ACC NUM".":".session('sale')->creditAccountNum }}" readonly/><br />                                 
+
+                            <input type="text" id="ecash" class="d-block" value="{{ "TXN ID"." : ".session('sale')->eCashRefNumber }}" readonly/><br />
+                            <input type="text" id="ecash" class="d-block" value="{{ session('sale')->depositBank != null ?  "Deposit Bank :".session('sale')->depositBank->bankName : "Deposit Bank :" }}" readonly/><br />                                 
+                            {{-- <input id="ecash" class="d-block" value="{{ session('sale')->depositBank != null ?  "Account Number :".session('sale')->depositBank->accNum : "Account Number :" }}" readonly/><br />                                  --}}
+                            <textarea class="d-block" rows="2" readonly>{{ session('sale')->depositBank != null ?  "Account Number :".session('sale')->depositBank->accNum : "Account Number :" }}</textarea><br />                                 
                             @endif
                         </div>
                         <div class="col-2"></div>
@@ -148,7 +151,6 @@
 </div>
 @livewireStyles
 <style>
-    /* Add the following styles to your existing stylesheet or in a <style> tag in your HTML */
 
     .row.invoice-info {
         margin-bottom: 20px;
@@ -189,6 +191,7 @@
         margin-bottom: 15px;
     }
 
+    
     input[type="radio"] {
         margin-right: 5px;
     }

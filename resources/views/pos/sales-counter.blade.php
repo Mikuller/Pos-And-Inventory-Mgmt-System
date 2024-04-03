@@ -24,7 +24,7 @@
                                 </form>
                             @endif
                         @else
-                            <span class="float-right btn-sm btn-danger" onclick="message(event)">StockOut <i class="fa fa-exclamation-triangle" aria-hidden="true"></i></span>
+                            <button class="align-right btn-sm btn-danger" onclick="message(event)">StockOut <i class="align-right fa fa-exclamation-triangle" aria-hidden="true"></i></button>
                         @endif
 
 
