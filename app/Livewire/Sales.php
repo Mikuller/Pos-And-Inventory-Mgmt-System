@@ -21,7 +21,7 @@ class Sales extends Component
     {
         $sales = Sale::when($this->search, function ($query) {
             $query->where('customerName', 'like', "%{$this->search}%")
-            ->orWhere('paymentMethod', 'like', "%{$this->search}%");
+            ->orWhere('paymentMethod', '=', $this->search);
         })
             ->when($this->selectedDate, function ($query) {
                 $query->whereDate('created_at', '=', Carbon::parse($this->selectedDate)->format('Y-m-d'));

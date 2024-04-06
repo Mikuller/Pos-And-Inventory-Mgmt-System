@@ -8,24 +8,23 @@
                     <a href="{{ route('service.serviceTypes') }}" class=" btn btn-sm btn-primary">+ Service Types</a>
                 </div>
                 <div class="col col-sm-2">
-                    
-                        <input wire:model.live.debounce.500ms="searchWithDate" class="form-control" type="date"
-                            />
-                    
+
+                    <input wire:model.live.debounce.500ms="searchWithDate" class="form-control" type="date" />
+
                 </div>
                 <div class="col col-sm-2">
-                        <input type="text" wire:model.live.debounce.500ms="search" class="form-control "
-                            placeholder="Search...">
+                    <input type="text" wire:model.live.debounce.500ms="search" class="form-control "
+                        placeholder="Search...">
                 </div>
                 <div class="col col-sm-4 mt-2">
-                        {{ $pendingServices->links() }}      
+                    {{ $pendingServices->links() }}
                 </div>
             </div>
             <div class="card-body">
                 <table id="advanced_table" class="table">
                     <thead>
                         <tr>
-                           
+
                             <th class="nosort">RefNo.</th>
                             <th>Customer Name</th>
                             <th>Service Type</th>
@@ -40,7 +39,7 @@
                         @forelse ($pendingServices  as $pendingService)
 
                             <tr>
-                               
+
                                 <td>{{ $pendingService->refNumber }}</td>
                                 <td>{{ $pendingService->customerName }}</td>
 
@@ -74,16 +73,18 @@
                                                 <a class="dropdown-item"
                                                     href="{{ route('service.edit.pendingService', ['service' => $pendingService->id]) }}"><i
                                                         class="ik ik-edit"></i> Edit </a>
-                                                <a class="dropdown-item"
-                                                    href="{{ route('service.changeStatus.pendingService', ['service' => $pendingService->id]) }}"><i
-                                                        class="fa fa-check-circle"></i> Mark as Done </a>
-                                                <a class="dropdown-item"
-                                                    href="{{ route('service.markAsPending.pendingService', ['service' => $pendingService->id]) }}"><i
-                                                        class="fa fa-check-circle"></i> Mark as Pending </a>
-
-                                                <a class="dropdown-item"
-                                                    href="{{ route('service.abortStatus.pendingService', ['service' => $pendingService->id]) }}">
-                                                    <i class="fa fa-ban"></i> Abort </a>
+                                                @if ($pendingService->status == 'Done')
+                                                    <a class="dropdown-item"
+                                                        href="{{ route('service.markAsPending.pendingService', ['service' => $pendingService->id]) }}"><i
+                                                            class="fa fa-check-circle"></i> Mark as Pending </a>
+                                                @else
+                                                    <a class="dropdown-item"
+                                                        href="{{ route('service.servicePaymentEdit.pendingService', ['service' => $pendingService->id]) }}" onclick="promptPaymentMtd()"><i
+                                                            class="fa fa-check-circle" ></i> Mark as Done </a>
+                                                    <a class="dropdown-item"
+                                                        href="{{ route('service.abortStatus.pendingService', ['service' => $pendingService->id]) }}">
+                                                        <i class="fa fa-ban"></i> Abort </a>
+                                                @endif
                                             </div>
                                         </div>
                                     </td>
@@ -99,8 +100,7 @@
                 </table>
             </div>
 
-
-
         </div>
     </div>
 </div>
+

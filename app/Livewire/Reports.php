@@ -20,25 +20,22 @@ class Reports extends Component
         $endDate = date_format(date_create($this->endDate), 'Y-m-d H:i:s');
 
         // $totalTaxDeduction = $this->getTotalTaxDeduction($startDate, $endDate);
-        $totalServiceIncome = DB::table('services')
-            ->whereDate('created_at', '>=', $startDate)
-            ->whereDate('created_at', '<=', $endDate)
-            ->where('status','=','Done')
-            ->sum('price');
-        $totalSalesIncome = DB::table('sales')
-            ->whereDate('created_at', '>=', $startDate)
-            ->whereDate('created_at', '<=', $endDate)
-            ->sum('grandTotal');
-        $totalRevenue = $totalSalesIncome + $totalServiceIncome;
+        $totalServiceIncomeCash = DB::table('services')->whereDate('created_at', '>=', $startDate)->whereDate('created_at', '<=', $endDate)->where('status', '=', 'Done')->where('paymentMethod', '=', 'Cash')->sum('price');
+        $totalServiceIncomeECash = DB::table('services')->whereDate('created_at', '>=', $startDate)->whereDate('created_at', '<=', $endDate)->where('status', '=', 'Done')->where('paymentMethod', '=', 'E-Cash')->sum('price');
+        $totalSalesIncomeCash = DB::table('sales')->whereDate('created_at', '>=', $startDate)->whereDate('created_at', '<=', $endDate)->where('paymentMethod', '=', 'Cash')->sum('grandTotal');
+        $totalSalesIncomeEcash = DB::table('sales')->whereDate('created_at', '>=', $startDate)->whereDate('created_at', '<=', $endDate)->where('paymentMethod', '=', 'E-Cash')->sum('grandTotal');
+        $totalRevenue = $totalSalesIncomeCash + $totalSalesIncomeEcash + $totalServiceIncomeCash + $totalServiceIncomeECash;
         $totalPurchaseCost = $this->getTotalPurchaseCost($startDate, $endDate);
         $totalShippingCost = $this->getTotalShippingCost($startDate, $endDate);
-        $totalProfit = $this->getTotalProfit($startDate, $endDate) + $totalServiceIncome - $totalShippingCost;
+        $totalProfit = $this->getTotalProfit($startDate, $endDate) + $totalServiceIncomeCash + $totalServiceIncomeECash  - $totalShippingCost;
 
         $this->data = [
             'totalProfit' => $totalProfit,
             // 'totalTaxDeduction' => $totalTaxDeduction,
-            'totalServiceIncome' => $totalServiceIncome,
-            'totalSalesIncome' => $totalSalesIncome,
+            'totalServiceIncomeCash' => $totalServiceIncomeCash,
+            'totalServiceIncomeECash' => $totalServiceIncomeECash,
+            'totalSalesIncomeCash' => $totalSalesIncomeCash,
+            'totalSalesIncomeEcash' => $totalSalesIncomeEcash,
             'totalRevenue' => $totalRevenue,
             'totalPurchaseCost' => $totalPurchaseCost,
             'totalShippingCost' => $totalShippingCost,
@@ -52,10 +49,7 @@ class Reports extends Component
     public function getTotalProfit($startDate, $endDate)
     {
         $totalProfit = 0.0;
-        $totalProfit = DB::table('sales')
-            ->whereDate('created_at', '>=', $startDate)
-            ->whereDate('created_at', '<=', $endDate)
-            ->sum('profit');
+        $totalProfit = DB::table('sales')->whereDate('created_at', '>=', $startDate)->whereDate('created_at', '<=', $endDate)->sum('profit');
         return $totalProfit;
     }
     // public function getTotalTaxDeduction($startDate, $endDate)
@@ -74,18 +68,12 @@ class Reports extends Component
     // }
     public function getTotalPurchaseCost($startDate, $endDate)
     {
-        $totalPurchaseCost = DB::table('purchases')
-            ->whereDate('created_at', '>=', $startDate)
-            ->whereDate('created_at', '<=', $endDate)
-            ->sum('grandTotal');
+        $totalPurchaseCost = DB::table('purchases')->whereDate('created_at', '>=', $startDate)->whereDate('created_at', '<=', $endDate)->sum('grandTotal');
         return $totalPurchaseCost;
     }
     public function getTotalShippingCost($startDate, $endDate)
     {
-        $totalShippingCost = DB::table('purchases')
-            ->whereDate('created_at', '>=', $startDate)
-            ->whereDate('created_at', '<=', $endDate)
-            ->sum('shippingCost');
+        $totalShippingCost = DB::table('purchases')->whereDate('created_at', '>=', $startDate)->whereDate('created_at', '<=', $endDate)->sum('shippingCost');
         return $totalShippingCost;
     }
     public function render()

@@ -31,6 +31,7 @@ class CategoryController extends Controller
     public function store()
     {
        // dd(request()->all());
+       try {
         $validated = request()->validate(
             [
               'name'=>'required|max:50|min:2',
@@ -45,6 +46,11 @@ class CategoryController extends Controller
 
            $category = Category::create($validated);
             return redirect()->route('category.index')->with('success', 'New Product Category is Added');
+       } catch (\Exception $e) {
+             // Handle other exceptions
+             return redirect()->back()->with('error', substr($e, 22, 55));
+       }
+       
     }
 
     /**

@@ -19,6 +19,9 @@ return new class extends Migration
             $table->string('status');
             $table->longText('statusNote')->nullable();
             $table->string('refNumber')->unique();
+            $table->string('paymentMethod')->nullable();
+            $table->foreignId('deposit_bank_id')->nullable()->constrained("deposit_banks")->cascadeOnUpdate()->nullOnDelete();
+            $table->string('eCashRefNumber')->nullable();
             $table->timestamps();
         });
 

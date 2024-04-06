@@ -39,6 +39,10 @@ class ServiceController extends Controller
 
             // 'status' => 'required|in:Pending,Done,Aborted',
         ]);
+        $validated['paymentMethod'] = request('paymentMethod', null);
+        $validated['deposit_bank_id'] = request('depositBank', null);
+        $validated['eCashRefNumber'] = request('eCashRefNumber', null);
+
         request()->validate(['serviceTypeId' => 'required|array|min:1']);
         $selectedServiceTypes = request()->input('serviceTypeId', []);
 
@@ -57,7 +61,7 @@ class ServiceController extends Controller
                 'customerPhone' => 'required|min:10',
                 'price' => 'required|numeric|min:1',
                 'statusNote' => 'nullable',
-               
+
                 // 'status' => 'required|in:Pending,Done,Aborted',
             ]);
             request()->validate(['serviceTypeId' => 'required|array|min:1']);
@@ -67,34 +71,58 @@ class ServiceController extends Controller
             $selectedServiceTypes = request()->input('serviceTypeId', []);
 
             // dd($validated);
-        
+
             $service = Service::create($validated);
             $service->serviceTypes()->sync($selectedServiceTypes);
-            return redirect()
-                ->back()
-                ->with('success', 'New Pending Service is Added');
+            return redirect()->back()->with('success', 'New Pending Service is Added');
         } catch (ValidationException $e) {
             // Pass validation errors back to the view
             return redirect()->back()->withInput()->withErrors($e);
         } catch (\Exception $e) {
             // Handle other exceptions
-            return redirect()->back()->with('error', 'An error occurred during submission.');
+            return redirect()->back()->with('error', substr($e, 22, 60));
         }
     }
     public function storeServiceType()
     {
-        $validated = request()->validate([
-            'name' => 'required|max:50|min:2',
-        ]);
-        ServiceType::create($validated);
-        return back()->with('success', 'New Service Type is Added');
+        try {
+            $validated = request()->validate([
+                'name' => 'required|max:50|min:2',
+            ]);
+            ServiceType::create($validated);
+            return back()->with('success', 'New Service Type is Added');
+        } catch (\Exception $e) {
+            // Handle other exceptions
+            return redirect()->back()->with('error', substr($e, 22, 55));
+        }
     }
-    public function changePendingServiceStatus(Service $service)
+    public function servicePaymentEdit(Service $service)
     {
-        $service->update([
-            'status' => 'Done',
-        ]);
-        return back()->with('success', 'Service status is Updated, successfully');
+        session(['editPaymentMode' => true,'service'=>$service]);
+        return back();
+    }
+    public function markAsDone(Service $service)
+    {
+       
+        if (request('paymentMethod')!=null) {
+            try {
+                $service->update([
+                    'paymentMethod' => request('paymentMethod'),
+                    'deposit_bank_id' => request('depositBank'),
+                    'eCashRefNumber' => request('eCashRefNumber'),
+                    'price' => request('price'),
+
+                    'status' => 'Done',
+                ]);
+                
+                return back()->with('success', 'Service status is Updated, successfully');
+            } catch (\Exception $e) {
+                return redirect()->back()->with('error', substr($e, 22, 55));
+            }
+        }else {
+            return back()->with('error', 'Service status NOT Updated!!');
+        }
+       
     }
     public function markAsPending(Service $service)
     {

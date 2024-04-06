@@ -19,7 +19,7 @@ aria-labelledby="categoryAddLabel" aria-hidden="true">
                 <div class="form-group">
                     <label class="d-block">Category Name</label>
                     <input type="text" name="name" class="form-control"
-                        placeholder="Enter Category name">
+                        placeholder="Enter Category name" required>
                 </div>
 
                 <div class="form-group">
