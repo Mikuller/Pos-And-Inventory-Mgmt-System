@@ -50,7 +50,7 @@
                         <div class="form-group">
                             <label class="d-block">Service Type Name</label>
                             <input type="text" name="name" class="form-control"
-                                placeholder="Enter Service Type Name">
+                                placeholder="Enter Service Type Name" required>
                         </div>
                         <div class="form-group">
                             <input class="btn btn-primary" type="submit" name="Save" value="Save">

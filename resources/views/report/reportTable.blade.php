@@ -22,26 +22,28 @@
                                             <th rowspan="4">INCOME</th>
                                         <tr>
                                             <th>Total Sales Income</th>
-                                            <td>{{ $data['totalSalesIncome'] }}</td>
+                                            <td><span class="text-primary font-weight-bold">Cash :</span>{{$data['totalSalesIncomeCash'] }}</td>
+                                            <td><span class="text-warning font-weight-bold">E-Cash :</span>{{ $data['totalSalesIncomeEcash'] }}</td>
                                         </tr>
                                         <tr>
                                             <th>Total Service Income</th>
-                                            <td>{{ $data['totalServiceIncome'] }}</td>
+                                            <td><span class="text-primary font-weight-bold">Cash :</span>{{ $data['totalServiceIncomeCash'] }}</td>
+                                            <td><span class="text-warning font-weight-bold">E-Cash :</span>{{ $data['totalServiceIncomeECash'] }}</td>
                                         </tr>
                                         <tr>
-                                            <th>Total Revenue</th>
-                                            <td>{{ $data['totalRevenue'] }}</td>
+                                            <th >Total Revenue</th>
+                                            <td colspan="2">{{ $data['totalRevenue'] }}</td>
                                         </tr>
                                         </tr>
                                         <tr>
                                             <th rowspan="3">COST</th>
                                         <tr>
                                             <th>Total Purchase Cost</th>
-                                            <td>{{ $data['totalPurchaseCost'] }}</td>
+                                            <td colspan="2">{{ $data['totalPurchaseCost'] }}</td>
                                         </tr>
                                         <tr>
                                             <th>Total Shipping Cost</th>
-                                            <td>{{ $data['totalShippingCost'] }}</td>
+                                            <td colspan="2">{{ $data['totalShippingCost'] }}</td>
                                         </tr>
 
                                         </tr>
@@ -57,7 +59,7 @@
                                             <th rowspan="2">PROFIT</th>
                                         <tr>
                                             <th>Total Profit</th>
-                                            <td>{{ $data['totalProfit'] }}</td>
+                                            <td colspan="2">{{ $data['totalProfit'] }}</td>
                                         </tr>
 
                                         </tr>

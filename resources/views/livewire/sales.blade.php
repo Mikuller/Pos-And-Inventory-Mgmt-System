@@ -3,7 +3,7 @@
         <div class="card">
             <div class="card-header row">
                 <div class="col col-sm-2">
-                    <a href="/sales/pos" class="btn btn-primary btn-rounded">Add Sale</a>
+                    <a href="/sales/pos" class="btn btn-primary mb-2 ">Add Sale</a>
                 </div>
                 
                 <div class="col col-sm-6">
@@ -14,7 +14,7 @@
                         </div>
                         <div class="col-md-4">
                             <div class="form-group">
-                                <input wire:model.live.debounce.500ms="selectedDate" class="form-control" type="date"
+                                <input wire:model.live="selectedDate" class="form-control" type="date"
                                     required />
                             </div>
                         </div>
@@ -33,11 +33,10 @@
                         </div>
                     </div>
                 </div>
-                <div class="col col-sm-3">
-                    <div class="card-options text-right">
-                        <span class="mr-5" id="top">{{ $sales->links() }}</span>
+                <div class="col col-sm-3 ">
+                   {{ $sales->links() }}
 
-                    </div>
+                    
                 </div>
             </div>
             <div class="card-body">
