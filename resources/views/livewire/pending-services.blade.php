@@ -23,16 +23,26 @@
             <div class="card-body">
                 <table id="advanced_table" class="table">
                     <thead>
-                        <tr>
+                        <h5 class="text-primary float-left">Total Revenue:
+                            {{ number_format($pendingServices->where('status', '=', 'Done')->sum('price')) }} </h5>
+                        <div class="float-left ml-3">
+                            <label for="cash1" class="mt-1"> <input type="checkbox" id="cash1"
+                                    wire:model.live="cash"> Cash</label>
+                            <label for="e-cash" class="d-block "> <input type="checkbox" id="e-cash"
+                                    wire:model.live="eCash"> E-Cash</label>
+                        </div>
 
-                            <th class="nosort">RefNo.</th>
+                    </thead>
+                    <thead>
+                        <tr>
+                            <th class="nosort">Service Ref_ID.</th>
                             <th>Customer Name</th>
                             <th>Service Type</th>
                             <th>Total Price</th>
+                            <th>Bank Info</th>
+                            <th>Txn Refrence</th>
                             <th>Status</th>
-                            @can('admin')
-                                <th>Action</th>
-                            @endcan
+                            <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -52,6 +62,10 @@
 
 
                                 <td>{{ $pendingService->price }}</td>
+                                <td>{{ $pendingService->depositBank != null ? $pendingService->depositBank->bankName . ':' . $pendingService->depositBank->accNum : '-' }}
+                                </td>
+                                <td>{{ $pendingService->eCashRefNumber != null ? $pendingService->eCashRefNumber : '-' }}
+                                </td>
                                 <td>
                                     @if ($pendingService->status == 'Aborted')
                                         <span
@@ -70,20 +84,27 @@
                                                 <i class="ik ik-more-vertical"></i>
                                             </a>
                                             <div class="dropdown-menu dropdown-menu-right">
-                                                <a class="dropdown-item"
-                                                    href="{{ route('service.edit.pendingService', ['service' => $pendingService->id]) }}"><i
-                                                        class="ik ik-edit"></i> Edit </a>
+
+                                                @can('admin')
+                                                    <a class="dropdown-item"
+                                                        href="{{ route('service.edit.pendingService', ['service' => $pendingService->id]) }}"><i
+                                                            class="ik ik-edit"></i> Edit </a>
+                                                @endcan
+
                                                 @if ($pendingService->status == 'Done')
                                                     <a class="dropdown-item"
                                                         href="{{ route('service.markAsPending.pendingService', ['service' => $pendingService->id]) }}"><i
                                                             class="fa fa-check-circle"></i> Mark as Pending </a>
                                                 @else
                                                     <a class="dropdown-item"
-                                                        href="{{ route('service.servicePaymentEdit.pendingService', ['service' => $pendingService->id]) }}" onclick="promptPaymentMtd()"><i
-                                                            class="fa fa-check-circle" ></i> Mark as Done </a>
-                                                    <a class="dropdown-item"
-                                                        href="{{ route('service.abortStatus.pendingService', ['service' => $pendingService->id]) }}">
-                                                        <i class="fa fa-ban"></i> Abort </a>
+                                                        href="{{ route('service.servicePaymentEdit.pendingService', ['service' => $pendingService->id]) }}"
+                                                        onclick="promptPaymentMtd()"><i class="fa fa-check-circle"></i> Mark
+                                                        as Done </a>
+                                                    @can('admin')
+                                                        <a class="dropdown-item"
+                                                            href="{{ route('service.abortStatus.pendingService', ['service' => $pendingService->id]) }}">
+                                                            <i class="fa fa-ban"></i> Abort </a>
+                                                    @endcan
                                                 @endif
                                             </div>
                                         </div>
@@ -103,4 +124,3 @@
         </div>
     </div>
 </div>
-

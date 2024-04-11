@@ -13,7 +13,8 @@ class PendingServices extends Component
     use WithPagination;
 
     public $search;
-
+    public $cash;
+    public $eCash;
     public $searchWithType;
     public $searchWithDate;
 
@@ -29,7 +30,13 @@ class PendingServices extends Component
                 ->orWhere('price', '=', $this->search);
         })
             ->when($this->searchWithDate, function ($query) {
-                $query->whereDate('created_at', '=', Carbon::parse($this->searchWithDate)->format('Y-m-d'));
+                $query->whereDate('updated_at', '=', Carbon::parse($this->searchWithDate)->format('Y-m-d'));
+            })
+            ->when($this->cash, function ($query) {
+                $query->where('paymentMethod', '=', 'Cash');
+            })
+            ->when($this->eCash, function ($query) {
+                $query->where('paymentMethod', '=', 'E-Cash');
             })
             ->latest()
             ->paginate(15);
