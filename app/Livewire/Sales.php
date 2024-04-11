@@ -14,15 +14,22 @@ class Sales extends Component
     use WithPagination;
 
     public $search;
+    public $cash;
+    public $eCash;
     public $selectedDate;
     public $selectedBank;
 
     public function render()
     {
         $sales = Sale::when($this->search, function ($query) {
-            $query->where('customerName', 'like', "%{$this->search}%")
-            ->orWhere('paymentMethod', '=', $this->search);
+            $query->where('customerName', 'like', "%{$this->search}%")->orWhere('paymentMethod', '=', $this->search);
         })
+            ->when($this->cash, function ($query) {
+                $query->where('paymentMethod', '=', 'Cash');
+            })
+            ->when($this->eCash, function ($query) {
+                $query->where('paymentMethod', '=', 'E-Cash');
+            })
             ->when($this->selectedDate, function ($query) {
                 $query->whereDate('created_at', '=', Carbon::parse($this->selectedDate)->format('Y-m-d'));
             })
@@ -33,6 +40,6 @@ class Sales extends Component
             ->paginate(10);
 
         $depositBank = DepositBank::latest()->get();
-        return view('livewire.sales', compact('sales','depositBank'));
+        return view('livewire.sales', compact('sales', 'depositBank'));
     }
 }

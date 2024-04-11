@@ -11,5 +11,9 @@ class Service extends Model
     public function serviceTypes(){
         return $this->belongsToMany(ServiceType::class, 'pending_type')->withTimestamps();
      }
+     public function depositBank()
+    {
+        return $this->belongsTo(DepositBank::class,'deposit_bank_id');
+    }
     use HasFactory;
 }

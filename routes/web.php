@@ -108,9 +108,9 @@ Route::group(['prefix' => 'services', 'as' => 'service.', 'middleware' => ['auth
     Route::group(['middleware' => ['auth', 'can:admin', 'can:status']], function () {
         Route::get('/edit/pendingServices/{service}', [ServiceController::class, 'editPendingService'])->name('edit.pendingService');
         Route::put('/update/pendingServices/{service}', [ServiceController::class, 'updatePendingService'])->name('update.pendingService');
-        Route::put('/changeStatus/pendingServices/{service}', [ServiceController::class, 'markAsDone'])->name('markAsDone.pendingService');
-        Route::get('/changeStatus/servicePaymentEdit/{service}', [ServiceController::class, 'servicePaymentEdit'])->name('servicePaymentEdit.pendingService');
-        Route::get('/markAsPending/pendingServices/{service}', [ServiceController::class, 'markAsPending'])->name('markAsPending.pendingService');
+        Route::put('/changeStatus/pendingServices/{service}', [ServiceController::class, 'markAsDone'])->name('markAsDone.pendingService')->withoutMiddleware('admin');
+        Route::get('/changeStatus/servicePaymentEdit/{service}', [ServiceController::class, 'servicePaymentEdit'])->name('servicePaymentEdit.pendingService')->withoutMiddleware('admin');
+        Route::get('/markAsPending/pendingServices/{service}', [ServiceController::class, 'markAsPending'])->name('markAsPending.pendingService')->withoutMiddleware('admin');
         Route::get('/abortStatus/pendingServices/{service}', [ServiceController::class, 'abortPendingServiceStatus'])->name('abortStatus.pendingService');
     });
 });

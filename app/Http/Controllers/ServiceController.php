@@ -25,9 +25,18 @@ class ServiceController extends Controller
     }
     public function editPendingService(Service $service)
     {
-        $serviceTypes = ServiceType::latest()->get();
-        session(['editMode' => true, 'service' => $service, 'serviceTypes' => $serviceTypes]);
-        return back();
+        //users can't edit a service after a day , 
+        //because services are filtered with the time of update 
+        //and updating a service after a day F*s with the daily report
+        //this will allow me to show pending services that are registerd today and Done services that are marked as Done today
+        if ($service->created_at < date("Y-m-d H:i:s")) {
+            return back()->with('error',"Pending Service is not eligible for Editing");
+        } else {
+            $serviceTypes = ServiceType::latest()->get();
+            session(['editMode' => true, 'service' => $service, 'serviceTypes' => $serviceTypes]);
+            return back();
+        }
+        
     }
     public function updatePendingService(Service $service)
     {
