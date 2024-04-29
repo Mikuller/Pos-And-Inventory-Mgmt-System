@@ -11,19 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('services', function (Blueprint $table) {
+        Schema::create('expenses', function (Blueprint $table) {
             $table->id();
-            $table->string('customerName');
-            $table->string('customerPhone');
-            $table->float('price');
+            $table->string('expenseReason');
+            $table->longText('expenseDescription');
+            $table->string('payedPartnerName')->nullable();
+            $table->float('amount');
             $table->string('status');
-            $table->longText('statusNote')->nullable();
-            $table->string('refNumber')->unique();
-            $table->string('paymentMethod')->nullable();
-            $table->string('eCashRefNumber')->nullable();
             $table->timestamps();
         });
-
     }
 
     /**
@@ -31,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('services');
+        Schema::dropIfExists('expenses');
     }
 };

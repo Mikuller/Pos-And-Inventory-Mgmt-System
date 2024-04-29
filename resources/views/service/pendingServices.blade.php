@@ -108,6 +108,9 @@
 
                                     </div>
                                 @empty
+                                    <span class=" b-b-primary text-primary ">
+                                        <p>No registerd Service types </p>
+                                    </span>
                                 @endforelse
 
                                 @error('serviceTypeId')
@@ -117,7 +120,14 @@
                                 @enderror
                             </div>
                             <div class="form-group">
-                                <input class="btn btn-primary" type="submit" name="Save" value="Save">
+                                @if (!session('serviceTypes')->isEmpty())
+                                    <input class="btn btn-primary" type="submit" name="Save" value="Save">
+                                @else
+                                <a href="{{route('service.serviceTypes')}}">
+                                    <span class="float-right btn-sm btn-danger">Add Service Types First <i
+                                            class="fa fa-exclamation-triangle" aria-hidden="true"></i></span></a>
+                                @endif
+
                             </div>
                         </form>
                     </div>
@@ -294,8 +304,8 @@
                             <div class="form-group">
                                 <label class="d-block">Price</label>
                                 <input type="number" name="price" class="form-control" placeholder="Enter Price"
-                                    value="{{session('service')->price}}" required>
-                                
+                                    value="{{ session('service')->price }}" required>
+
                             </div>
                             <div class="form-group">
                                 <label class="d-block h4">Payment Method <span

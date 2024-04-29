@@ -82,10 +82,10 @@
                             <div class="sign-btn text-center">
                                 <button type="submit" class="btn btn-custom">Sign In</button>
                             </div>
-                            <div class="register">
+                            {{-- <div class="register">
                                 <p>{{ __('No account?') }} <a href="{{ route('register') }}">{{ __('Sign Up') }}</a>
                                 </p>
-                            </div>
+                            </div> --}}
 
                         </form>
                     </div>

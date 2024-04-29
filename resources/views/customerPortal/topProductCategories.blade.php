@@ -22,11 +22,12 @@
                 <div class="category-wrapper category-slider1 white-arrow category-arrow">
                     @forelse ($categories as $category)
                         <div>
-                            <a href="shop-left-sidebar.html" class="category-wrap category-padding">
+                           
+                            <a href="#" class="category-wrap category-padding">
                                 <img src="{{ $category->getImageURL() }}" class="bg-img blur-up lazyload"
                                     alt="category image">
-                                <div class="category-content category-text-1">
-                                    <h3 class="theme-color">{{ $category->name }}</h3>
+                                <div class="category-content category-text-1  ">
+                                    <h3 class="theme-color ">{{ $category->name }}</h3>
                                 </div>
                             </a>
                         </div>

@@ -10,9 +10,9 @@ class BankInfo extends Component
 {
     public $banks = '';
 
-    #[Validate('required|unique:deposit_banks,bankName')]
+   
     public $bankName = '';
-    #[Validate('required|numeric|unique:deposit_banks,accNum')]
+    
     public $accNum = '';
     public function storeBankInfo(){
         

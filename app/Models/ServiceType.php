@@ -18,7 +18,7 @@ function getImageURL()
         return url('storage/' . $this->image);
     }
 
-    return url('img/defaultImages/product_image.jpg') ;
+    return url('img/defaultImages/service_type_img.png') ;
 }
     use HasFactory;
 }

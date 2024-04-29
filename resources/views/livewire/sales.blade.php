@@ -8,7 +8,7 @@
 
                 <div class="col col-sm-6">
                     <div class="row">
-                        
+
                         <div class="col-md-4">
                             <input type="text" wire:model.live.debounce.500ms="search" class="form-control"
                                 placeholder="Search with customer name.." required="">
@@ -42,10 +42,13 @@
             <div class="card-body">
                 <table id="advanced_table" class="table">
                     <thead>
-                        <h5 class="text-primary float-left">Total Revenue: {{ number_format($sales->sum('grandTotal')) }} </h5>
-                        <div class="float-left ml-3" >
-                            <label for="cash1" class="mt-1"> <input type="checkbox" id="cash1" wire:model.live="cash" > Cash</label>             
-                            <label for="e-cash" class="d-block "> <input type="checkbox" id="e-cash" wire:model.live="eCash" > E-Cash</label>                          
+                        <h5 class="text-primary float-left">Total Revenue:
+                            {{ number_format($sales->sum('grandTotal')) }} </h5>
+                        <div class="float-left ml-3">
+                            <label for="cash1" class="mt-1"> <input type="checkbox" id="cash1"
+                                    wire:model.live="cash"> Cash</label>
+                            <label for="e-cash" class="d-block "> <input type="checkbox" id="e-cash"
+                                    wire:model.live="eCash"> E-Cash</label>
                         </div>
                     </thead>
                     <thead>
@@ -61,7 +64,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($sales as $index => $sale)
+                        @forelse ($sales as $index => $sale)
                             @php
                                 $seller = App\Models\User::all()->find($sale->sellerID);
                             @endphp
@@ -93,7 +96,11 @@
                                     </div>
                                 </td>
                             </tr>
-                        @endforeach
+                        @empty
+                            <span class=" b-b-primary text-primary text-center ">
+                                <p>No Sales were Made!!</p>
+                            </span>
+                        @endforelse
                     </tbody>
                 </table>
             </div>

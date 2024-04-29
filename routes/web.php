@@ -3,8 +3,10 @@
 use App\Http\Controllers\AuditLogController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\CreditController;
 use App\Http\Controllers\CustomerPortalController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\ExpenseController;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\SalesController;
 use App\Http\Controllers\ProductController;
@@ -140,6 +142,18 @@ Route::get('/messages/index', [MessageController::class, 'index'])->name('messag
 Route::get('/messages/show/{message}', [MessageController::class, 'show'])->name('message.show') ->middleware(['auth', 'can:status']);
 Route::get('/messages/destroy/{message}', [MessageController::class, 'destroy'])->name('message.destroy')->middleware(['auth', 'can:admin', 'can:status']);
 
+
+Route::get('/expenses/index',[ExpenseController::class,'index'])->name('expense.index');
+Route::put('/expenses/update/{expense}',[ExpenseController::class,'update'])->name('expense.update');
+Route::get('/expenses/destroy/{expense}',[ExpenseController::class,'destroy'])->name('expense.destroy');
+Route::get('/expenses/edit/{expense}',[ExpenseController::class,'edit'])->name('expense.edit');
+Route::get('/expenses/show/{expense}',[ExpenseController::class,'show'])->name('expense.show');
+
+Route::get('debit_credit/index',[CreditController::class,'index'])->name('debit_credit.index');
+Route::get('credit/edit/{credit}',[CreditController::class,'edit'])->name('credit.edit');
+Route::put('credit/update/{credit}',[CreditController::class,'update'])->name('credit.update');
+Route::get('credit/destroy{credit}',[CreditController::class,'destroy'])->name('credit.destroy');
+Route::put('credit/store',[CreditController::class,'store'])->name('credit.store');
 
 Route::get('settings',function(){
     session()->flush();

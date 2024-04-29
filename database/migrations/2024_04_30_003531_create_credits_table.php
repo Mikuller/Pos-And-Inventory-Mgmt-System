@@ -11,9 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->longText('securityQuestion')->nullable();
-            $table->string('securityAnswer')->nullable();
+        Schema::create('credits', function (Blueprint $table) {
+            $table->id();
+            $table->longText('creditDescription');
+            $table->string('payedPartnerName');
+            $table->string('payedPartnerPhone');
+            $table->float('amount');
+            $table->timestamps();
         });
     }
 
@@ -22,10 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn('securityQuestion');
-            $table->dropColumn('securityAnswer');
-
-        });
+        Schema::dropIfExists('credits');
     }
 };
