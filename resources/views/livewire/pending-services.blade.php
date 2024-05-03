@@ -88,12 +88,15 @@
                                             <a class="dropdown-item"
                                                 href="{{ route('service.edit.pendingService', ['service' => $pendingService->id]) }}"><i
                                                     class="ik ik-edit"></i> Edit </a>
-
+                                                    <a class="dropdown-item"
+                                                    href="{{ route('service.markAsPending.pendingService', ['service' => $pendingService->id]) }}">
+                                                    <i class="fa fa-credit-card-alt"></i>Complete Payment </a>
 
                                             @if ($pendingService->status == 'Done')
                                                 <a class="dropdown-item"
                                                     href="{{ route('service.markAsPending.pendingService', ['service' => $pendingService->id]) }}"><i
                                                         class="fa fa-check-circle"></i> Mark as Pending </a>
+                                               
                                             @else
                                                 <a class="dropdown-item"
                                                     href="{{ route('service.servicePaymentEdit.pendingService', ['service' => $pendingService->id]) }}"

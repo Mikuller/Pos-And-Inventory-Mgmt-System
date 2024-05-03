@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Credit;
 use App\Models\Product;
 use App\Models\Sale;
 
@@ -29,7 +30,8 @@ class SalesController extends Controller
 
         session()->put('sale', $sale);
 
-        return back();
+        return view('pos.sale.list');
+        
 
         
     }
@@ -43,6 +45,7 @@ class SalesController extends Controller
                 'grandTotal' => 'required|numeric|min:1',
                 // 'totalTax' => 'required|numeric|min:1',
                 'paymentMethod' => 'required|in:Cash,E-Cash',
+                'paymentStatus' => 'required|in:Paid,Unpaid',
             ]);
  
             $validated['eCashRefNumber'] = request('eCashRefNumber');
@@ -64,19 +67,36 @@ class SalesController extends Controller
             $sale = Sale::create($validated);
 
             $sale->products()->sync($cart);
+            
 
             foreach ($cart as $key => $value) {
                 $productId = $key;
                 $amount = $value['amount'];
                 $this->updateInventoryValue($productId, $amount);
             }
-
+             
+            if($sale->paymentStatus=="Unpaid"){
+                $this->saveAsCredit($sale);
+            }
+            
             session()->flush();
             return redirect(route('sales.index'))->with('success', 'Transaction was Successful!');
         } catch (\Exception $e) {
             return redirect(route('sales.index'))->with('error', $e);
         }
     }
+
+    public function saveAsCredit($sale){
+
+        Credit::create([
+            'debtorName' => $sale->customerName,
+            'debtorPhone' => $sale->customerPhone,
+            'amount' => $sale->grandTotal,
+            'creditDescription' => "Sales Credit",
+            'sale_id' => $sale->id
+                ]);
+    }
+
     public function calculateProfit($cart)
     {
         $profit = 0;

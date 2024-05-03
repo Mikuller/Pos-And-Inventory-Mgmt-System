@@ -60,19 +60,24 @@
                             </div>
                             
                             <div class="form-group">
-                                <label>Paid To:-</label>
-                                <input name="payedPartnerName" type="text" class="form-control"
-                                    placeholder="Enter Paid Partner" value="{{session('expense')->payedPartnerName}}">
+                                <label class="d-block">PAID TO:-</label>
+                                <label class="d-inline" for="payedPartnerName" >Name:   <input value="{{session('expense')->payedPartnerName}}" id="payedPartnerName" name="payedPartnerName" type="text" class="d-inline form-control "
+                                    placeholder="Enter Paid Partner's Name" required></label>
                                 @error('payedPartnerName')
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
+                                <label class="d-inline" for="payedPartnerPhone" >Phone: </label> <input value="{{session('expense')->payedPartnerPhone}}" id="payedPartnerPhone"  name="payedPartnerPhone" type="number" class="form-control d-inline"
+                                    placeholder="Enter Partner's Phone Number">
+                                @error('payedPartnerPhone')
                                     <span class="text-danger">{{ $message }}</span>
                                 @enderror
                             </div>
                             <div class="form-group">
                                 <label class="d-block">Payment Status</label>
-                                <label class="ml-2" for="paid"><input type="radio" @checked(session('expense')->status=='Paid') name="status"
-                                        id="paid" value="Paid" required /> Paid</label><br />
-                                <label class="ml-2" for="unpaid"><input type="radio" @checked(session('expense')->status=='Unpaid') name="status"
-                                        id="unpaid" value="Unpaid" required /> Unpaid</label><br />
+                                <label class="ml-2" for="paid3"><input type="radio" @checked(session('expense')->status=='Paid') name="status"
+                                        id="paid3" value="Paid" required /> Paid</label><br />
+                                <label class="ml-2" for="unpaid3"><input type="radio" @checked(session('expense')->status=='Unpaid') name="status"
+                                        id="unpaid3" value="Unpaid" required /> Unpaid</label><br />
                                 @error('status')
                                     <span class="text-danger">{{ $message }}</span>
                                 @enderror

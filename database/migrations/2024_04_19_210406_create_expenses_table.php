@@ -15,8 +15,10 @@ return new class extends Migration
             $table->id();
             $table->string('expenseReason');
             $table->longText('expenseDescription');
-            $table->string('payedPartnerName')->nullable();
+            $table->string('payedPartnerName');
+            $table->string('payedPartnerPhone')->nullable();
             $table->float('amount');
+            $table->foreignId('service_id')->nullable()->constrained("services")->cascadeOnUpdate()->nullOnDelete();        
             $table->string('status');
             $table->timestamps();
         });

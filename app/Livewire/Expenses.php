@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use App\Models\Debt;
 use App\Models\Expense;
 use App\Models\Service;
 use Carbon\Carbon;
@@ -20,6 +21,7 @@ class Expenses extends Component
     public $expenseReason='';
     public $serviceId=null;
     public $payedPartnerName= '';
+    public $payedPartnerPhone= '';
     public $expenseDescription= '';
     public $status= '';
     public $amount= 0;
@@ -34,14 +36,25 @@ class Expenses extends Component
         ]);
         $validated['service_id'] = $this->serviceId;
         $validated['payedPartnerName'] = $this->payedPartnerName;
-        Expense::create($validated);
+        $validated['payedPartnerPhone'] = $this->payedPartnerPhone;
+        $expense = Expense::create($validated);
+        if($validated['status']=="Unpaid"){
+            $this->saveAsDebt($expense);
+        }
         session()->flash("Success","Expense saved");
         $this->dispatch('$refresh');
         $this->reset();
     }
 
-    public function showServiceList(){
+    public function saveAsDebt($expense){
 
+        Debt::create([
+            'creditorName' => $expense->payedPartnerName,
+            'creditorPhone' => $expense->payedPartnerPhone,
+            'amount' => $expense->amount,
+            'deptDescription' => $expense->expenseReason . " Expense" ,
+            'expense_id' => $expense->id
+                ]);
     }
 
     public function render()
@@ -49,6 +62,7 @@ class Expenses extends Component
         $expenses =  Expense::when($this->search, function ($query) {
             $query->where('payedPartnerName', 'like', "%{$this->search}%")
             ->orWhere('expenseReason', 'like', "%{$this->search}%")
+            ->orWhere('payedPartnerPhone', 'like', "%{$this->search}%")
             ->orWhere('expenseDescription', 'like', "%{$this->search}%")
             ->orWhere('status', 'like', "%{$this->search}%")
             ->orWhere('amount', '=' , $this->search);

@@ -14,9 +14,11 @@ return new class extends Migration
         Schema::create('credits', function (Blueprint $table) {
             $table->id();
             $table->longText('creditDescription');
-            $table->string('payedPartnerName');
-            $table->string('payedPartnerPhone');
+            $table->string('debtorName');
+            $table->string('debtorPhone');
             $table->float('amount');
+            $table->foreignId('service_id')->nullable()->constrained("services")->cascadeOnUpdate()->nullOnDelete();        
+            $table->foreignId('sale_id')->nullable()->constrained("sales")->cascadeOnUpdate()->nullOnDelete();        
             $table->timestamps();
         });
     }

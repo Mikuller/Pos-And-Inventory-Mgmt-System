@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Credit;
+use App\Models\Debt;
 use App\Models\Expense;
 use Illuminate\Http\Request;
 
@@ -13,9 +14,7 @@ class CreditController extends Controller
      */
     public function index()
     {
-        $account_payable = Expense::where(
-            'status',"=","Unpaid"
-        )->latest()->paginate(10);
+        $account_payable = Debt::latest()->paginate(10);
         $account_receivable = Credit::latest()->paginate(10);
         return view('Debit_Credit.index',compact('account_payable','account_receivable'));
     }
@@ -78,11 +77,14 @@ class CreditController extends Controller
                 'amount' => 'required|numeric'
             ]);
             $credit->update($validated);
+            
             return back()->with('success',"Credit Info Updated!");
         } catch (\Throwable $th) {
             return back()->with('error',"Credit Info Not Updated!"); 
         }
     }
+     
+   
 
     /**
      * Remove the specified resource from storage.

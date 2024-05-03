@@ -44,10 +44,15 @@
                     @enderror
                 </div>
                 <div class="form-group">
-                    <label>Paid To:-</label>
-                    <input wire:model="payedPartnerName" name="payedPartnerName" type="text" class="form-control"
-                        placeholder="Enter Paid Partner(optional )">
+                    <label class="d-block">PAID TO:-</label>
+                    <label class="d-inline" for="payedPartnerName" >Name:   <input wire:model="payedPartnerName" id="payedPartnerName" name="payedPartnerName" type="text" class="d-inline form-control "
+                        placeholder="Enter Paid Partner's Name" required></label>
                     @error('payedPartnerName')
+                        <span class="text-danger">{{ $message }}</span>
+                    @enderror
+                    <label class="d-inline" for="payedPartnerPhone" >Phone: </label> <input wire:model="payedPartnerPhone" id="payedPartnerPhone"  name="payedPartnerPhone" type="number" class="form-control d-inline"
+                        placeholder="Enter Partner's Phone Number">
+                    @error('payedPartnerPhone')
                         <span class="text-danger">{{ $message }}</span>
                     @enderror
                 </div>

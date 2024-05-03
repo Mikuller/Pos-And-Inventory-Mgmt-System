@@ -33,7 +33,7 @@
 
             <div class="col-md-12">
 
-                {{-- <input type="hidden" name="_token" value="k4JC0rIKsVlV9AR9NCn4JfVS7hvobvmKTZm9pwR6"> --}}
+                {{-- <input type="hidden" name="_token" credit="k4JC0rIKsVlV9AR9NCn4JfVS7hvobvmKTZm9pwR6"> --}}
                 <div class="row">
 
 
@@ -50,21 +50,21 @@
                                 <table id="advanced_table" class="table">
                                     <thead>
                                         <tr>
-                                            <th>ID</th>
-                                            <th>Creditor Name</th>
-                                            <th>Reason</th>
+                                            {{-- <th>ID</th> --}}
+                                            <th>Creditor's Name</th>
+                                            <th>Creditor's Phone</th>
                                             <th>Amount</th>
                                             <th>Description</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @forelse ($account_payable as $key=>$value)
+                                        @forelse ($account_payable as $debt)
                                             <tr>
-                                                <td>{{ $key + 1 }}</td>
-                                                <td>{{ $value->payedPartnerName }}</td>
-                                                <td>{{ $value->expenseReason }}</td>
-                                                <td>{{ $value->amount }}</td>
-                                                <td>{{ $value->expenseDescription }}</td>
+                                                {{-- <td>{{ $key + 1 }}</td> --}}
+                                                <td>{{ $debt->creditorName }}</td>
+                                                <td>{{ $debt->creditorPhone }}</td>
+                                                <td>{{ $debt->amount }}</td>
+                                                <td><a class="text-primary" href="{{ $debt->expense_id!=null ?  route('expense.show',['expense'=>$debt->expense_id]) : route('purchases.show',['purchase'=>$debt->purchase_id])}}"> {{ $debt->deptDescription }}</a></td>
                                             </tr>
                                         @empty
                                         @endforelse
@@ -93,22 +93,22 @@
                                 <table id="advanced_table" class="table">
                                     <thead>
                                         <tr>
-                                            <th class="wp-10">ID</th>
-                                            <th class="wp-20">Description</th>
-                                            <th class="wp-40">Debitor Name</th>
-                                            <th class="wp-40">Debitor Phone#</th>
+                                            {{-- <th class="wp-10">ID</th>           --}}
+                                            <th class="wp-40">Debitor's Name</th>
+                                            <th class="wp-40">Debitor's Phone</th>
                                             <th class="wp-15">Amount</th>
+                                            <th class="wp-20">Description</th>
                                             <th>Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @forelse ($account_receivable as $key=>$value)
+                                        @forelse ($account_receivable as $credit)
                                             <tr>
-                                                <td>{{ $key + 1 }}</td>
-                                                <td> {{ $value->creditDescription }}</td>
-                                                <td>{{ $value->payedPartnerName }}</td>
-                                                <td>{{ $value->payedPartnerPhone }}</td>
-                                                <td>{{ $value->amount }} </td>
+                                                {{-- <td>{{ $key + 1 }}</td> --}}    
+                                                <td>{{ $credit->debtorName }}</td>
+                                                <td>{{ $credit->debtorPhone }}</td>
+                                                <td>{{ $credit->amount }} </td>
+                                                <td><a class="text-primary" href="{{$credit->sale_id!=null ? route('sales.show',['sale'=>$credit->sale_id])   :  route('service.index')  }}">{{ $credit->creditDescription }}</a> </td>
                                                 <td>
                                                     <div class="dropdown d-inline-block">
                                                         <a class="nav-link dropdown-toggle" href="#" id="moreDropdown"
@@ -117,9 +117,9 @@
                                                             <i class="ik ik-more-vertical"></i>
                                                         </a>
                                                         <div class="dropdown-menu dropdown-menu-right">
-                                                            <a class="dropdown-item" href="{{route('credit.edit',['credit'=>$value->id])}}"><i
+                                                            <a class="dropdown-item" href="{{route('credit.edit',['credit'=>$credit->id])}}"><i
                                                                     class="ik ik-edit"></i> Edit </a>
-                                                            <a class="dropdown-item" href="{{route('credit.destroy',['credit'=>$value->id])}}">
+                                                            <a class="dropdown-item" href="{{route('credit.destroy',['credit'=>$credit->id])}}">
                                                                 <i class="fa fa-trash"  onclick="confirmation(event)"></i> Delete </a>
                                                         </div>
                                                     </div>
