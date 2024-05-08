@@ -31,7 +31,7 @@ class Products extends Component
             $query->where('description', 'like', "%{$this->search}%")
                 ->orWhere('id', 'like', "%{$this->search}%")
                 ->orWhere('stockAlert', '=', $this->search)
-                ->orWhere('name', '=', $this->search)
+                ->orWhere('name', 'like', "%{$this->search}%")
                 ->orWhere('sellingPrice', '=', $this->search)
                 ->orWhere('purchasePrice', '=', $this->search);
             })

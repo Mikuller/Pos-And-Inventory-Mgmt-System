@@ -34,59 +34,57 @@
 
                     </div>
                 </div>
-                <div class="float-md-right">
-                    <span class="text-muted text-small mr-2">{{ $products->links() }}</span>
-
-                </div>
             </div>
         </div>
-        <div class="separator mb-20"></div>
+        <div class="card-body">
+            <table id="advanced_table" class="table">
+                <thead>
+                    <tr>
+                        <th class="text-center">Image</th>
+                        <th class="text-center">Name</th>
+                        <th class="text-center">Purchase Price</th>
+                        <th class="text-center">Selling Price</th>
+                        <th class="text-center">Current Quantity</th>
+                        <th class="text-center">Description</th>
+                        <th class="text-center">Stock Alert</th>
+                        <th class="text-center">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @forelse ($products as $product)
+                        <tr>
 
-        <div class="row layout-wrap" id="layout-wrap">
-            @forelse ($products as $product)
-                <div class="col-xl-3 col-lg-4 col-12 col-sm-6 mb-4 list-item list-item-grid">
-                    <div class="card d-flex flex-row mb-3">
-                        <a class="d-flex card-img" href="{{ route('product.show', ['product' => $product->id]) }}">
-                            <img src="{{ $product->getImageURL() }}" alt="{{ $product->name }}"
-                                class="list-thumbnail responsive border-0">
-                        </a>
-                        <div class="d-flex flex-grow-1 min-width-zero card-content">
-                            <div
-                                class="card-body align-self-center d-flex flex-column flex-md-row justify-content-between min-width-zero align-items-md-center mb-0">
-                                <a class="mb-1 list-item-heading  truncate w-40 w-xs-100"
-                                    href="{{ route('product.show', ['product' => $product->id]) }}">
-                                    <b>{{ $product->name }}
-                                    </b>
+                            <td><img src="{{$product->getImageURL()}}" class="table-user-thumb" alt="image_product"></td>
+                            <td >{{ $product->name }} </td>
+                            <td class="text-center">{{ $product->purchasePrice }}</td>
+                            <td class="text-center">{{ $product->sellingPrice }}</td>
+                            <td class="text-center">{{ $product->quantity }}</td>
+                            <td class="text-center">{{$product->description}}</td>
+                            <td class="text-center">{{$product->stockAlert}}</td>
+                            <td>
+                                <div class="text-center">
+                                    {{-- <a href="#"><i class="m-2 fa fa-print" aria-hidden="true"></i></a> --}}
+                                    <a class="btn btn-sm btn-success ml-2"
+                                    href="{{ route('product.edit', ['product' => $product->id]) }}"><i
+                                            class="fa fa-pen"></i></a>
+                                    <a class="btn btn-sm btn-danger"
+                                    href="{{ route('product.destroy', ['product' => $product->id]) }}"
+                                        onclick="confirmation(event)"><i class="ik ik-trash-2"></i></a>
+                                </div>
 
-                                </a>
-                                <p class="mb-1 w-15 w-xs-100">
-                                    Total {{ $product->quantity }} items
-                                </p>
-                            </div>
-                            <div class="list-actions">
-                                <a href="{{ route('product.edit', ['product' => $product->id]) }}"><i
-                                        class="ik ik-edit-2"></i></a>
-                                <a href="{{ route('product.destroy', ['product' => $product->id]) }}"
-                                    class="list-delete" onclick="confirmation(event)"><i class="ik ik-trash-2"></i></a>
-                            </div>
-                            <div class="custom-control custom-checkbox pl-1 align-self-center">
-                                <label class="custom-control custom-checkbox mb-0">
-                                    <input type="checkbox" class="custom-control-input">
-                                    <span class="custom-control-label"></span>
-                                </label>
-                            </div>
+                            </td>
+                        </tr>
+                    @empty
+                        <span class=" b-b-primary text-primary text-center">
+                            <p>No records!</p>
+                        </span>
+                    @endforelse
 
-                        </div>
-                    </div>
-                </div>
-            @empty
-            
-                <span class=" b-b-primary text-primary float-center ">
-                    <p>No Registered Product available!!</p>
-                </span>
-            
-                
-            @endforelse
+                </tbody>
+            </table>
+        </div>
+        <div class="col col-sm-3 ">
+            {{ $products->links() }}
         </div>
     </div>
 </div>

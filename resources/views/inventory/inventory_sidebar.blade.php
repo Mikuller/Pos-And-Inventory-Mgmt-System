@@ -47,11 +47,11 @@
                     </div> --}}
                 </div>
                 
-                <div class="nav-item {{ ($segment1 == 'Debit/Credit') ? 'active' : '' }}">
+                <div class="nav-item {{ ($segment1 == 'debit_credit') ? 'active' : '' }}">
                     <a href="{{route('debit_credit.index')}}"><i class="fa fa-university" aria-hidden="true"></i><span>{{ __('Debit/Credit')}}</span></a>
                 </div>
 
-                <div class="nav-item {{ ($segment1 == 'Expenses') ? 'active' : '' }}">
+                <div class="nav-item {{ ($segment1 == 'expenses') ? 'active' : '' }}">
                     <a href="{{route('expense.index')}}"><i class="fa fa-book" aria-hidden="true"></i><span>{{ __('Expenses')}}</span></a>
                 </div>
                

@@ -6,6 +6,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CreditController;
 use App\Http\Controllers\CustomerPortalController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\DebtController;
 use App\Http\Controllers\ExpenseController;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\SalesController;
@@ -66,7 +67,6 @@ Route::group(['prefix' => 'products', 'as' => 'product.', 'middleware' => ['auth
     Route::get('/index', [ProductController::class, 'index'])->name('index');
     Route::put('/store', [ProductController::class, 'store'])->name('store');
     Route::get('/edit/{product}', [ProductController::class, 'edit'])->name('edit');
-    Route::get('/show/{product}', [ProductController::class, 'show'])->name('show');
     Route::put('/update/{product}', [ProductController::class, 'update'])->name('update');
     Route::get('/destroy/{product}', [ProductController::class, 'destroy'])->name('destroy');
 });
@@ -107,10 +107,12 @@ Route::group(['prefix' => 'services', 'as' => 'service.', 'middleware' => ['auth
     Route::get('/serviceTypes', [ServiceController::class, 'serviceTypes'])->name('serviceTypes');
     Route::post('/store/pendingServices', [ServiceController::class, 'storePendingService'])->name('store.pendingService');
     Route::get('/create/pendingServices', [ServiceController::class, 'createPendingService'])->name('create.pendingService');
+    Route::get('/show/pendingServices/{service}', [ServiceController::class, 'showPendingService'])->name('show.pendingService');
     Route::group(['middleware' => ['auth', 'can:admin', 'can:status']], function () {
         Route::get('/edit/pendingServices/{service}', [ServiceController::class, 'editPendingService'])->name('edit.pendingService');
         Route::put('/update/pendingServices/{service}', [ServiceController::class, 'updatePendingService'])->name('update.pendingService');
-        Route::put('/changeStatus/pendingServices/{service}', [ServiceController::class, 'markAsDone'])->name('markAsDone.pendingService')->withoutMiddleware('admin');
+        Route::put('/savePaymentInfo/pendingServices/{service}', [ServiceController::class, 'savePaymentInfo'])->name('savePaymentInfo.pendingService');
+        Route::get('/changeStatus/pendingServices/{service}', [ServiceController::class, 'markAsDone'])->name('markAsDone.pendingService')->withoutMiddleware('admin');
         Route::get('/changeStatus/servicePaymentEdit/{service}', [ServiceController::class, 'servicePaymentEdit'])->name('servicePaymentEdit.pendingService')->withoutMiddleware('admin');
         Route::get('/markAsPending/pendingServices/{service}', [ServiceController::class, 'markAsPending'])->name('markAsPending.pendingService')->withoutMiddleware('admin');
         Route::get('/abortStatus/pendingServices/{service}', [ServiceController::class, 'abortPendingServiceStatus'])->name('abortStatus.pendingService');
@@ -154,6 +156,14 @@ Route::get('credit/edit/{credit}',[CreditController::class,'edit'])->name('credi
 Route::put('credit/update/{credit}',[CreditController::class,'update'])->name('credit.update');
 Route::get('credit/destroy{credit}',[CreditController::class,'destroy'])->name('credit.destroy');
 Route::put('credit/store',[CreditController::class,'store'])->name('credit.store');
+
+
+Route::get('debt/destroy{debt}',[DebtController::class,'destroy'])->name('debt.destroy');
+Route::put('debt/update/{debt}',[DebtController::class,'update'])->name('debt.update');
+Route::get('debt/edit/{debt}',[DebtController::class,'edit'])->name('debt.edit');
+Route::put('debt/store',[DebtController::class,'store'])->name('debt.store');
+
+
 
 Route::get('settings',function(){
     session()->flush();

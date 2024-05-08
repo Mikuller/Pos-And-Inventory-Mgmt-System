@@ -34,16 +34,7 @@
         </div>
         <livewire:products/>
         
-        @if (session('viewMode') ?? false)
-        @include('inventory.product.show')
-            <script>
-                // Open the modal using JavaScript
-                $(document).ready(function() {
-                    $('#viewModal').modal('show');
-                });
-            </script>
-           <?php session(['viewMode' => false]); ?>{{-- Reset the session value after displaying modal --}}
-        @endif
+       
         @push('script')
             <script src="{{ asset('plugins/amcharts/amcharts.js') }}"></script>
             <script src="{{ asset('plugins/amcharts/gauge.js') }}"></script>

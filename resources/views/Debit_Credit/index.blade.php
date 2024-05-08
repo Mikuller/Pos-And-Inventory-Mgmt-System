@@ -1,5 +1,5 @@
 @extends('inventory.layout')
-@section('title', 'Manage Staff')
+@section('title', 'Manage Debt & Credit')
 @section('content')
     <div class="container-fluid">
         <div class="page-header">
@@ -38,39 +38,66 @@
 
 
                     <div class="col-md-6">
-                        <div class="card mb-0 p-2">  
-                                <div class="row">
-                                    <div class="col-sm-4">
-                                        <div class="form-group">
-                                            <p class="btn bg-warning bg-btn text-white"> Debt </p>
-                                        </div>
+                        <div class="card mb-0 p-2">
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+                                        <a href="#addDebt" data-toggle="modal" data-target="#addDebt"
+                                            class="btn btn-success">+ Debt(ያለብህ ዱቤ) </a>
+
                                     </div>
-
                                 </div>
-                                <table id="advanced_table" class="table">
-                                    <thead>
-                                        <tr>
-                                            {{-- <th>ID</th> --}}
-                                            <th>Creditor's Name</th>
-                                            <th>Creditor's Phone</th>
-                                            <th>Amount</th>
-                                            <th>Description</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @forelse ($account_payable as $debt)
-                                            <tr>
-                                                {{-- <td>{{ $key + 1 }}</td> --}}
-                                                <td>{{ $debt->creditorName }}</td>
-                                                <td>{{ $debt->creditorPhone }}</td>
-                                                <td>{{ $debt->amount }}</td>
-                                                <td><a class="text-primary" href="{{ $debt->expense_id!=null ?  route('expense.show',['expense'=>$debt->expense_id]) : route('purchases.show',['purchase'=>$debt->purchase_id])}}"> {{ $debt->deptDescription }}</a></td>
-                                            </tr>
-                                        @empty
-                                        @endforelse
 
-                                    </tbody>
-                                </table>
+                            </div>
+                            <table id="advanced_table" class="table">
+                                <thead>
+                                    <tr>
+                                        {{-- <th>ID</th> --}}
+                                        <th>Creditor's Name</th>
+                                        <th>Creditor's Phone</th>
+                                        <th>Amount</th>
+                                        <th>Description</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @forelse ($account_payable as $debt)
+                                        <tr>
+                                            {{-- <td>{{ $key + 1 }}</td> --}}
+                                            <td>{{ $debt->creditorName }}</td>
+                                            <td>{{ $debt->creditorPhone }}</td>
+                                            <td>{{ $debt->amount }}</td>
+                                            @if ($debt->expense_id != null || $debt->purchase_id != null)
+                                                <td><a class="text-primary"
+                                                        href="{{ $debt->expense_id != null ? route('expense.show', ['expense' => $debt->expense_id]) : route('purchases.show', ['purchase' => $debt->purchase_id]) }}">
+                                                        {{ $debt->deptDescription }}</a></td>
+                                            @else
+                                                <td>{{ $debt->deptDescription }}</td>
+                                            @endif
+                                            <td>
+                                                <div class="dropdown d-inline-block">
+                                                    <a class="nav-link dropdown-toggle" href="#" id="moreDropdown"
+                                                        role="button" data-toggle="dropdown" aria-haspopup="true"
+                                                        aria-expanded="false">
+                                                        <i class="ik ik-more-vertical"></i>
+                                                    </a>
+                                                    <div class="dropdown-menu dropdown-menu-right">
+                                                        <a class="dropdown-item"
+                                                            href="{{ route('debt.edit', ['debt' => $debt->id]) }}"><i
+                                                                class="ik ik-edit"></i> Edit </a>
+                                                        <a class="dropdown-item"
+                                                            href="{{ route('debt.destroy', ['debt' => $debt->id]) }}">
+                                                            <i class="fa fa-trash" onclick="confirmation(event)"></i>
+                                                            Delete/Paid </a>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    @empty
+                                    @endforelse
+
+                                </tbody>
+                            </table>
                             <div class="col col-sm-3 ">
                                 {{ $account_payable->links() }}
                             </div>
@@ -78,59 +105,71 @@
                     </div>
                     <div class="col-md-6">
                         <div class="card mb-0 p-2">
-                            
-                                <div class="row">
-                                    <div class="col-sm-4">
-                                        <div class="form-group">
-                                            <a href="#addCredit" data-toggle="modal" data-target="#addCredit"
-                                                class="btn btn-success">+ Credit ( የሰጠህው ዱቤ )</a>
-                                        </div>
-                                    </div>
 
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+                                        <a href="#addCredit" data-toggle="modal" data-target="#addCredit"
+                                            class="btn btn-success">+ Credit ( የሰጠህው ዱቤ )</a>
+                                    </div>
                                 </div>
 
+                            </div>
 
-                                <table id="advanced_table" class="table">
-                                    <thead>
+
+                            <table id="advanced_table" class="table">
+                                <thead>
+                                    <tr>
+                                        {{-- <th class="wp-10">ID</th>           --}}
+                                        <th class="wp-40">Debitor's Name</th>
+                                        <th class="wp-40">Debitor's Phone</th>
+                                        <th class="wp-15">Amount</th>
+                                        <th class="wp-20">Description</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @forelse ($account_receivable as $credit)
                                         <tr>
-                                            {{-- <th class="wp-10">ID</th>           --}}
-                                            <th class="wp-40">Debitor's Name</th>
-                                            <th class="wp-40">Debitor's Phone</th>
-                                            <th class="wp-15">Amount</th>
-                                            <th class="wp-20">Description</th>
-                                            <th>Action</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @forelse ($account_receivable as $credit)
-                                            <tr>
-                                                {{-- <td>{{ $key + 1 }}</td> --}}    
-                                                <td>{{ $credit->debtorName }}</td>
-                                                <td>{{ $credit->debtorPhone }}</td>
-                                                <td>{{ $credit->amount }} </td>
-                                                <td><a class="text-primary" href="{{$credit->sale_id!=null ? route('sales.show',['sale'=>$credit->sale_id])   :  route('service.index')  }}">{{ $credit->creditDescription }}</a> </td>
-                                                <td>
-                                                    <div class="dropdown d-inline-block">
-                                                        <a class="nav-link dropdown-toggle" href="#" id="moreDropdown"
-                                                            role="button" data-toggle="dropdown" aria-haspopup="true"
-                                                            aria-expanded="false">
-                                                            <i class="ik ik-more-vertical"></i>
-                                                        </a>
-                                                        <div class="dropdown-menu dropdown-menu-right">
-                                                            <a class="dropdown-item" href="{{route('credit.edit',['credit'=>$credit->id])}}"><i
-                                                                    class="ik ik-edit"></i> Edit </a>
-                                                            <a class="dropdown-item" href="{{route('credit.destroy',['credit'=>$credit->id])}}">
-                                                                <i class="fa fa-trash"  onclick="confirmation(event)"></i> Delete </a>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        @empty
-                                        @endforelse
+                                            {{-- <td>{{ $key + 1 }}</td> --}}
+                                            <td>{{ $credit->debtorName }}</td>
+                                            <td>{{ $credit->debtorPhone }}</td>
+                                            <td>{{ $credit->amount }} </td>
 
-                                    </tbody>
-                                </table>
-                            
+                                            <td>
+                                                @if ($credit->sale_id != null || $credit->service_id != null)
+                                                    <a class="text-primary"
+                                                        href="{{ $credit->sale_id != null ? route('sales.show', ['sale' => $credit->sale_id]) : route('service.show.pendingService', ['service' => $credit->service_id]) }}">{{ $credit->creditDescription }}</a>
+                                                @else
+                                                    {{ $credit->creditDescription }}
+                                                @endif
+                                            </td>
+
+                                            <td>
+                                                <div class="dropdown d-inline-block">
+                                                    <a class="nav-link dropdown-toggle" href="#" id="moreDropdown"
+                                                        role="button" data-toggle="dropdown" aria-haspopup="true"
+                                                        aria-expanded="false">
+                                                        <i class="ik ik-more-vertical"></i>
+                                                    </a>
+                                                    <div class="dropdown-menu dropdown-menu-right">
+                                                        <a class="dropdown-item"
+                                                            href="{{ route('credit.edit', ['credit' => $credit->id]) }}"><i
+                                                                class="ik ik-edit"></i> Edit </a>
+                                                        <a class="dropdown-item"
+                                                            href="{{ route('credit.destroy', ['credit' => $credit->id]) }}">
+                                                            <i class="fa fa-trash" onclick="confirmation(event)"></i>
+                                                            Delete/Paid </a>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    @empty
+                                    @endforelse
+
+                                </tbody>
+                            </table>
+
                             <div class="col col-sm-3 ">
                                 {{ $account_receivable->links() }}
                             </div>
@@ -145,7 +184,8 @@
         </div>
     </div>
 
-    @include('Debit_Credit.create')
+    @include('Debit_Credit.create_credit')
+    @include('Debit_Credit.create_debt')
 
     @if (session('editMode') && session('credit')->exists() ?? false)
         @include('Debit_Credit.edit_credit')
@@ -156,6 +196,16 @@
             });
         </script>
         <?php session(['editMode' => false]); ?>
+    @endif
+    @if (session('debtEditMode') && session('debt')->exists() ?? false)
+        @include('Debit_Credit.edit_debt')
+        <script>
+            // Open the modal using JavaScript
+            $(document).ready(function() {
+                $('#editDebt').modal('show');
+            });
+        </script>
+        <?php session(['debtEditMode' => false]); ?>
     @endif
 
 

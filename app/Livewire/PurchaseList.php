@@ -17,8 +17,7 @@ class PurchaseList extends Component
             $query->where('supplierName', 'like', "%{$this->search}%")
                 ->orWhere('status', 'like', "%{$this->search}%")
                 ->orWhere('shippingCost', '=', $this->search)
-                ->orWhere('grandTotal', '=', $this->search)
-                ->orWhere('totalTax', '=', $this->search);
+                ->orWhere('grandTotal', '=', $this->search);
             })
             ->when($this->selectedDate, function ($query) {
                 $query->whereDate('created_at', '=', Carbon::parse($this->selectedDate)->format('Y-m-d'));

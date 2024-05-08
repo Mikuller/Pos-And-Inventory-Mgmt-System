@@ -22,44 +22,74 @@
                                             <th rowspan="4">INCOME</th>
                                         <tr>
                                             <th>Total Sales Income</th>
-                                            <td><span class="text-primary font-weight-bold">Cash :</span>{{$data['totalSalesIncomeCash'] }}</td>
-                                            <td><span class="text-warning font-weight-bold">E-Cash :</span>{{ $data['totalSalesIncomeEcash'] }}</td>
+                                            <td><span
+                                                    class="text-success font-weight-bold">{{ number_format($data['totalSalesIncome']) }}</span>
+                                            </td>
                                         </tr>
                                         <tr>
                                             <th>Total Service Income</th>
-                                            <td><span class="text-primary font-weight-bold">Cash :</span>{{ $data['totalServiceIncomeCash'] }}</td>
-                                            <td><span class="text-warning font-weight-bold">E-Cash :</span>{{ $data['totalServiceIncomeECash'] }}</td>
+                                            <td><span
+                                                    class="text-success font-weight-bold">{{ number_format($data['totalServiceIncome']) }}</span>
+                                            </td>
                                         </tr>
                                         <tr>
-                                            <th >Total Revenue</th>
-                                            <td colspan="2">{{ $data['totalRevenue'] }}</td>
+                                            <th>Total Revenue</th>
+                                            <td colspan="2">{{number_format($data['totalRevenue'])}}</td>
                                         </tr>
                                         </tr>
                                         <tr>
                                             <th rowspan="3">COST</th>
                                         <tr>
-                                            <th>Total Purchase Cost</th>
-                                            <td colspan="2">{{ $data['totalPurchaseCost'] }}</td>
+                                            <th>Total Cost of Sales</th>
+                                            <td colspan="2">{{ number_format($data['totalPurchaseCost']) }}</td>
                                         </tr>
                                         <tr>
                                             <th>Total Shipping Cost</th>
-                                            <td colspan="2">{{ $data['totalShippingCost'] }}</td>
+                                            <td colspan="2">{{ number_format($data['totalShippingCost'] )}}</td>
                                         </tr>
 
                                         </tr>
-                                        {{-- <tr>
-                                            <th rowspan="2">TAX</th>
                                         <tr>
-                                            <th>Total Tax Deduction</th>>
-                                            <td>{{ $data['totalTaxDeduction'] }}</td>
-                                        </tr> --}}
+                                            <th rowspan="2">GROSS INCOME</th>
+                                        <tr>
+                                            <th>INCOME - COST</th>
+                                            <td colspan="2">{{ number_format($data['grossIncome'])  }}</td>
+                                        </tr>
+
+                                        </tr>
+                                        <tr>
+                                            <th rowspan="7">EXPENSES</th>
+                                        <tr>
+                                            <th>Rent Expense</th>
+                                            <td>{{number_format($data['expenses']['Rent'])}}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Service Expense</th>
+                                            <td>{{number_format($data['expenses']['Service'])}}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Food Expense</th>
+                                            <td>{{number_format($data['expenses']['Food'])}}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Salary Expense</th>
+                                            <td>{{number_format($data['expenses']['Salary'])}}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Transport Expense</th>
+                                            <td>{{number_format($data['expenses']['Transport'])}}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Other Expense</th>
+                                            <td>{{number_format($data['expenses']['Other'])}}</td>
+                                        </tr>
 
                                         </tr>
                                         <tr>
                                             <th rowspan="2">PROFIT</th>
                                         <tr>
                                             <th>Total Profit</th>
-                                            <td colspan="2">{{ $data['totalProfit'] }}</td>
+                                            <td colspan="2">{{ number_format($data['totalProfit']) }}</td>
                                         </tr>
 
                                         </tr>

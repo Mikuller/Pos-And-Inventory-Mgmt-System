@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Credit;
 use App\Models\Debt;
 use App\Models\Expense;
+use App\Models\Sale;
+use App\Models\Service;
 use Illuminate\Http\Request;
 
 class CreditController extends Controller
@@ -35,8 +37,8 @@ class CreditController extends Controller
         try {
             $validated = request()->validate([
                 'creditDescription' => 'required',
-                'payedPartnerName' =>'required',
-                'payedPartnerPhone' =>'required',
+                'debtorName' =>'required',
+                'debtorPhone' =>'required',
                 'amount' => 'required|numeric'
             ]);
             Credit::create($validated);
@@ -72,8 +74,8 @@ class CreditController extends Controller
         try {
             $validated = request()->validate([
                 'creditDescription' => 'required',
-                'payedPartnerName' =>'required',
-                'payedPartnerPhone' =>'required',
+                'debtorName' =>'required',
+                'debtorPhone' =>'required',
                 'amount' => 'required|numeric'
             ]);
             $credit->update($validated);
@@ -93,9 +95,26 @@ class CreditController extends Controller
     {
         try {
             $credit->delete();
+            $this->markAsPaid($credit);
             return back()->with('success','credit Info Deleted Successfully');         
         } catch (\Throwable $th) {
             return back()->with('error','Error while Deleting Credit Info ');         
+        }
+    }
+    function markAsPaid($credit){
+        if($credit->service_id != null){
+          //update service payment status 
+          $service = Service::all()->find($credit->service_id);
+          $service->update([
+            'paymentStatus' => "Paid"
+          ]);
+        }
+        elseif($credit->sale_id != null){
+            //update sales payment status
+           $sale = Sale::all()->find($credit->sale_id);
+           $sale->update([
+            'paymentStatus' => "Paid"
+          ]);
         }
     }
 }

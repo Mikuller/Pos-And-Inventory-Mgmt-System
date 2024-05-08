@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Credit;
 use App\Models\Service;
 use App\Models\ServiceType;
 use Dotenv\Exception\ValidationException;
@@ -25,18 +26,23 @@ class ServiceController extends Controller
     }
     public function editPendingService(Service $service)
     {
-        //users can't edit a service after a day , 
-        //because services are filtered with the time of update 
+        //users can't edit a service after a day ,
+        //because services are filtered with the time of update
         //and updating a service after a day F*s with the daily report
         //this will allow me to show pending services that are registerd today and Done services that are marked as Done today
-        if ($service->created_at < date("Y-m-d H:i:s")) {
-            return back()->with('error',"Pending Service is not eligible for Editing");
+        if ($service->created_at < date('Y-m-d H:i:s')) {
+            return back()->with('error', 'Pending Service is not eligible for Editing');
         } else {
             $serviceTypes = ServiceType::latest()->get();
             session(['editMode' => true, 'service' => $service, 'serviceTypes' => $serviceTypes]);
             return back();
         }
-        
+    }
+    public function showPendingService(Service $service)
+    {
+        $serviceTypes = ServiceType::latest()->get();
+        session(['showMode' => true, 'service' => $service, 'serviceTypes' => $serviceTypes]);
+        return view('service.pendingServices');
     }
     public function updatePendingService(Service $service)
     {
@@ -107,32 +113,49 @@ class ServiceController extends Controller
     }
     public function servicePaymentEdit(Service $service)
     {
-        session(['editPaymentMode' => true,'service'=>$service]);
+        session(['editPaymentMode' => true, 'service' => $service]);
         return back();
     }
-    public function markAsDone(Service $service)
+    public function savePaymentInfo(Service $service)
     {
-       
-        if (request('paymentMethod')!=null) {
+        if (request('paymentMethod') != null) {
             try {
                 $service->update([
                     'paymentMethod' => request('paymentMethod'),
+                    'paymentStatus' => request('paymentStatus'),
                     'deposit_bank_id' => request('depositBank'),
                     'eCashRefNumber' => request('eCashRefNumber'),
                     'price' => request('price'),
-
-                    'status' => 'Done',
                 ]);
-                
+                if ($service->paymentStatus == 'Unpaid') {
+                    $this->saveAsCredit($service);
+                }
                 return back()->with('success', 'Service status is Updated, successfully');
             } catch (\Exception $e) {
                 return redirect()->back()->with('error', substr($e, 22, 55));
             }
-        }else {
+        } else {
             return back()->with('error', 'Service status NOT Updated!!');
         }
-       
     }
+    public function saveAsCredit($service)
+    {
+        Credit::create([
+            'debtorName' => $service->customerName,
+            'debtorPhone' => $service->customerPhone,
+            'amount' => $service->price,
+            'creditDescription' => 'Service Credit',
+            'service_id' => $service->id,
+        ]);
+    }
+    public function markAsDone(Service $service)
+    {
+        $service->update([
+            'status' => 'Done',
+        ]);
+        return back()->with('success', 'Service status is Updated, successfully');
+    }
+
     public function markAsPending(Service $service)
     {
         $service->update([

@@ -43,6 +43,7 @@
                             <th>Bank Info</th>
                             <th>Txn Refrence</th>
                             <th>Status</th>
+                            <th>Payment Status</th>
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -74,7 +75,7 @@
                                             class="badge badge-pill {{ $pendingService->status == 'Pending' ? 'badge-warning' : 'badge-success' }}  mb-1 text-black">{{ $pendingService->status }}</span>
                                     @endif
                                 </td>
-
+                                <td><span class="badge badge-pill  {{ $pendingService->paymentStatus == 'Unpaid' ? 'badge-warning' : 'badge-success' }}  mb-1 text-black">{{ $pendingService->paymentStatus}}</span></td>
                                 <td>
                                     <div class="dropdown d-inline-block">
                                         <a class="nav-link dropdown-toggle" href="#" id="moreDropdown"
@@ -89,8 +90,8 @@
                                                 href="{{ route('service.edit.pendingService', ['service' => $pendingService->id]) }}"><i
                                                     class="ik ik-edit"></i> Edit </a>
                                                     <a class="dropdown-item"
-                                                    href="{{ route('service.markAsPending.pendingService', ['service' => $pendingService->id]) }}">
-                                                    <i class="fa fa-credit-card-alt"></i>Complete Payment </a>
+                                                    href="{{ route('service.servicePaymentEdit.pendingService', ['service' => $pendingService->id]) }}">
+                                                    <i class="fa fa-gavel"></i> Complete Payment </a>
 
                                             @if ($pendingService->status == 'Done')
                                                 <a class="dropdown-item"
@@ -99,9 +100,9 @@
                                                
                                             @else
                                                 <a class="dropdown-item"
-                                                    href="{{ route('service.servicePaymentEdit.pendingService', ['service' => $pendingService->id]) }}"
-                                                   ><i class="fa fa-check-circle"></i> Mark
-                                                    as Done </a>
+                                                    href="{{ route('service.markAsDone.pendingService', ['service' => $pendingService->id]) }}">
+                                                    <i class="fa fa-check-circle"></i> Mark as Done </a>
+
                                                 @can('admin')
                                                     <a class="dropdown-item"
                                                         href="{{ route('service.abortStatus.pendingService', ['service' => $pendingService->id]) }}">
@@ -117,7 +118,7 @@
                         @empty
                             <tr>
                                 <span class=" b-b-primary text-primary text-center ">
-                                    <p>No Registered Pending Services!!</p>
+                                    <p>No Records!!</p>
                                 </span>
                             </tr>
 

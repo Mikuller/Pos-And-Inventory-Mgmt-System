@@ -69,6 +69,7 @@ class ProductController extends Controller
         $purchase = Purchase::create([
           'grandTotal' => $product->purchasePrice * $product->quantity,
           'purchaserID' => Auth::user()->id,
+          'supplierName' => 'unknown'
         //   'status' => $this->status,
         //   'purchaseNote' => $this->purchaseNote,
         //   'shippingCost' => $this->shippingCost,
@@ -81,13 +82,13 @@ class ProductController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Product $product)
-    {
-        session(['viewMode' => true]);
-        session(['product' => $product]);
+    // public function show(Product $product)
+    // {
+    //     session(['viewMode' => true]);
+    //     session(['product' => $product]);
 
-        return back();
-    }
+    //     return back();
+    // }
 
     /**
      * Show the form for editing the specified resource.

@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use App\Models\Expense;
 use App\Models\Product;
 use Barryvdh\DomPDF\Facade\Pdf;
 
@@ -20,25 +21,24 @@ class Reports extends Component
         $endDate = date_format(date_create($this->endDate), 'Y-m-d H:i:s');
 
         // $totalTaxDeduction = $this->getTotalTaxDeduction($startDate, $endDate);
-        $totalServiceIncomeCash = DB::table('services')->whereDate('created_at', '>=', $startDate)->whereDate('created_at', '<=', $endDate)->where('status', '=', 'Done')->where('paymentMethod', '=', 'Cash')->sum('price');
-        $totalServiceIncomeECash = DB::table('services')->whereDate('created_at', '>=', $startDate)->whereDate('created_at', '<=', $endDate)->where('status', '=', 'Done')->where('paymentMethod', '=', 'E-Cash')->sum('price');
-        $totalSalesIncomeCash = DB::table('sales')->whereDate('created_at', '>=', $startDate)->whereDate('created_at', '<=', $endDate)->where('paymentMethod', '=', 'Cash')->sum('grandTotal');
-        $totalSalesIncomeEcash = DB::table('sales')->whereDate('created_at', '>=', $startDate)->whereDate('created_at', '<=', $endDate)->where('paymentMethod', '=', 'E-Cash')->sum('grandTotal');
-        $totalRevenue = $totalSalesIncomeCash + $totalSalesIncomeEcash + $totalServiceIncomeCash + $totalServiceIncomeECash;
+        $totalServiceIncome = $this->getTotalServiceIncome($startDate, $endDate);
+        $totalSalesIncome = $this->getTotalSalesIncome($startDate, $endDate);
+        $totalRevenue = $totalSalesIncome + $totalServiceIncome;
         $totalPurchaseCost = $this->getTotalPurchaseCost($startDate, $endDate);
         $totalShippingCost = $this->getTotalShippingCost($startDate, $endDate);
-        $totalProfit = $this->getTotalProfit($startDate, $endDate) + $totalServiceIncomeCash + $totalServiceIncomeECash  - $totalShippingCost;
-
+        $totalProfit = $this->getTotalProfit($startDate, $endDate) - $totalShippingCost;
+        $grossIncome = $totalRevenue - ($totalPurchaseCost + $totalShippingCost);
+        $allExpenses = $this->getAllExpenses();
         $this->data = [
             'totalProfit' => $totalProfit,
             // 'totalTaxDeduction' => $totalTaxDeduction,
-            'totalServiceIncomeCash' => $totalServiceIncomeCash,
-            'totalServiceIncomeECash' => $totalServiceIncomeECash,
-            'totalSalesIncomeCash' => $totalSalesIncomeCash,
-            'totalSalesIncomeEcash' => $totalSalesIncomeEcash,
+            'totalServiceIncome' => $totalServiceIncome,
+            'totalSalesIncome' => $totalSalesIncome,
             'totalRevenue' => $totalRevenue,
             'totalPurchaseCost' => $totalPurchaseCost,
             'totalShippingCost' => $totalShippingCost,
+            'grossIncome' => $grossIncome,
+            'expenses' => $allExpenses
         ];
         session()->put('data', $this->data);
         session()->put('startDate', $this->startDate);
@@ -46,11 +46,33 @@ class Reports extends Component
         //$this->reset('startDate', 'endDate');
         //$this->downloadReportFile($data);
     }
+    function getTotalSalesIncome($startDate, $endDate){
+        $totalSalesIncome = DB::table('sales')->whereDate('created_at', '>=', $startDate)->whereDate('created_at', '<=', $endDate)->where('paymentStatus', '=', 'Paid')->sum('grandTotal');
+        return $totalSalesIncome;
+    }
+    function getTotalServiceIncome($startDate, $endDate){
+        $totalServiceIncome = DB::table('services')->whereDate('created_at', '>=', $startDate)->whereDate('created_at', '<=', $endDate)->where('status', '=', 'Done')->where('paymentStatus', '=', 'Paid')->sum('price');
+        return $totalServiceIncome;
+    }
     public function getTotalProfit($startDate, $endDate)
     {
         $totalProfit = 0.0;
-        $totalProfit = DB::table('sales')->whereDate('created_at', '>=', $startDate)->whereDate('created_at', '<=', $endDate)->sum('profit');
+        $totalSalesProfit = DB::table('sales')->whereDate('created_at', '>=', $startDate)->whereDate('created_at', '<=', $endDate)->sum('profit');
+        $totalServiceProfit = $this->getTotalServiceIncome($startDate, $endDate) - DB::table('expenses')->where('status','=','Paid')->where('expenseReason','=','Service')->whereDate('created_at', '>=', $startDate)->whereDate('created_at', '<=', $endDate)->sum('amount');
+        $totalProfit = $totalSalesProfit + $totalServiceProfit;
         return $totalProfit;
+    }
+    function getAllExpenses(){
+        $expenses = Expense::where('status','=','Paid')->get()->groupBy('expenseReason');
+        return [
+            'Rent' => $expenses->has('Rent') ?  $expenses["Rent"]->sum('amount') : 0.00 ,
+            'Salary' =>   $expenses->has('Salary') ? $expenses["Salary"]->sum('amount') : 0.00,
+            'Transport' =>  $expenses->has('Transport') ? $expenses["Transport"]->sum('amount') : 0.00,
+            'Food' =>  $expenses->has('Food') ? $expenses["Food"]->sum('amount') : 0.00,
+            'Service' =>  $expenses->has('Service') ? $expenses["Service"]->sum('amount') : 0.00,
+            'Other' =>  $expenses->has('Other') ? $expenses["Other"]->sum('amount') : 0.00
+        ];
+        
     }
     // public function getTotalTaxDeduction($startDate, $endDate)
     // {

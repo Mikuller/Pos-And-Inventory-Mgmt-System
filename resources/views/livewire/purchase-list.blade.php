@@ -44,9 +44,7 @@
                         </form>
                     </div>
                 </div>
-                <div class="col col-sm-5 ">
-                    <span class="float-right mr-3 ml-4 mt-10">{{ $purchases->links() }}</span>
-                </div>
+                
             </div>
             <div class="card-body">
                 <table id="advanced_table" class="table">
@@ -55,10 +53,10 @@
                             
                             <th class="text-center">ID</th>
                             <th>Supplier</th>
-                            <th>Grand Total</th>
-                            <th>Shipping Cost</th>
-                            <th>Purchase DateTime</th>
-                            <th>Status</th>
+                            <th class="text-center">Grand Total</th>
+                            <th class="text-center">Shipping Cost</th>
+                            <th class="text-center">Purchase DateTime</th>
+                            <th class="text-center">Status</th>
                             <th class="text-center">Action</th>
                         </tr>
                     </thead>
@@ -74,10 +72,10 @@
                                         {{ $purchase->supplierName }}
                                     @endif
                                 </td>
-                                <td>{{ $purchase->grandTotal }}</td>
-                                <td>{{ $purchase->shippingCost }}</td>
-                                <td>{{ $purchase->created_at->diffForHumans() }}</td>
-                                <td>
+                                <td class="text-center">{{ $purchase->grandTotal }}</td>
+                                <td class="text-center">{{ $purchase->shippingCost }}</td>
+                                <td class="text-center">{{ $purchase->created_at->diffForHumans() }}</td>
+                                <td class="text-center">
                                     @if ($purchase->status == 'Paid')
                                         <span class="badge badge-pill badge-success mb-1">Paid</span>
                                     @else
@@ -102,6 +100,9 @@
 
                     </tbody>
                 </table>
+            </div>
+            <div class="col col-sm-3 ">
+                {{ $purchases->links() }}
             </div>
         </div>
     </div>

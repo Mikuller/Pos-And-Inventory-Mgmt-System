@@ -33,11 +33,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col col-sm-3 ">
-                    {{ $sales->links() }}
-
-
-                </div>
+                
             </div>
             <div class="card-body">
                 <table id="advanced_table" class="table">
@@ -103,6 +99,9 @@
                         @endforelse
                     </tbody>
                 </table>
+            </div>
+            <div class="col col-sm-3 ">
+                {{ $sales->links() }}
             </div>
         </div>
     </div>
