@@ -103,7 +103,7 @@
 
                                     </div>
 
-                                    <div class="form-group" >
+                                    <div class="form-group">
                                         <label for="qty">Quantity<span class="text-red">*</span></label>
                                         <input id="qty" type="text" class="form-control" name="quantity"
                                             placeholder="Enter initial Quantity" required>
@@ -161,8 +161,10 @@
                                         @if (!$categories->isEmpty())
                                             <button type="submit" name="submit" class="btn btn-primary">Save</button>
                                         @else
-                                            <span class="float-right btn-sm btn-danger" >Add Categories First <i
-                                                    class="fa fa-exclamation-triangle" aria-hidden="true"></i></span>
+                                            <a href="{{ route('category.index') }}">
+                                                <span class="float-right btn-sm btn-danger">Add Categories First <i
+                                                        class="fa fa-exclamation-triangle" aria-hidden="true"></i></span>
+                                            </a>
                                         @endif
                                     </div>
                                 </div>

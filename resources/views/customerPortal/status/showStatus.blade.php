@@ -48,6 +48,15 @@
                     </div>
                     <div class="contact-box">
                         <div class="contact-icon">
+                            <i data-feather="dollar-sign"></i>
+                        </div>
+                        <div class="contact-title">
+                            <h4>Service Price :</h4>
+                            <strong><span class="theme-color">{{ $service->price }}</span></strong>
+                        </div>
+                    </div>
+                    <div class="contact-box">
+                        <div class="contact-icon">
                             <i data-feather="flag"></i>
                         </div>
                         <div class="contact-title">

@@ -48,6 +48,9 @@
                                 </td>
                             </tr>
                         @empty
+                        <span class=" b-b-primary text-primary text-center ">
+                            <p>No Registered Pending Services!!</p>
+                        </span>
                         @endforelse
                     </tbody>
                 </table>

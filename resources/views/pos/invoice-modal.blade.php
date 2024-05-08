@@ -107,7 +107,7 @@
 
                         <div class="row">
                             <div class="col-6">
-                                <p class="lead">Payment Methods:</p>
+                                <p class="lead">Payment Method:</p>
                                 <input type="radio" name="paymentMethod" id="cash" value="Cash"
                                     required /><label class="ml-2" for="cash">Cash</label><br />
                                 <input type="radio" name="paymentMethod" id="E-Cash" value="E-Cash"
@@ -141,7 +141,18 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-2"></div>
+                            <div class="col-5">
+                                <div class="form-group">
+                                    <p class="lead text-primary">Payment Status:</p>
+                                    <label class="ml-2" for="paid"><input type="radio"  name="paymentStatus"
+                                            id="paid" value="Paid" required /> Paid</label><br />
+                                    <label class="ml-2" for="unpaid"><input type="radio"  name="paymentStatus"
+                                            id="unpaid" value="Unpaid" required /> Credit</label><br />
+                                    @error('paymentStatus')
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
+                                </div>
+                            </div>
                             <div class="col-4">
                                 <div class="table-responsive">
                                     @php

@@ -39,6 +39,7 @@
                             <th>Customer Name</th>
                             <th>Service Type</th>
                             <th>Total Price</th>
+                            <th>Total Expense</th>
                             <th>Bank Info</th>
                             <th>Txn Refrence</th>
                             <th>Status</th>
@@ -58,10 +59,8 @@
                                         {{ $serviceTypes->name }},
                                     @endforeach
                                 </td>
-
-
-
                                 <td>{{ $pendingService->price }}</td>
+                                <td>{{ $pendingService->totalExpense() }}</td>
                                 <td>{{ $pendingService->depositBank != null ? $pendingService->depositBank->bankName . ':' . $pendingService->depositBank->accNum : '-' }}
                                 </td>
                                 <td>{{ $pendingService->eCashRefNumber != null ? $pendingService->eCashRefNumber : '-' }}
@@ -75,45 +74,52 @@
                                             class="badge badge-pill {{ $pendingService->status == 'Pending' ? 'badge-warning' : 'badge-success' }}  mb-1 text-black">{{ $pendingService->status }}</span>
                                     @endif
                                 </td>
-                                @can('admin')
-                                    <td>
-                                        <div class="dropdown d-inline-block">
-                                            <a class="nav-link dropdown-toggle" href="#" id="moreDropdown"
-                                                role="button" data-toggle="dropdown" aria-haspopup="true"
-                                                aria-expanded="false">
-                                                <i class="ik ik-more-vertical"></i>
-                                            </a>
-                                            <div class="dropdown-menu dropdown-menu-right">
 
+                                <td>
+                                    <div class="dropdown d-inline-block">
+                                        <a class="nav-link dropdown-toggle" href="#" id="moreDropdown"
+                                            role="button" data-toggle="dropdown" aria-haspopup="true"
+                                            aria-expanded="false">
+                                            <i class="ik ik-more-vertical"></i>
+                                        </a>
+                                        <div class="dropdown-menu dropdown-menu-right">
+
+
+                                            <a class="dropdown-item"
+                                                href="{{ route('service.edit.pendingService', ['service' => $pendingService->id]) }}"><i
+                                                    class="ik ik-edit"></i> Edit </a>
+                                                    <a class="dropdown-item"
+                                                    href="{{ route('service.markAsPending.pendingService', ['service' => $pendingService->id]) }}">
+                                                    <i class="fa fa-credit-card-alt"></i>Complete Payment </a>
+
+                                            @if ($pendingService->status == 'Done')
+                                                <a class="dropdown-item"
+                                                    href="{{ route('service.markAsPending.pendingService', ['service' => $pendingService->id]) }}"><i
+                                                        class="fa fa-check-circle"></i> Mark as Pending </a>
+                                               
+                                            @else
+                                                <a class="dropdown-item"
+                                                    href="{{ route('service.servicePaymentEdit.pendingService', ['service' => $pendingService->id]) }}"
+                                                   ><i class="fa fa-check-circle"></i> Mark
+                                                    as Done </a>
                                                 @can('admin')
                                                     <a class="dropdown-item"
-                                                        href="{{ route('service.edit.pendingService', ['service' => $pendingService->id]) }}"><i
-                                                            class="ik ik-edit"></i> Edit </a>
+                                                        href="{{ route('service.abortStatus.pendingService', ['service' => $pendingService->id]) }}">
+                                                        <i class="fa fa-ban"></i> Abort </a>
                                                 @endcan
-
-                                                @if ($pendingService->status == 'Done')
-                                                    <a class="dropdown-item"
-                                                        href="{{ route('service.markAsPending.pendingService', ['service' => $pendingService->id]) }}"><i
-                                                            class="fa fa-check-circle"></i> Mark as Pending </a>
-                                                @else
-                                                    <a class="dropdown-item"
-                                                        href="{{ route('service.servicePaymentEdit.pendingService', ['service' => $pendingService->id]) }}"
-                                                        onclick="promptPaymentMtd()"><i class="fa fa-check-circle"></i> Mark
-                                                        as Done </a>
-                                                    @can('admin')
-                                                        <a class="dropdown-item"
-                                                            href="{{ route('service.abortStatus.pendingService', ['service' => $pendingService->id]) }}">
-                                                            <i class="fa fa-ban"></i> Abort </a>
-                                                    @endcan
-                                                @endif
-                                            </div>
+                                            @endif
                                         </div>
-                                    </td>
-                                @endcan
+                                    </div>
+                                </td>
 
                             </tr>
 
                         @empty
+                            <tr>
+                                <span class=" b-b-primary text-primary text-center ">
+                                    <p>No Registered Pending Services!!</p>
+                                </span>
+                            </tr>
 
                         @endforelse
 

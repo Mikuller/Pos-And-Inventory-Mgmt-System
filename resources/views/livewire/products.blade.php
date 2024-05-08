@@ -2,23 +2,27 @@
     <div class="col-md-12">
         <div class="mb-2 clearfix">
             <div class="d-inline mb-5">
-                <a class="btn btn-primary" href="{{ route('product.create') }}">
-                    Add Product
+                <a class="btn btn-success" href="{{ route('product.create') }}">
+                    + Product
                 </a>
-                <a class="btn btn-primary" href="{{ route('purchases.index') }}">
-                    Add Purchase 
-                 </a>
+                <a class="btn btn-primary" href="{{ route('category.index') }}">
+                    + Category
+                </a>
+                <a class="btn btn-warning" href="{{ route('purchases.index') }}">
+                    + Purchase
+                </a>
             </div>
-           
-           
+
+
             <div class="collapse mt-2 d-md-block display-options" id="displayOptions">
-               
+
                 <div class=" d-block d-md-inline-block">
                     <div class="float-md-left col-md-3 mb-1 form-group">
                         <select wire:model.live="searchWithCategory" class="form-control">
-                            <option value="" >Filter with Category</option>
+                            <option value="">Filter with Category</option>
                             @foreach ($categories as $category)
-                            <option  wire:key={{$category->id}} value="{{$category->id}}">{{$category->name}}</option>
+                                <option wire:key={{ $category->id }} value="{{ $category->id }}">{{ $category->name }}
+                                </option>
                             @endforeach
                         </select>
                     </div>
@@ -26,20 +30,20 @@
 
                         <input wire:model.live.debounce.500ms="search" type="text" class="form-control"
                             placeholder="Search with any attribute.." required>
-                       
+
 
                     </div>
                 </div>
                 <div class="float-md-right">
                     <span class="text-muted text-small mr-2">{{ $products->links() }}</span>
-                  
+
                 </div>
             </div>
         </div>
         <div class="separator mb-20"></div>
 
         <div class="row layout-wrap" id="layout-wrap">
-            @foreach ($products as $product)
+            @forelse ($products as $product)
                 <div class="col-xl-3 col-lg-4 col-12 col-sm-6 mb-4 list-item list-item-grid">
                     <div class="card d-flex flex-row mb-3">
                         <a class="d-flex card-img" href="{{ route('product.show', ['product' => $product->id]) }}">
@@ -75,7 +79,14 @@
                         </div>
                     </div>
                 </div>
-            @endforeach
+            @empty
+            
+                <span class=" b-b-primary text-primary float-center ">
+                    <p>No Registered Product available!!</p>
+                </span>
+            
+                
+            @endforelse
         </div>
     </div>
 </div>

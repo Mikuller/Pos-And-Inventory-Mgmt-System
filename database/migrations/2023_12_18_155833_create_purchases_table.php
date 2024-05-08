@@ -15,7 +15,8 @@ return new class extends Migration
             $table->id();
             $table->float('grandTotal');
             // $table->float('totalTax');
-            $table->string('supplierName')->nullable();
+            $table->string('supplierName');
+            $table->string('supplierPhone')->nullable();
             $table->string('purchaserID'); 
             $table->string('status')->default("Paid");
             $table->string('purchaseNote')->nullable();

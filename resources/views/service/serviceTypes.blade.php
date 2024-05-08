@@ -20,7 +20,7 @@
                     <nav class="breadcrumb-container" aria-label="breadcrumb">
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item">
-                                <a href="{{route('dashboard')}}"><i class="ik ik-home"></i></a>
+                                <a href="{{ route('service.index') }}">Pending Services</a>
                             </li>
                             <li class="breadcrumb-item">
                                 <a href="{{ route('service.index') }}">Service Types</a>

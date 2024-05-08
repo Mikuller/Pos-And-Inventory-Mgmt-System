@@ -61,6 +61,9 @@
                                 </td>
                             </tr>
                         @empty
+                        <span class=" b-b-primary text-primary text-center ">
+                            <p>No Registered Service Types!!</p>
+                        </span>
                         @endforelse
 
                     </tbody>

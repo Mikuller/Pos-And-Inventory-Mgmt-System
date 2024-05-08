@@ -38,7 +38,7 @@ class PurchaseController extends Controller
         session(['viewMode' => true]);
         session(['purchase' => $purchase]);
 
-        return back();
+        return view('inventory.purchase.list');
     }
 
     /**

@@ -11,9 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->longText('securityQuestion')->nullable();
-            $table->string('securityAnswer')->nullable();
+        Schema::table('expenses', function (Blueprint $table) {
+            $table->foreignId('service_id')->nullable()->constrained("services")->cascadeOnUpdate()->nullOnDelete();        
         });
     }
 
@@ -22,10 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn('securityQuestion');
-            $table->dropColumn('securityAnswer');
-
+        Schema::table('expenses', function (Blueprint $table) {
+            $table->dropColumn('service_id');
         });
     }
 };

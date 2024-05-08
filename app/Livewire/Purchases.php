@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use App\Models\Debt;
 use App\Models\Product;
 use App\Models\Purchase;
 use Illuminate\Foundation\Auth\User;
@@ -21,6 +22,7 @@ class Purchases extends Component
     public $shippingCost = 0;
     public $status = "Paid";
     public $supplierName = '';
+    public $supplierPhone = '';
 
 
 
@@ -32,25 +34,41 @@ class Purchases extends Component
     {
         sleep(1);
         $purchaserID = Auth::user()->id;
-        $purchase = Purchase::create([
-          'grandTotal' => $this->grandTotal,
-        //   'totalTax' => $this->totalTax,
-          'supplierName' => $this->supplierName,
-          'purchaserID' => $purchaserID,
-          'status' => $this->status,
-          'purchaseNote' => $this->purchaseNote,
-          'shippingCost' => $this->shippingCost,
+        $validated = $this->validate([
+            'supplierName'=> 'required',
+            'status' => 'required|in:Paid,Unpaid',
         ]);
+        $validated += ([
+            'grandTotal' => $this->grandTotal,
+          //   'totalTax' => $this->totalTax,
+            'supplierPhone' => $this->supplierPhone,
+            'purchaserID' => $purchaserID,
+            'purchaseNote' => $this->purchaseNote,
+            'shippingCost' => $this->shippingCost,
+          ]);
         
-        
+        $purchase = Purchase::create($validated);
         foreach ($this->purchaseList as $item) {
              $purchase->products()->attach($item['product']->id, ['amount' => $item['quantity']]);
              $this->updateInventoryValue($item['product']->id, $item['quantity']);
         }
-       
-        session()->flash('success', 'Purchase was Successful!');
+        if($purchase->status=="Unpaid"){
+            $this->saveAsDebt($purchase);
+        }
+        session()->flash('success', 'Purchase was Successfully Done!');
         $this->redirect('index');
     }
+    public function saveAsDebt($purchase){
+
+        Debt::create([
+            'creditorName' => $purchase->supplierName,
+            'creditorPhone' => $purchase->supplierPhone,
+            'amount' => $purchase->grandTotal,
+            'deptDescription' => "Purchase Debt",
+            'purchase_id' => $purchase->id
+                ]);
+    }
+
     public function updateInventoryValue(string $productId, float $amount)
     {
         $product = Product::all()->find($productId);

@@ -9,7 +9,7 @@
                         <i class="fa fa-cog bg-green"></i>
                         <div class="d-inline">
                             <h5>Settings</h5>
-                            <span>Twick some settings here</span>
+                            <span>Twik some settings here</span>
                         </div>
                     </div>
                 </div>
@@ -57,14 +57,28 @@
                                         <div
                                             class="card-body align-self-center d-flex flex-column flex-md-row justify-content-between min-width-zero align-items-md-center">
                                             <span class="btn btn-bg text-primary">
-                                                <h5><strong>Manage Bank Info</strong></h5>
+                                                <h5><strong>Manage Bank Information</strong></h5>
                                             </span>
 
                                         </div>
                                     </div>
                                 </a>
                             </div>
+                            @can('admin')
+                            <div class="card d-flex flex-row mb-3">
+                                <a href="{{ route('staffs.index') }}">
+                                    <div class="d-flex flex-grow-1 min-width-zero card-content">
+                                        <div
+                                            class="card-body align-self-center d-flex flex-column flex-md-row justify-content-between min-width-zero align-items-md-center">
+                                            <span class="btn btn-bg text-primary">
+                                                <h5><strong>Manage Staff Information</strong></h5>
+                                            </span>
 
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                            @endcan
                         </div>
                     </div>
                 </div>

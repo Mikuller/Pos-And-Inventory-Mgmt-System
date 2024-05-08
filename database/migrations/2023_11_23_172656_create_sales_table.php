@@ -15,14 +15,12 @@ return new class extends Migration
         Schema::create('sales', function (Blueprint $table) {
             $table->id();
             $table->float('grandTotal');
-            // $table->float('totalTax');
             $table->float('profit');
             $table->string('customerName');
             $table->string('customerPhone');
             $table->string('paymentMethod');
             $table->string('eCashRefNumber')->nullable();
             $table->string('sellerID');
-            $table->foreignId('deposit_bank_id')->nullable()->constrained("deposit_banks")->cascadeOnUpdate()->nullOnDelete();
             $table->timestamps();
         });
     }

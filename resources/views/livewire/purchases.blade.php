@@ -55,22 +55,33 @@
             <div class="card mb-0">
                 <div class="card-body">
                     <div class="row">
-                        <div class="col-sm-5 pl-1 ">
+                        <div class="col-sm-5 pl-1">
                             <div class="form-group">
                                 <label>Purchase Note</label>
-                                <textarea wire:model="purchaseNote" class="form-control h-8" name="note" placeholder="Enter Note"></textarea>
+                                <textarea wire:model="purchaseNote" class="form-control h-8" name="note" placeholder="Enter Note" rows="5"></textarea>
                             </div>
                         </div>
-                        <div class="col-sm-5">
+                        <div class="col-sm-5 float-right">
                             <div class="form-group">
-                                <div class="form-group">
-                                    <label>Supplier Name</label>
-                                    <input wire:model="supplierName" type="text" class="form-control text-input">
+                                <label>Supplier Info</label>
+                                <div>
+                                    <label for="supplierName" class="col-form-label d-inline">Name:</label>
+                                    <input wire:model="supplierName" id="supplierName" type="text"
+                                        class="form-control text-input d-inline" required>
+                                    @error('supplierName')
+                                       <span class="text-danger">{{ $message }}</span> 
+                                    @enderror
+                                </div>
+                                <div>
+                                    <label for="supplierPhone" class="col-form-label d-inline">Phone:</label>
+                                    <input wire:model="supplierPhone" id="supplierPhone" type="text"
+                                        class="form-control text-input d-inline">
                                 </div>
                             </div>
                         </div>
-
                     </div>
+
+
 
                     <div class="Purchasestable">
                         <table class="table table-hover">
@@ -103,7 +114,7 @@
                                                 class="form-control w-60 text-center hm-30"
                                                 value={{ number_format($purchase['quantity']) }} readonly></td>
                                         <td class="text-right">
-                                            {{ number_format($purchase['quantity'] * ($purchase['product']->purchasePrice)) }}
+                                            {{ number_format($purchase['quantity'] * $purchase['product']->purchasePrice) }}
                                         </td>
                                     </tr>
                                 @endforeach
@@ -123,7 +134,8 @@
                                     <td class="border-0" colspan="4"></td>
                                     <td>Shipping</td>
                                     <td class="text-right"><input type="text" name="shiping"
-                                            class="form-control w-60 text-center hm-30 ml-auto" wire:model="shippingCost"></td>
+                                            class="form-control w-60 text-center hm-30 ml-auto"
+                                            wire:model="shippingCost"></td>
                                 </tr>
                                 {{-- <tr>
                                         <td class="border-0" colspan="3"></td>
@@ -141,23 +153,27 @@
 
                                     <td class="border-0" colspan="5">
                                         <div class="form-group">
-                                            <select wire:model="status" class="form-control">
+                                            <select wire:model="status" class="form-control" required>
                                                 <option selected="">Select Status</option>
                                                 <option value="Paid">Paid</option>
                                                 <option value="Unpaid">Unpaid</option>
                                             </select>
+                                            @error('status')
+                                                {{ $message }}
+                                            @enderror
                                         </div>
                                     </td>
-                                    @if (count($purchaseList)>0)
-                                    <td class="border-0">
-                                        <form wire:submit.prevent="storePurchase">
-                                            <div class="form-group">
-                                                <button type="submit" class="btn btn-primary wp-100">Save</button>
-                                            </div>
-                                        </form>
-                                    </td> 
+                                    @if (count($purchaseList) > 0)
+                                        <td class="border-0">
+                                            <form wire:submit.prevent="storePurchase">
+                                                <div class="form-group">
+                                                    <button type="submit"
+                                                        class="btn btn-primary wp-100">Save</button>
+                                                </div>
+                                            </form>
+                                        </td>
                                     @endif
-                                    
+
                                 </tr>
                             </tbody>
                         </table>
