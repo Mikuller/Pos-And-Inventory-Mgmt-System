@@ -18,25 +18,12 @@ class ServiceController extends Controller
     {
         return view('service.serviceTypes');
     }
-    public function createPendingService()
-    {
-        $serviceTypes = ServiceType::latest()->get();
-        session(['createMode' => true, 'serviceTypes' => $serviceTypes]);
-        return back();
-    }
+
     public function editPendingService(Service $service)
     {
-        //users can't edit a service after a day ,
-        //because services are filtered with the time of update
-        //and updating a service after a day F*s with the daily report
-        //this will allow me to show pending services that are registerd today and Done services that are marked as Done today
-        if ($service->created_at < date('Y-m-d H:i:s')) {
-            return back()->with('error', 'Pending Service is not eligible for Editing');
-        } else {
-            $serviceTypes = ServiceType::latest()->get();
-            session(['editMode' => true, 'service' => $service, 'serviceTypes' => $serviceTypes]);
-            return back();
-        }
+        $serviceTypes = ServiceType::latest()->get();
+        session(['editMode' => true, 'service' => $service, 'serviceTypes' => $serviceTypes]);
+        return back();
     }
     public function showPendingService(Service $service)
     {
@@ -44,6 +31,7 @@ class ServiceController extends Controller
         session(['showMode' => true, 'service' => $service, 'serviceTypes' => $serviceTypes]);
         return view('service.pendingServices');
     }
+
     public function updatePendingService(Service $service)
     {
         $validated = request()->validate([
@@ -124,6 +112,7 @@ class ServiceController extends Controller
                     'paymentMethod' => request('paymentMethod'),
                     'paymentStatus' => request('paymentStatus'),
                     'deposit_bank_id' => request('depositBank'),
+                    'maintainerName' => request('maintainerName'),
                     'eCashRefNumber' => request('eCashRefNumber'),
                     'price' => request('price'),
                 ]);

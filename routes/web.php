@@ -106,7 +106,6 @@ Route::group(['prefix' => 'services', 'as' => 'service.', 'middleware' => ['auth
     Route::get('/destroy/{serviceType}', [ServiceController::class, 'destroyServiceType'])->name('destroy');
     Route::get('/serviceTypes', [ServiceController::class, 'serviceTypes'])->name('serviceTypes');
     Route::post('/store/pendingServices', [ServiceController::class, 'storePendingService'])->name('store.pendingService');
-    Route::get('/create/pendingServices', [ServiceController::class, 'createPendingService'])->name('create.pendingService');
     Route::get('/show/pendingServices/{service}', [ServiceController::class, 'showPendingService'])->name('show.pendingService');
     Route::group(['middleware' => ['auth', 'can:admin', 'can:status']], function () {
         Route::get('/edit/pendingServices/{service}', [ServiceController::class, 'editPendingService'])->name('edit.pendingService');

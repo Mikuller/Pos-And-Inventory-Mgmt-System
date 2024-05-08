@@ -3,7 +3,8 @@
         <div class="card">
             <div class="card-header row">
                 <div class="col col-sm-4">
-                    <a href="{{ route('service.create.pendingService') }}" class="btn btn-sm btn-success ">+ Pending
+                    <a href="#serviceAdd" data-toggle="modal" data-target="#serviceAdd" class="btn btn-sm btn-success ">+
+                        Pending
                         Service</a>
                     <a href="{{ route('service.serviceTypes') }}" class=" btn btn-sm btn-primary">+ Service Types</a>
                 </div>
@@ -16,9 +17,19 @@
                     <input type="text" wire:model.live.debounce.500ms="search" class="form-control "
                         placeholder="Search...">
                 </div>
-                <div class="col col-sm-4 mt-2">
-                    {{ $pendingServices->links() }}
+                <div class="col col-sm-3">
+                    <select wire:model.live.debounce.500ms="searchByMaintainer" name="searchByMaintainer"
+                        class="form-control">
+                        <option selected value="{{ null }}" disabled>Select maintainer's name</option>
+                        @forelse ($maintainerNames as $maintainerName)
+                            @if ($maintainerName != null)
+                                <option value="{{ $maintainerName }}">{{ $maintainerName }}</option>
+                            @endif
+                        @empty
+                        @endforelse
+                    </select>
                 </div>
+
             </div>
             <div class="card-body">
                 <table id="advanced_table" class="table">
@@ -35,16 +46,15 @@
                     </thead>
                     <thead>
                         <tr>
-                            <th class="nosort">Service Ref_ID.</th>
+                            <th>Ref_ID.</th>
                             <th>Customer Name</th>
                             <th>Service Type</th>
-                            <th>Total Price</th>
-                            <th>Total Expense</th>
-                            <th>Bank Info</th>
-                            <th>Txn Refrence</th>
-                            <th>Status</th>
-                            <th>Payment Status</th>
-                            <th>Action</th>
+                            <th class="text-center">Total Price</th>
+                            <th class="text-center">Total Expense</th>
+                            <th class="text-center">Maintainer's Name</th>
+                            <th class="text-center">Status</th>
+                            <th class="text-center">Payment Status</th>
+                            <th class="text-center">Action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -60,13 +70,10 @@
                                         {{ $serviceTypes->name }},
                                     @endforeach
                                 </td>
-                                <td>{{ $pendingService->price }}</td>
-                                <td>{{ $pendingService->totalExpense() }}</td>
-                                <td>{{ $pendingService->depositBank != null ? $pendingService->depositBank->bankName . ':' . $pendingService->depositBank->accNum : '-' }}
-                                </td>
-                                <td>{{ $pendingService->eCashRefNumber != null ? $pendingService->eCashRefNumber : '-' }}
-                                </td>
-                                <td>
+                                <td class="text-center">{{ $pendingService->price }}</td>
+                                <td class="text-center">{{ $pendingService->totalExpense() }}</td>
+                                <td class="text-center">{{ $pendingService->maintainerName }}</td>
+                                <td class="text-center">
                                     @if ($pendingService->status == 'Aborted')
                                         <span
                                             class="badge badge-pill badge-danger mb-1 text-black">{{ $pendingService->status }}</span>
@@ -75,7 +82,9 @@
                                             class="badge badge-pill {{ $pendingService->status == 'Pending' ? 'badge-warning' : 'badge-success' }}  mb-1 text-black">{{ $pendingService->status }}</span>
                                     @endif
                                 </td>
-                                <td><span class="badge badge-pill  {{ $pendingService->paymentStatus == 'Unpaid' ? 'badge-warning' : 'badge-success' }}  mb-1 text-black">{{ $pendingService->paymentStatus}}</span></td>
+                                <td class="text-center"><span
+                                        class="badge badge-pill  {{ $pendingService->paymentStatus == 'Unpaid' ? 'badge-warning' : 'badge-success' }}  mb-1 text-black">{{ $pendingService->paymentStatus }}</span>
+                                </td>
                                 <td>
                                     <div class="dropdown d-inline-block">
                                         <a class="nav-link dropdown-toggle" href="#" id="moreDropdown"
@@ -89,15 +98,18 @@
                                             <a class="dropdown-item"
                                                 href="{{ route('service.edit.pendingService', ['service' => $pendingService->id]) }}"><i
                                                     class="ik ik-edit"></i> Edit </a>
-                                                    <a class="dropdown-item"
-                                                    href="{{ route('service.servicePaymentEdit.pendingService', ['service' => $pendingService->id]) }}">
-                                                    <i class="fa fa-gavel"></i> Complete Payment </a>
+
+                                            <a class="dropdown-item"
+                                                href="{{ route('service.show.pendingService', ['service' => $pendingService->id]) }}">
+                                                <i class="fa fa-eye"></i> Show Details </a>
 
                                             @if ($pendingService->status == 'Done')
                                                 <a class="dropdown-item"
+                                                    href="{{ route('service.servicePaymentEdit.pendingService', ['service' => $pendingService->id]) }}">
+                                                    <i class="fa fa-gavel"></i> Complete Payment </a>
+                                                <a class="dropdown-item"
                                                     href="{{ route('service.markAsPending.pendingService', ['service' => $pendingService->id]) }}"><i
                                                         class="fa fa-check-circle"></i> Mark as Pending </a>
-                                               
                                             @else
                                                 <a class="dropdown-item"
                                                     href="{{ route('service.markAsDone.pendingService', ['service' => $pendingService->id]) }}">
@@ -127,7 +139,9 @@
                     </tbody>
                 </table>
             </div>
-
+            <div class="col col-sm-3 ">
+                {{ $pendingServices->links() }}
+            </div>
         </div>
     </div>
 </div>

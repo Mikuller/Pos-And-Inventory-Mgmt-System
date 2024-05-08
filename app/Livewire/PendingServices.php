@@ -17,6 +17,7 @@ class PendingServices extends Component
     public $eCash;
     public $searchWithType;
     public $searchWithDate;
+    public $searchByMaintainer;
 
     public function render()
     {
@@ -25,6 +26,7 @@ class PendingServices extends Component
                     $serviceQuery->where('name', 'like', "%{$this->search}%");
                 })
                 ->orWhere('customerName', 'like', "%{$this->search}%")
+                ->orWhere('maintainerName', 'like', "%{$this->search}%")
                 ->orWhere('refNumber', 'like', "%{$this->search}%")
                 ->orWhere('status', 'like', "%{$this->search}%")
                 ->orWhere('price', '=', $this->search);
@@ -38,9 +40,12 @@ class PendingServices extends Component
             ->when($this->eCash, function ($query) {
                 $query->where('paymentMethod', '=', 'E-Cash');
             })
+            ->when($this->searchByMaintainer, function ($query) {
+                $query->where('maintainerName', '=', $this->searchByMaintainer);
+            })
             ->latest()
-            ->paginate(15);
-
-        return view('livewire.pending-services', compact('pendingServices'));
+            ->paginate(10);
+        $maintainerNames = Service::all()->groupBy('maintainerName')->keys();
+        return view('livewire.pending-services', compact('pendingServices','maintainerNames'));
     }
 }
