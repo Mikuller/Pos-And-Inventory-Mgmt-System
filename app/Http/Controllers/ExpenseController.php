@@ -68,7 +68,6 @@ class ExpenseController extends Controller
     }
 
     public function saveAsDebt($expense){
-
         Debt::create([
             'creditorName' => $expense->payedPartnerName,
             'creditorPhone' => $expense->payedPartnerPhone,

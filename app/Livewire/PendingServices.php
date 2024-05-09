@@ -32,7 +32,7 @@ class PendingServices extends Component
                 ->orWhere('price', '=', $this->search);
         })
             ->when($this->searchWithDate, function ($query) {
-                $query->whereDate('updated_at', '=', Carbon::parse($this->searchWithDate)->format('Y-m-d'));
+                $query->whereDate('paymentTimestamp', '=', Carbon::parse($this->searchWithDate)->format('Y-m-d'));
             })
             ->when($this->cash, function ($query) {
                 $query->where('paymentMethod', '=', 'Cash');

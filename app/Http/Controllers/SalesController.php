@@ -7,6 +7,7 @@ use App\Models\Product;
 use App\Models\Sale;
 
 use Barryvdh\DomPDF\Facade\Pdf;
+use Carbon\Carbon;
 use Illuminate\Database\Console\DumpCommand;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -77,6 +78,9 @@ class SalesController extends Controller
              
             if($sale->paymentStatus=="Unpaid"){
                 $this->saveAsCredit($sale);
+            }else{
+                $sale->paymentTimestamp = Carbon::now();
+                $sale->save();
             }
             
             session()->flush();

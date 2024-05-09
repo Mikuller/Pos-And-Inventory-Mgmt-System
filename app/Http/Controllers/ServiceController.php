@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Credit;
 use App\Models\Service;
 use App\Models\ServiceType;
+use Carbon\Carbon;
 use Dotenv\Exception\ValidationException;
 use Illuminate\Http\Request;
 
@@ -12,11 +13,11 @@ class ServiceController extends Controller
 {
     public function index()
     {
-        return view('service.pendingServices');
+        return view('service.service_views.index');
     }
     public function serviceTypes()
     {
-        return view('service.serviceTypes');
+        return view('service.service_type_views.index');
     }
 
     public function editPendingService(Service $service)
@@ -29,11 +30,12 @@ class ServiceController extends Controller
     {
         $serviceTypes = ServiceType::latest()->get();
         session(['showMode' => true, 'service' => $service, 'serviceTypes' => $serviceTypes]);
-        return view('service.pendingServices');
+        return back();
     }
 
     public function updatePendingService(Service $service)
     {
+        
         $validated = request()->validate([
             'customerName' => 'required|max:50|min:2',
             'customerPhone' => 'required|min:10',
@@ -68,15 +70,19 @@ class ServiceController extends Controller
                 // 'status' => 'required|in:Pending,Done,Aborted',
             ]);
             request()->validate(['serviceTypeId' => 'required|array|min:1']);
-            $phoneSubStr = substr($validated['customerPhone'], -8);
-            $validated['refNumber'] = $validated['customerName'] . $phoneSubStr;
+            // $phoneSubStr = substr($validated['customerPhone'], -8);
+            $validated['refNumber'] =  $validated['customerName'];
             $validated['status'] = 'Pending';
             $selectedServiceTypes = request()->input('serviceTypeId', []);
 
             // dd($validated);
 
             $service = Service::create($validated);
+            $service->update([
+                'refNumber' => $validated['customerName']."/".$service->id
+            ]);
             $service->serviceTypes()->sync($selectedServiceTypes);
+            
             return redirect()->back()->with('success', 'New Pending Service is Added');
         } catch (ValidationException $e) {
             // Pass validation errors back to the view
@@ -112,7 +118,8 @@ class ServiceController extends Controller
                     'paymentMethod' => request('paymentMethod'),
                     'paymentStatus' => request('paymentStatus'),
                     'deposit_bank_id' => request('depositBank'),
-                    'maintainerName' => request('maintainerName'),
+                    'paymentTimestamp' => Carbon::now(),
+                    'maintainerName' => request('maintainerNameNew')!=null ? request('maintainerNameNew') : request('maintainerName'),
                     'eCashRefNumber' => request('eCashRefNumber'),
                     'price' => request('price'),
                 ]);

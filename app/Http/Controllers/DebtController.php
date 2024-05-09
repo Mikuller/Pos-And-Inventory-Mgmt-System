@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Debt;
 use App\Models\Expense;
 use App\Models\Purchase;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class DebtController extends Controller
@@ -112,7 +113,8 @@ class DebtController extends Controller
               //update sales payment status
              $expense = Expense::all()->find($debt->expense_id);
              $expense->update([
-              'status' => "Paid"
+              'status' => "Paid",
+              'paymentTimestamp' => Carbon::now()
             ]);
           }
     }

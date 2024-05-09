@@ -40,6 +40,9 @@ class Expenses extends Component
         $expense = Expense::create($validated);
         if($validated['status']=="Unpaid"){
             $this->saveAsDebt($expense);
+        }else{
+            $expense->paymentTimestamp = Carbon::now();
+            $expense->save(); 
         }
         session()->flash("Success","Expense saved");
         $this->dispatch('$refresh');

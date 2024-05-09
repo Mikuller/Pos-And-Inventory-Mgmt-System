@@ -86,8 +86,8 @@
                                                             href="{{ route('debt.edit', ['debt' => $debt->id]) }}"><i
                                                                 class="ik ik-edit"></i> Edit </a>
                                                         <a class="dropdown-item"
-                                                            href="{{ route('debt.destroy', ['debt' => $debt->id]) }}">
-                                                            <i class="fa fa-trash" onclick="confirmation(event)"></i>
+                                                            href="{{ route('debt.destroy', ['debt' => $debt->id]) }}" onclick="confirmation(event)">
+                                                            <i class="fa fa-trash" ></i>
                                                             Delete/Paid </a>
                                                     </div>
                                                 </div>
@@ -157,8 +157,8 @@
                                                             href="{{ route('credit.edit', ['credit' => $credit->id]) }}"><i
                                                                 class="ik ik-edit"></i> Edit </a>
                                                         <a class="dropdown-item"
-                                                            href="{{ route('credit.destroy', ['credit' => $credit->id]) }}">
-                                                            <i class="fa fa-trash" onclick="confirmation(event)"></i>
+                                                            href="{{ route('credit.destroy', ['credit' => $credit->id]) }}" onclick="confirmation(event)">
+                                                            <i class="fa fa-trash" ></i>
                                                             Delete/Paid </a>
                                                     </div>
                                                 </div>
@@ -207,6 +207,28 @@
         </script>
         <?php session(['debtEditMode' => false]); ?>
     @endif
+    <script>
+        function confirmation(ev) {
+            ev.preventDefault();
+            var urlToRedirect = ev.currentTarget.getAttribute('href');
+            console.log(urlToRedirect);
+            swal({
+                    title: "Are you sure to Delete this Record?",
+                    text: "You will not be able to revert this!",
+                    icon: "warning",
+                    buttons: true,
+                    dangerMode: true,
+                })
+                .then((willCancel) => {
+                    if (willCancel) {
+                        window.location.href = urlToRedirect;
+                    }
+                });
+
+
+        }
+    </script>
+
 
 
 

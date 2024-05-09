@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Models\Expense;
 use App\Models\User;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Gate;
@@ -39,6 +40,16 @@ class AppServiceProvider extends ServiceProvider
             else{
                 return 0;
             }  
+       });
+
+       Expense::saved(function ($expense){
+        if ($expense->service!=null) {
+            $service = $expense->service;
+            $totalExpense = $service->expenses()->sum('amount');
+            $service->profit = $service->price - $totalExpense;
+            $service->save();
+        }
+           
        });
     }
 }

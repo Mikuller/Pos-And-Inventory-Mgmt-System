@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('services', function (Blueprint $table) {
+        Schema::table('expenses', function (Blueprint $table) {
             $table->timestamp('paymentTimestamp')->nullable();
         });
     }
@@ -21,7 +21,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('services', function (Blueprint $table) {
+        Schema::table('expenses', function (Blueprint $table) {
             $table->dropColumn('paymentTimestamp');
         });
     }

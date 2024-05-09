@@ -3,7 +3,7 @@
         <div class="modal-dialog w-300" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="expenseShowLabel">Edit Staff Information</h5>
+                    <h5 class="modal-title" id="expenseShowLabel">Expense Information</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                             aria-hidden="true">×</span></button>
                 </div>

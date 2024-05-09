@@ -1,5 +1,6 @@
 <div class="modal fade edit-layout-modal pr-0" id="serviceShow" role="dialog"
             aria-labelledby="serviceShowLabel" style="display: none;" aria-hidden="true">
+            
             <div class="modal-dialog w-300" role="document">
                 <div class="modal-content">
                     <div class="modal-header">

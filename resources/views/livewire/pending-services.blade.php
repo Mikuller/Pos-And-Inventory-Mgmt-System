@@ -20,7 +20,7 @@
                 <div class="col col-sm-3">
                     <select wire:model.live.debounce.500ms="searchByMaintainer" name="searchByMaintainer"
                         class="form-control">
-                        <option selected value="{{ null }}" disabled>Select maintainer's name</option>
+                        <option selected value="{{ null }}">Select maintainer's name</option>
                         @forelse ($maintainerNames as $maintainerName)
                             @if ($maintainerName != null)
                                 <option value="{{ $maintainerName }}">{{ $maintainerName }}</option>
@@ -106,7 +106,7 @@
                                             @if ($pendingService->status == 'Done')
                                                 <a class="dropdown-item"
                                                     href="{{ route('service.servicePaymentEdit.pendingService', ['service' => $pendingService->id]) }}">
-                                                    <i class="fa fa-gavel"></i> Complete Payment </a>
+                                                    <i class="fa fa-gavel"></i> Manage Payment </a>
                                                 <a class="dropdown-item"
                                                     href="{{ route('service.markAsPending.pendingService', ['service' => $pendingService->id]) }}"><i
                                                         class="fa fa-check-circle"></i> Mark as Pending </a>

@@ -7,6 +7,7 @@ use App\Models\Debt;
 use App\Models\Expense;
 use App\Models\Sale;
 use App\Models\Service;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class CreditController extends Controller
@@ -106,14 +107,16 @@ class CreditController extends Controller
           //update service payment status 
           $service = Service::all()->find($credit->service_id);
           $service->update([
-            'paymentStatus' => "Paid"
+            'paymentStatus' => "Paid",
+            'paymentTimestamp' => Carbon::now()
           ]);
         }
         elseif($credit->sale_id != null){
             //update sales payment status
            $sale = Sale::all()->find($credit->sale_id);
            $sale->update([
-            'paymentStatus' => "Paid"
+            'paymentStatus' => "Paid",
+            'paymentTimestamp' => Carbon::now()
           ]);
         }
     }
