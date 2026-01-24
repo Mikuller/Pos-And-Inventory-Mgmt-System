@@ -107,7 +107,7 @@ class ProductController extends Controller
     {
         $validated = request()->validate([
             'name' => 'required|max:40|min:2',
-            'image' => 'image',
+            'image' => 'image|max:2048',
             'sellingPrice' => 'required|numeric|min:1',
             'purchasePrice' => 'required|numeric|min:1',
             'stockAlert' => 'required|numeric|min:1',

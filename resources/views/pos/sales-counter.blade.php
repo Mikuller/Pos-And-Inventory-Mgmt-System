@@ -14,8 +14,7 @@
                     </div>
                     <div class="p-2">
                         <p>{{ $product['name'] }} <small class="text-muted">{{ $product['category_name'] }}</small> </p>
-                        <span class="product-price"><span
-                                class="price-symbol">$</span>{{ $product['sellingPrice'] }}</span>
+                        <span class="product-price">$ &nbsp;</span>
                         @if ($product->quantity >= 1)
                             @if (!key_exists($product->id, $cart))
                                 <form class="float-right" wire:submit.prevent="countCart({{ $product->id }})">

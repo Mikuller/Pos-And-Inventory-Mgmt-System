@@ -106,10 +106,11 @@ class DebtController extends Controller
             //update service payment status 
             $purchase = Purchase::all()->find($debt->purchase_id);
             $purchase->update([
-              'status' => "Paid"
+              'status' => "Paid",
+              'paymentTimestamp' => Carbon::now()
             ]);
           }
-          elseif($debt->expense_id != null){
+        elseif($debt->expense_id != null){
               //update sales payment status
              $expense = Expense::all()->find($debt->expense_id);
              $expense->update([

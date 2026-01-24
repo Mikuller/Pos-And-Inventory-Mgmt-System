@@ -83,6 +83,9 @@
                         <a class="dropdown-item" href="{{ route('staffs.index') }}"><i
                                 class="ik ik-users dropdown-icon"></i>
                             {{ __('Staff Management') }}</a>
+                        <a class="dropdown-item" href="{{ route('spareParts.index')}}"><i
+                                class="fa fa-paperclip dropdown-icon"></i>
+                            {{ __('Manage Spare Parts') }}</a>
                         <a class="dropdown-item" href="{{ route('setting.index') }}"><i
                                 class="fa fa-cog dropdown-icon"></i>
                             {{ __('Settings') }}</a>

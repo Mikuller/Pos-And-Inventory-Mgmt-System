@@ -32,9 +32,6 @@ class SalesController extends Controller
         session()->put('sale', $sale);
 
         return view('pos.sale.list');
-        
-
-        
     }
 
     public function create()
@@ -48,41 +45,51 @@ class SalesController extends Controller
                 'paymentMethod' => 'required|in:Cash,E-Cash',
                 'paymentStatus' => 'required|in:Paid,Unpaid',
             ]);
- 
+
             $validated['eCashRefNumber'] = request('eCashRefNumber');
-        
+
             $validated['deposit_bank_id'] = request('depositBank');
             // dump( $validated);
             $validated['sellerID'] = Auth::user()->id;
             $validated['customerName'] = session('customerInfo')['customerName'];
             $validated['customerPhone'] = session('customerInfo')['customerPhone'];
 
-            $cart = collect(session('cart'))->map(function ($amount) {
-                return ['amount' => $amount];
+            $sessionCart = session('cart') ?? [];
+
+            // Normalize cart: expect structure productId => ['quantity'=>int, 'sellingPrice'=>float]
+            $cart = collect($sessionCart)->map(function ($item) {
+                if (is_array($item)) {
+                    return ['amount' => $item['quantity'] ?? ($item['amount'] ?? 0), 'sellingPrice' => $item['sellingPrice'] ?? null];
+                }
+                // legacy integer amount
+                return ['amount' => $item, 'sellingPrice' => null];
             });
 
-            //calculate profit
-
+            //calculate profit using sellingPrice from cart where provided
             $validated['profit'] = $this->calculateProfit($cart);
 
             $sale = Sale::create($validated);
 
-            $sale->products()->sync($cart);
-            
+            // prepare sync data (pivot stores 'amount' and 'selling_price')
+            $syncData = [];
+            foreach ($cart as $productId => $data) {
+                $syncData[$productId] = ['amount' => $data['amount'], 'selling_price' => $data['sellingPrice'] ?? null];
+            }
 
-            foreach ($cart as $key => $value) {
-                $productId = $key;
+            $sale->products()->sync($syncData);
+
+            foreach ($syncData as $productId => $value) {
                 $amount = $value['amount'];
                 $this->updateInventoryValue($productId, $amount);
             }
-             
-            if($sale->paymentStatus=="Unpaid"){
+
+            if ($sale->paymentStatus == "Unpaid") {
                 $this->saveAsCredit($sale);
-            }else{
+            } else {
                 $sale->paymentTimestamp = Carbon::now();
                 $sale->save();
             }
-            
+
             session()->flush();
             return redirect(route('sales.index'))->with('success', 'Transaction was Successful!');
         } catch (\Exception $e) {
@@ -90,7 +97,8 @@ class SalesController extends Controller
         }
     }
 
-    public function saveAsCredit($sale){
+    public function saveAsCredit($sale)
+    {
 
         Credit::create([
             'debtorName' => $sale->customerName,
@@ -98,7 +106,7 @@ class SalesController extends Controller
             'amount' => $sale->grandTotal,
             'creditDescription' => "Sales Credit",
             'sale_id' => $sale->id
-                ]);
+        ]);
     }
 
     public function calculateProfit($cart)
@@ -106,10 +114,10 @@ class SalesController extends Controller
         $profit = 0;
         foreach ($cart as $key => $value) {
             $productId = $key;
-            $product = Product::all()->find($productId);
-            // $taxDeduction = $product->sellingPrice * 0.15 - $product->purchasePrice * 0.15;
-            // $profit += ($product->sellingPrice - $product->purchasePrice - $taxDeduction) * $value['amount'];
-            $profit += ($product->sellingPrice - $product->purchasePrice ) * $value['amount'];
+            $product = Product::find($productId);
+            $sellingPrice = $value['sellingPrice'] ?? ($product->sellingPrice ?? 0);
+            $purchasePrice = $product->purchasePrice ?? 0;
+            $profit += ($sellingPrice - $purchasePrice) * $value['amount'];
         }
         return $profit;
     }

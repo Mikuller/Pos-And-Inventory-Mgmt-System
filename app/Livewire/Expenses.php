@@ -83,6 +83,7 @@ class Expenses extends Component
             ->paginate(10);
         $services='';
         if ($this->expenseReason=='Service') {
+            //this will allow to fetch service ref numbers
             $services = Service::latest()->get();
         }else{
             $this->serviceId=null;

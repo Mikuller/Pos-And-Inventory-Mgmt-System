@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Models\Expense;
+use App\Models\SparePart;
 use App\Models\User;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Gate;
@@ -49,6 +50,7 @@ class AppServiceProvider extends ServiceProvider
             $service->profit = $service->price - $totalExpense;
             $service->save();
         }
+        
            
        });
     }

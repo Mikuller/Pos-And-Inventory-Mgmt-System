@@ -15,11 +15,9 @@ use App\Http\Controllers\PurchaseController;
 
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\ServiceController;
+use App\Http\Controllers\SparePartController;
 use App\Http\Controllers\StaffController;
-use App\Models\Category;
-use App\Models\Product;
-use App\Models\Service;
-use App\Models\ServiceType;
+
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 use Carbon\Carbon;
@@ -162,6 +160,12 @@ Route::put('debt/update/{debt}',[DebtController::class,'update'])->name('debt.up
 Route::get('debt/edit/{debt}',[DebtController::class,'edit'])->name('debt.edit');
 Route::put('debt/store',[DebtController::class,'store'])->name('debt.store');
 
+Route::get('spare_parts/index',[SparePartController::class,'index'])->name('spareParts.index');
+Route::get('spare_parts/edit/{sparePart}',[SparePartController::class,'edit'])->name('spareParts.edit');
+Route::put('spare_parts/update/{sparePart}',[SparePartController::class,'update'])->name('spareParts.update');
+Route::get('spare_parts/show/{sparePart}',[SparePartController::class,'show'])->name('spareParts.show');
+Route::get('spare_parts/destroy/{sparePart}',[SparePartController::class,'destroy'])->name('spareParts.destroy');
+Route::get('spare_parts/withdraw/{sparePart}',[SparePartController::class,'withdraw'])->name('spareParts.withdraw');
 
 
 Route::get('settings',function(){

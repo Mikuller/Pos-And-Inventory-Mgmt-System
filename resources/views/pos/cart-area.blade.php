@@ -13,10 +13,12 @@
 
                 @foreach ($cart as $key => $item)
                     @php
-                        $product = App\Models\Product::all()->find($key);
-
+                        $product = App\Models\Product::find($key);
+                        $quantity = is_array($item) ? $item['quantity'] ?? 0 : $item;
+                        // default POS input to 0; do not expose product default here
+                        $sellingPrice = is_array($item) ? ($item['sellingPrice'] ?? 0) : 0;
                     @endphp
-                    @if ($product != null && $item > 0)
+                    @if ($product != null && $quantity > 0)
                         <div class="d-flex justify-content-between position-relative">
 
                             <i class="text-red ik ik-x-circle cart-remove cursor-pointer"
@@ -27,29 +29,32 @@
                             <div class="w-100 p-2">
                                 <h5 class="mb-2 cart-item-title">{{ $product->name }}</h5>
                                 <div class="d-flex justify-content-between align-items-center">
-                                    @if ($product->quantity>=$item)
-                                    <form wire:submit.prevent="addToCart({{ $product->id }})">
-                                        <button type="submit" class="btn btn-primary btn-sm">+</button>
-                                    </form>
+                                    @if ($product->quantity >= $quantity)
+                                        <form wire:submit.prevent="addToCart({{ $product->id }})">
+                                            <button type="submit" class="btn btn-primary btn-sm">+</button>
+                                        </form>
                                     @endif
-                                    
-                            
-                                    <span class="mx-2 text-muted">{{ $item }}</span>
-                            
-                                    
+
+                                    <span class="mx-2 text-muted">{{ $quantity }}</span>
+
+
                                     <form wire:submit.prevent="removeFromCart({{ $product->id }})">
                                         <button type="submit" class="btn btn-primary btn-sm ">-</button>
                                     </form>
-                                   
 
-                                    
-                            
-                                    <span class="text-success font-weight-bold cart-item-price">
-                                        {{ number_format($product->sellingPrice * $item) }}
-                                    </span>
+
+                                    <div class="d-flex align-items-center">
+                                        <input type="number" step="0.01" min="0"
+                                            class="form-control form-control-sm mr-2" style="width:90px"
+                                            value="{{ $sellingPrice }}"
+                                            wire:change="updateSellingPrice({{ $product->id }}, $event.target.value)">
+                                        <span class="text-success font-weight-bold cart-item-price">
+                                            {{ $sellingPrice > 0 ? number_format($sellingPrice * $quantity) : '' }}
+                                        </span>
+                                    </div>
                                 </div>
                             </div>
-                            
+
 
                         </div>
                     @endif
@@ -75,8 +80,8 @@
             <hr>
             <div class="d-flex justify-content-between font-20 align-items-center">
                 <b>Grand Total</b>
-                {{-- the grandTotal is calculated inside the component --}}
-                <b id="total-bill"> {{ number_format($grandTotal) }}</b>
+                {{-- show grand total only when component computed a positive total from entered prices --}}
+                <b id="total-bill">{{ $grandTotal > 0 ? number_format($grandTotal) : '' }}</b>
             </div>
         </div>
 

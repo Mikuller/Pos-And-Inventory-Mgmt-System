@@ -14,12 +14,12 @@ class Sale extends Model
 
     public function depositBank()
     {
-        return $this->belongsTo(DepositBank::class,'deposit_bank_id');
+        return $this->belongsTo(DepositBank::class, 'deposit_bank_id');
     }
     public function products()
     {
         return $this->belongsToMany(Product::class, 'product_sale')
-            ->withPivot('amount')
+            ->withPivot('amount', 'selling_price')
             ->withTimestamps();
     }
     use HasFactory;

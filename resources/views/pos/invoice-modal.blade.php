@@ -82,18 +82,23 @@
                                         @if ($invoiceItems != null)
                                             @forelse ($invoiceItems as $key => $item)
                                                 @php
-
-                                                    $product = App\Models\Product::all()->find($key);
-                                                    $subtotal = $item * $product['sellingPrice'];
+                                                    $product = App\Models\Product::find($key);
+                                                    if (is_array($item)) {
+                                                        $quantity = $item['quantity'] ?? ($item['amount'] ?? 0);
+                                                        $unitPrice =
+                                                            $item['sellingPrice'] ?? ($product->sellingPrice ?? 0);
+                                                    } else {
+                                                        $quantity = $item;
+                                                        $unitPrice = $product->sellingPrice ?? 0;
+                                                    }
+                                                    $subtotal = $quantity * $unitPrice;
                                                     $grandTotal += $subtotal;
                                                 @endphp
                                                 <tr>
                                                     <td>{{ $key }}</td>
-                                                    <td>{{ $product['name'] }}</td>
-                                                    <td>{{ $product['sellingPrice'] }}
-                                                    </td>
-                                                    <td>{{ $item }}</td>
-
+                                                    <td>{{ $product->name }}</td>
+                                                    <td>{{ number_format($unitPrice, 2, '.', '') }}</td>
+                                                    <td>{{ $quantity }}</td>
                                                     <td class="text-right">{{ number_format($subtotal, 2, '.', '') }}
                                                     </td>
                                                 </tr>
@@ -144,9 +149,9 @@
                             <div class="col-5">
                                 <div class="form-group">
                                     <p class="lead text-primary">Payment Status:</p>
-                                    <label class="ml-2" for="paid"><input type="radio"  name="paymentStatus"
+                                    <label class="ml-2" for="paid"><input type="radio" name="paymentStatus"
                                             id="paid" value="Paid" required /> Paid</label><br />
-                                    <label class="ml-2" for="unpaid"><input type="radio"  name="paymentStatus"
+                                    <label class="ml-2" for="unpaid"><input type="radio" name="paymentStatus"
                                             id="unpaid" value="Unpaid" required /> Credit</label><br />
                                     @error('paymentStatus')
                                         <span class="text-danger">{{ $message }}</span>
@@ -228,7 +233,7 @@
             refNum.required = false;
             bankInfo.required = false;
             bankInfo.value = null;
-            refNum.value =null;
+            refNum.value = null;
 
         }
     });
@@ -239,7 +244,7 @@
             refNum.required = false;
             bankInfo.required = false;
             bankInfo.value = null;
-            refNum.value =null;
+            refNum.value = null;
         } else {
             eCashRefNumberWrapper.style.display = 'block';
             refNum.required = true;

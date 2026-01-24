@@ -3,8 +3,6 @@
 namespace App\Livewire;
 
 use App\Models\Expense;
-use App\Models\Product;
-use Barryvdh\DomPDF\Facade\Pdf;
 
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
@@ -28,7 +26,7 @@ class Reports extends Component
         $totalShippingCost = $this->getTotalShippingCost($startDate, $endDate);
         $totalProfit = $this->getTotalProfit($startDate, $endDate) - $totalShippingCost;
         $grossIncome = $totalRevenue - ($totalPurchaseCost + $totalShippingCost);
-        $allExpenses = $this->getAllExpenses();
+        $allExpenses = $this->getAllExpenses($startDate, $endDate);
         $this->data = [
             'totalProfit' => $totalProfit,
             // 'totalTaxDeduction' => $totalTaxDeduction,
@@ -47,23 +45,24 @@ class Reports extends Component
         //$this->downloadReportFile($data);
     }
     function getTotalSalesIncome($startDate, $endDate){
-        $totalSalesIncome = DB::table('sales')->whereDate('created_at', '>=', $startDate)->whereDate('created_at', '<=', $endDate)->where('paymentStatus', '=', 'Paid')->sum('grandTotal');
+        $totalSalesIncome = DB::table('sales')->whereDate('paymentTimestamp', '>=', $startDate)->whereDate('paymentTimestamp', '<=', $endDate)->where('paymentStatus', '=', 'Paid')->sum('grandTotal');
         return $totalSalesIncome;
     }
     function getTotalServiceIncome($startDate, $endDate){
-        $totalServiceIncome = DB::table('services')->whereDate('created_at', '>=', $startDate)->whereDate('created_at', '<=', $endDate)->where('status', '=', 'Done')->where('paymentStatus', '=', 'Paid')->sum('price');
+        $totalServiceIncome = DB::table('services')->whereDate('paymentTimestamp', '>=', $startDate)->whereDate('paymentTimestamp', '<=', $endDate)->where('status', '=', 'Done')->where('paymentStatus', '=', 'Paid')->sum('price');
         return $totalServiceIncome;
     }
     public function getTotalProfit($startDate, $endDate)
     {
         $totalProfit = 0.0;
-        $totalSalesProfit = DB::table('sales')->whereDate('created_at', '>=', $startDate)->whereDate('created_at', '<=', $endDate)->sum('profit');
-        $totalServiceProfit = $this->getTotalServiceIncome($startDate, $endDate) - DB::table('expenses')->where('status','=','Paid')->where('expenseReason','=','Service')->whereDate('created_at', '>=', $startDate)->whereDate('created_at', '<=', $endDate)->sum('amount');
-        $totalProfit = $totalSalesProfit + $totalServiceProfit;
+        $totalSalesProfit = DB::table('sales')->whereDate('paymentTimestamp', '>=', $startDate)->whereDate('paymentTimestamp', '<=', $endDate)->where('paymentStatus', '=', 'Paid')->sum('profit');
+        $totalServiceProfit = DB::table('services')->whereDate('paymentTimestamp', '>=', $startDate)->whereDate('paymentTimestamp', '<=', $endDate)->where('paymentStatus', '=', 'Paid')->sum('profit');
+        $totalExpense = DB::table('expenses')->whereDate('paymentTimestamp', '>=', $startDate)->whereDate('paymentTimestamp', '<=', $endDate)->where('status', '=', 'Paid')->sum('amount');
+        $totalProfit = $totalSalesProfit + $totalServiceProfit - $totalExpense;
         return $totalProfit;
     }
-    function getAllExpenses(){
-        $expenses = Expense::where('status','=','Paid')->get()->groupBy('expenseReason');
+    function getAllExpenses($startDate, $endDate){
+        $expenses = Expense::whereDate('paymentTimestamp', '>=', $startDate)->whereDate('paymentTimestamp', '<=', $endDate)->where('status','=','Paid')->get()->groupBy('expenseReason');
         return [
             'Rent' => $expenses->has('Rent') ?  $expenses["Rent"]->sum('amount') : 0.00 ,
             'Salary' =>   $expenses->has('Salary') ? $expenses["Salary"]->sum('amount') : 0.00,
@@ -90,7 +89,7 @@ class Reports extends Component
     // }
     public function getTotalPurchaseCost($startDate, $endDate)
     {
-        $totalPurchaseCost = DB::table('purchases')->whereDate('created_at', '>=', $startDate)->whereDate('created_at', '<=', $endDate)->sum('grandTotal');
+        $totalPurchaseCost = DB::table('purchases')->whereDate('paymentTimestamp', '>=', $startDate)->whereDate('paymentTimestamp', '<=', $endDate)->where('status', '=', 'Paid')->sum('grandTotal');
         return $totalPurchaseCost;
     }
     public function getTotalShippingCost($startDate, $endDate)

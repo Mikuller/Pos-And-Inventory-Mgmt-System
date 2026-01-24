@@ -5,6 +5,7 @@ namespace App\Livewire;
 use App\Models\Debt;
 use App\Models\Product;
 use App\Models\Purchase;
+use Carbon\Carbon;
 use Illuminate\Foundation\Auth\User;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Reactive;
@@ -54,6 +55,9 @@ class Purchases extends Component
         }
         if($purchase->status=="Unpaid"){
             $this->saveAsDebt($purchase);
+        }else{
+            $purchase->paymentTimestamp = Carbon::now();
+            $purchase->save();
         }
         session()->flash('success', 'Purchase was Successfully Done!');
         $this->redirect('index');
