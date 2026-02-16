@@ -81,18 +81,18 @@
                     </div>
                 </div>
             </div>
-            <!-- page statustic chart end -->
-            <!-- sale 2 card start -->
-
-            <div class="col-md-12 col-xl-4">
-                <div class="card card-green text-white">
-                    <div class="card-block pb-0">
-                        <div class="row mb-50">
-                            <div class="col">
-                                <h6 class="mb-5">{{ 'Sales In ' . date('F') }}</h6>
-                                <h5 class="mb-0  fw-700">{{ number_format($totalMonthlySales) . ' ETB' }}</h5>
-                            </div>
-                            {{-- <div class="col-auto text-center">
+            <!-- page statistic chart end -->
+            @can('admin')
+                <!-- sale 2 card start -->
+                <div class="col-md-12 col-xl-4">
+                    <div class="card card-green text-white">
+                        <div class="card-block pb-0">
+                            <div class="row mb-50">
+                                <div class="col">
+                                    <h6 class="mb-5">{{ 'Sales In ' . date('F') }}</h6>
+                                    <h5 class="mb-0  fw-700">{{ number_format($totalMonthlySales) . ' ETB' }}</h5>
+                                </div>
+                                {{-- <div class="col-auto text-center">
                                 <p class="mb-5">{{ __('Direct Sale') }}</p>
                                 <h6 class="mb-0">{{ __('$1768') }}</h6>
                             </div>
@@ -101,46 +101,47 @@
                                 <p class="mb-5">{{ __('Referal') }}</p>
                                 <h6 class="mb-0">{{ __('$897') }}</h6>
                             </div> --}}
-                        </div>
-
-                    </div>
-                </div>
-            </div>
-            <!-- sale 2 card end -->
-            <!-- profit card start -->
-
-            <div class="col-md-12 col-xl-4">
-                <div class="card card-red text-white">
-                    <div class="card-block pb-0">
-                        <div class="row mb-50">
-                            <div class="col">
-                                <h6 class="mb-5">{{ 'Profit in ' . date('F') }}</h6>
-                                <h5 class="mb-0  fw-700">{{ number_format($totalMonthlyProfit) . ' ETB' }}</h5>
                             </div>
 
                         </div>
-
                     </div>
                 </div>
-            </div>
-            <!-- profit card end -->
-            <!--total service card start -->
+                <!-- sale 2 card end -->
 
-            <div class="col-md-12 col-xl-4">
-                <div class="card card-blue text-white">
-                    <div class="card-block pb-0">
-                        <div class="row mb-50">
-                            <div class="col">
-                                <h6 class="mb-5">{{ 'Service income in ' . date('F') }}</h6>
-                                <h5 class="mb-0  fw-700">{{ number_format($totalMonthlyService) . ' ETB' }}</h5>
+                <!-- profit card start -->
+                <div class="col-md-12 col-xl-4">
+                    <div class="card card-red text-white">
+                        <div class="card-block pb-0">
+                            <div class="row mb-50">
+                                <div class="col">
+                                    <h6 class="mb-5">{{ 'Profit in ' . date('F') }}</h6>
+                                    <h5 class="mb-0  fw-700">{{ number_format($totalMonthlyProfit) . ' ETB' }}</h5>
+                                </div>
+
                             </div>
 
                         </div>
-
                     </div>
                 </div>
-            </div>
-            <!-- total sevice card end -->
+                <!-- profit card end -->
+
+                <!--total service card start -->
+                <div class="col-md-12 col-xl-4">
+                    <div class="card card-blue text-white">
+                        <div class="card-block pb-0">
+                            <div class="row mb-50">
+                                <div class="col">
+                                    <h6 class="mb-5">{{ 'Service income in ' . date('F') }}</h6>
+                                    <h5 class="mb-0  fw-700">{{ number_format($totalMonthlyService) . ' ETB' }}</h5>
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <!-- total sevice card end -->
+            @endcan
 
             <!-- pending services -->
             <div class="col-xl-4 col-md-6">
@@ -170,11 +171,7 @@
                                     @foreach ($service->serviceTypes as $serviceType)
                                         <p class="text-muted mb-0 d-inline">{{ $serviceType->name . ',' }}</p>
                                     @endforeach
-
-
                                 </div>
-
-
                             </div>
                         @empty
                             <span class=" b-b-primary text-primary text-center">
@@ -341,7 +338,5 @@
 
 
         }
-
-        
     </script>
 @endsection
