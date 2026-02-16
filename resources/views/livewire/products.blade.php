@@ -5,6 +5,9 @@
                 <a class="btn btn-success" href="{{ route('product.create') }}">
                     + Product
                 </a>
+                <a class="btn btn-info" href="{{ route('product.import') }}">
+                    Bulk Import
+                </a>
                 <a class="btn btn-primary" href="{{ route('category.index') }}">
                     + Category
                 </a>
