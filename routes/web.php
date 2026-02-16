@@ -72,6 +72,9 @@ Route::group(['prefix' => 'categories', 'as' => 'category.', 'middleware' => ['a
     Route::get('/show/{category}', [CategoryController::class , 'show'])->name('show');
     Route::put('/update/{category}', [CategoryController::class , 'update'])->name('update');
     Route::get('/destroy/{category}', [CategoryController::class , 'destroy'])->name('destroy');
+    Route::get('/import', [CategoryController::class , 'import'])->name('import');
+    Route::post('/import', [CategoryController::class , 'storeImport'])->name('storeImport');
+    Route::get('/downloadSample', [CategoryController::class , 'downloadSample'])->name('downloadSample');
 });
 
 Route::group(['prefix' => 'sales', 'as' => 'sales.', 'middleware' => ['auth', 'can:status']], function () {
@@ -109,7 +112,8 @@ Route::group(['prefix' => 'services', 'as' => 'service.', 'middleware' => ['auth
             Route::get('/markAsPending/pendingServices/{service}', [ServiceController::class , 'markAsPending'])->name('markAsPending.pendingService')->withoutMiddleware('admin');
             Route::get('/abortStatus/pendingServices/{service}', [ServiceController::class , 'abortPendingServiceStatus'])->name('abortStatus.pendingService');
         }
-        );    });
+        );
+    });
 
 Route::resource('staffs', StaffController::class)->middleware(['auth', 'can:admin', 'can:status']); //use ->except([]) or ->only([]) function if you don't use some controller functions
 Route::get('staffs/changePrivilege/{staff}', [StaffController::class , 'changePrivilege'])

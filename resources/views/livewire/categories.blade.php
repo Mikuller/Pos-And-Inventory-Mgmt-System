@@ -7,6 +7,9 @@
                     <button class="btn btn-primary" href="#categoryAdd" data-toggle="modal" data-target="#categoryAdd">
                         Add Category
                     </button>
+                    <a href="{{ route('category.import') }}" class="btn btn-success ml-2">
+                        Import Categories
+                    </a>
 
                 </div>
                
