@@ -35,6 +35,17 @@ Built to reduce operational errors, improve customer satisfaction, and provide d
 - Technician assignment and workload tracking
 - Service history and warranty management
 
+### 💡 Real-Time Features (Livewire)
+
+The system leverages **Laravel Livewire** for dynamic, real-time interactions without full page reloads:
+
+- **Live Purchase Updates** - Stock levels auto-refresh when purchases are recorded
+- **Real-Time Expense Tracking** - Expense entries update dashboard totals instantly
+- **Live Debit/Credit Management** - Customer credit balances refresh immediately after payments
+- **Dynamic POS Cart** - Add/remove items with instant total recalculation
+- **Service Status Changes** - Technician status updates trigger instant UI refresh
+- **Live Inventory Alerts** - Low-stock warnings appear in real-time during transactions
+
 ### Reporting & Analytics
 - Daily/weekly/monthly sales reports
 - Inventory turnover analysis
@@ -48,11 +59,11 @@ Built to reduce operational errors, improve customer satisfaction, and provide d
 | Layer | Technology |
 |-------|------------|
 | Backend | Laravel 10.x |
-| Frontend | Vue.js 3.x |
+| Frontend | Vue.js 3.x + Livewire |
 | Styling | Tailwind CSS + Bootstrap 5 |
 | Database | MySQL 8.x |
 | Authentication | Laravel Sanctum |
-| Real-time | Laravel Echo / Pusher |
+| Real-time | Livewire + Laravel Echo / Pusher |
 
 ## 📦 Installation
 
