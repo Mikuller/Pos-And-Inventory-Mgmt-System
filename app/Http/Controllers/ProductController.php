@@ -229,4 +229,5 @@ class ProductController extends Controller
             ->route('product.index')
             ->with('success', "$count products imported successfully. $skipped duplicates skipped.");
     }
+
 }

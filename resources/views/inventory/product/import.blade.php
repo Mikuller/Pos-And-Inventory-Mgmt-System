@@ -35,9 +35,7 @@
                 <div class="card-header"><h3>Upload CSV</h3></div>
                 <div class="card-body">
                     @if (session('success'))
-                        <div class="alert alert-success">
-                            {{ session('success') }}
-                        </div>
+                        <div class="alert alert-success">{{ session('success') }}</div>
                     @endif
                     @if ($errors->any())
                         <div class="alert alert-danger">
@@ -51,7 +49,9 @@
 
                     <div class="mb-4">
                         <p>Please download the sample CSV file to understand the required format.</p>
-                        <a href="{{ route('product.downloadSample') }}" class="btn btn-primary"><i class="ik ik-download"></i> Download Sample CSV</a>
+                        <a href="{{ route('product.downloadSample') }}" class="btn btn-primary">
+                            <i class="ik ik-download"></i> Download Sample CSV
+                        </a>
                     </div>
 
                     <form action="{{ route('product.storeImport') }}" method="POST" enctype="multipart/form-data">
@@ -60,7 +60,9 @@
                             <label for="file">Choose CSV File</label>
                             <input type="file" class="form-control" name="file" id="file" required accept=".csv,.txt">
                         </div>
-                        <button type="submit" class="btn btn-success"><i class="ik ik-upload"></i> Import Products</button>
+                        <button type="submit" class="btn btn-success">
+                            <i class="ik ik-upload"></i> Import Products
+                        </button>
                     </form>
                 </div>
             </div>

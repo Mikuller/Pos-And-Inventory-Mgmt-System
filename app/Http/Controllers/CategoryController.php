@@ -171,4 +171,5 @@ class CategoryController extends Controller
             ->route('category.index')
             ->with('success', "$count categories imported successfully. $skipped duplicates skipped.");
     }
+
 }
